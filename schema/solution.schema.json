@@ -157,6 +157,19 @@
       "default": null,
       "title": "Wall Runtime S"
     },
+    "time_to_best_s": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Time To Best S"
+    },
     "native_objective": {
       "anyOf": [
         {

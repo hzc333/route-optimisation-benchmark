@@ -153,5 +153,6 @@ class Solution(_Strict):
     unserved: list[str] = Field(default_factory=list)
     solver_runtime_s: NonNegFloat | None = None
     wall_runtime_s: NonNegFloat | None = None
+    time_to_best_s: NonNegFloat | None = None
     native_objective: float | None = None
     notes: str = ""

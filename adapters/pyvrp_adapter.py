@@ -1,0 +1,113 @@
+"""PyVRP adapter (plan §9).
+
+Mapping from the shared schema:
+
+* PyVRP 0.14 matrices are indexed by Location, so the shared matrices are
+  passed through unchanged and jobs reference their location index;
+* identical vehicles are grouped into one VehicleType; shift -> tw_early /
+  tw_late of the vehicle type;
+* optional jobs -> ``required=False`` with ``prize`` = per-class drop penalty
+  (weighted, *not* strict priority);
+* skills are not supported natively -> ``UnsupportedFeature``.
+
+The objective is distance (+ fixed vehicle cost), matching OR-Tools.
+"""
+
+from __future__ import annotations
+
+from collections import defaultdict
+from importlib import metadata
+from time import perf_counter
+
+import numpy as np
+import pyvrp
+from pyvrp.stop import MaxRuntime
+
+from schema.models import PriorityClass, Problem, Solution
+
+from .base import UnsupportedFeature, build_solution, default_penalties
+
+NAME = "pyvrp"
+VERSION = metadata.version("pyvrp")
+
+_INT_MAX = np.iinfo(np.int64).max
+
+
+def _time_to_best(stats: pyvrp.Statistics) -> float | None:
+    data = stats.data
+    if not data or not data[-1].best_feas:
+        return None
+    final = data[-1].best_cost
+    elapsed = 0.0
+    for runtime, datum in zip(stats.runtimes, data):
+        elapsed += runtime
+        if datum.best_feas and datum.best_cost <= final:
+            return elapsed
+    return None
+
+
+def solve(
+    problem: Problem,
+    *,
+    time_limit_s: float,
+    seed: int = 0,
+    threads: int = 1,
+    penalties: dict[PriorityClass, int] | None = None,
+) -> Solution:
+    t_wall = perf_counter()
+    if any(j.skills for j in problem.jobs):
+        raise UnsupportedFeature("skills (no native vehicle-client compatibility)")
+    penalties = penalties or default_penalties(problem)
+
+    # Group identical vehicles; remember the ids in each group for mapping back.
+    groups: dict[tuple, list[str]] = defaultdict(list)
+    for veh in problem.vehicles:
+        groups[(veh.capacity, veh.shift, veh.fixed_cost)].append(veh.id)
+    vehicle_types = [
+        pyvrp.VehicleType(num_available=len(ids), capacity=[cap], fixed_cost=fixed,
+                          tw_early=shift[0], tw_late=shift[1])
+        for (cap, shift, fixed), ids in groups.items()
+    ]
+    type_ids = list(groups.values())
+
+    clients = []
+    for job in problem.jobs:
+        early, late = job.time_window or (0, _INT_MAX)
+        optional = not job.required
+        clients.append(pyvrp.Client(
+            location=job.location, delivery=[job.demand], service_duration=job.service,
+            tw_early=early, tw_late=late, required=job.required,
+            prize=penalties[job.priority_class] if optional else 0, name=job.id))
+
+    data = pyvrp.ProblemData(
+        locations=[pyvrp.Location(x=loc.x or 0.0, y=loc.y or 0.0) for loc in problem.locations],
+        clients=clients,
+        depots=[pyvrp.Depot(location=problem.depot)],
+        vehicle_types=vehicle_types,
+        distance_matrices=[np.asarray(problem.distance_matrix, dtype=np.int64)],
+        duration_matrices=[np.asarray(problem.duration_matrix, dtype=np.int64)],
+    )
+
+    t_solve = perf_counter()
+    res = pyvrp.solve(data, stop=MaxRuntime(time_limit_s), seed=seed,
+                      collect_stats=True, display=False)
+    solver_runtime = perf_counter() - t_solve
+
+    next_vehicle = [0] * len(type_ids)
+    routes = []
+    for route in res.best.routes():
+        vt = route.vehicle_type()
+        vid = type_ids[vt][next_vehicle[vt]]
+        next_vehicle[vt] += 1
+        routes.append((vid, [problem.jobs[act.idx].id for act in route if act.is_client()]))
+
+    feasible = res.is_feasible()
+    return build_solution(
+        problem, solver=NAME, solver_version=VERSION, routes=routes,
+        seed=seed, time_limit_s=time_limit_s, threads=1,
+        solver_runtime_s=solver_runtime,
+        native_objective=float(res.cost()) if feasible else None,
+        time_to_best_s=_time_to_best(res.stats),
+        wall_runtime_s=perf_counter() - t_wall,
+        notes=f"iterations={res.num_iterations}; native_feasible={feasible}",
+    )
