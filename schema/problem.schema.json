@@ -1,0 +1,249 @@
+{
+  "$defs": {
+    "Job": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "minimum": 0,
+          "title": "Location",
+          "type": "integer"
+        },
+        "demand": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Demand",
+          "type": "integer"
+        },
+        "service": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Service",
+          "type": "integer"
+        },
+        "time_window": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time Window"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "priority_class": {
+          "$ref": "#/$defs/PriorityClass",
+          "default": "NORMAL"
+        },
+        "skills": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Skills",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "location"
+      ],
+      "title": "Job",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "description": "A row/column of the matrices. Coordinates are informational only.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "x": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "X"
+        },
+        "y": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Y"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "PriorityClass": {
+      "enum": [
+        "CRITICAL",
+        "HIGH",
+        "NORMAL",
+        "LOW"
+      ],
+      "title": "PriorityClass",
+      "type": "string"
+    },
+    "Vehicle": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "capacity": {
+          "minimum": 0,
+          "title": "Capacity",
+          "type": "integer"
+        },
+        "shift": {
+          "default": [
+            0,
+            2147483647
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "minimum": 0,
+              "type": "integer"
+            }
+          ],
+          "title": "Shift",
+          "type": "array"
+        },
+        "fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Fixed Cost",
+          "type": "integer"
+        },
+        "skills": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Skills",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "capacity"
+      ],
+      "title": "Vehicle",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "meta": {
+      "additionalProperties": true,
+      "title": "Meta",
+      "type": "object"
+    },
+    "locations": {
+      "items": {
+        "$ref": "#/$defs/Location"
+      },
+      "title": "Locations",
+      "type": "array"
+    },
+    "depot": {
+      "minimum": 0,
+      "title": "Depot",
+      "type": "integer"
+    },
+    "vehicles": {
+      "items": {
+        "$ref": "#/$defs/Vehicle"
+      },
+      "title": "Vehicles",
+      "type": "array"
+    },
+    "jobs": {
+      "items": {
+        "$ref": "#/$defs/Job"
+      },
+      "title": "Jobs",
+      "type": "array"
+    },
+    "distance_matrix": {
+      "items": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Distance Matrix",
+      "type": "array"
+    },
+    "duration_matrix": {
+      "items": {
+        "items": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Duration Matrix",
+      "type": "array"
+    }
+  },
+  "required": [
+    "name",
+    "locations",
+    "depot",
+    "vehicles",
+    "jobs",
+    "distance_matrix",
+    "duration_matrix"
+  ],
+  "title": "Problem",
+  "type": "object"
+}

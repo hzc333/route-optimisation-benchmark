@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Large downloaded benchmark files; conversion scripts are versioned instead.
+data/raw/
+
+# Raw run outputs can be large; summaries and metadata are versioned.
+results/raw/

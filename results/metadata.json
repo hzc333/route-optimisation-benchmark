@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-09-29T01:29:13+02:00",
+  "hostname": "LAPTOP-33TQHC2S",
+  "os": {
+    "system": "Windows",
+    "release": "11",
+    "version": "10.0.26200"
+  },
+  "cpu": {
+    "name": "13th Gen Intel(R) Core(TM) i5-13500H",
+    "physical_cores": 12,
+    "logical_cores": 16,
+    "max_freq_mhz": 2600.0
+  },
+  "ram_gb": 15.7,
+  "power_scheme": "\u7535\u6e90\u65b9\u6848 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (\u5e73\u8861)",
+  "power_mode_overlay": {
+    "ac": "best_performance",
+    "dc": "best_performance"
+  },
+  "on_ac_power": true,
+  "python": {
+    "version": "3.13.7",
+    "implementation": "CPython",
+    "executable": "D:\\route_opti\\route-optimisation-benchmark\\.venv\\Scripts\\python.exe"
+  },
+  "packages": {
+    "ortools": "9.15.6755",
+    "pyvrp": "0.14.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "pydantic": "2.13.5",
+    "psutil": "7.2.2",
+    "vrplib": "2.2.0"
+  },
+  "env": {
+    "OMP_NUM_THREADS": null
+  }
+}
