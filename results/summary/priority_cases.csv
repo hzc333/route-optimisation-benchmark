@@ -19,26 +19,31 @@ case,P1_high_vs_20_normal,ortools,sequential,1,2.0,SOLVED,True,0,0,0,20,0,200,20
 case,P1_high_vs_20_normal,ortools,sequential,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,ortools,sequential,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,ortools,sequential,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=25457; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26576; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26847; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=25257; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=25473; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23159; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23838; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22431; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22604; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23046; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27474; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26945; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26697; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27107; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27528; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23556; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=25661; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26114; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26009; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23440; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22404; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22599; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22943; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21949; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22468; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27037; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27003; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=25169; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26251; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26749; native_feasible=True,"(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,vroom,native,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,vroom,native,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,vroom,native,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,vroom,native,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,vroom,native,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
 case,P2_far_critical,ortools,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
@@ -59,26 +64,31 @@ case,P2_far_critical,ortools,sequential,1,2.0,SOLVED,True,0,0,0,0,0,120084,12008
 case,P2_far_critical,ortools,sequential,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,sequential,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,sequential,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=74209; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=73217; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=79627; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=78259; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=75377; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=95537; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=100322; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=96475; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=92938; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=93027; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=77771; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=77124; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=73871; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=75817; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=78507; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64489; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64697; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=66625; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=60745; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64453; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=85696; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=82437; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=69129; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=65252; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=56997; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=42137; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=36752; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=49598; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=45509; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=44045; native_feasible=True,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,vroom,native,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,vroom,native,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,vroom,native,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,vroom,native,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,vroom,native,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
@@ -99,26 +109,31 @@ case,P3_value_within_high,ortools,sequential,1,2.0,SOLVED,True,0,0,2,0,0,900,900
 case,P3_value_within_high,ortools,sequential,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,sequential,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,sequential,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=98919; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=100218; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=104613; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=107427; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=100008; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=101006; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=105585; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=105166; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=98695; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=99404; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=103931; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=106332; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=98424; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=101147; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=105261; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=56801; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58394; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=35696; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58679; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=62503; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58459; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=38339; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=61931; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=43544; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=41621; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=25911; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=49018; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=46523; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=45579; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=30838; native_feasible=True,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,vroom,native,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,vroom,native,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,vroom,native,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,vroom,native,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,vroom,native,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
 case,P4_softcost_vs_one_normal,ortools,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
 case,P4_softcost_vs_one_normal,ortools,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
@@ -139,23 +154,28 @@ case,P4_softcost_vs_one_normal,ortools,sequential,1,2.0,SOLVED,True,0,0,0,0,0,43
 case,P4_softcost_vs_one_normal,ortools,sequential,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,sequential,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,sequential,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=86008; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=88588; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=93760; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=92430; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=87877; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=90415; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=93354; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=95490; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=89518; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=90297; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=64972; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=65311; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=62632; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=62000; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=64983; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=58245; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=31535; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=57510; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=58383; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=50746; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=42448; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=49554; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=48858; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=53602; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=48555; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38866; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=37908; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38046; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=33807; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38659; native_feasible=True,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,vroom,native,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,vroom,native,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,vroom,native,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,vroom,native,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,vroom,native,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True

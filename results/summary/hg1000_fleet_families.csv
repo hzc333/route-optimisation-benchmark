@@ -1,3 +1,4 @@
 solver,family,time_limit_s,n_instances,runs,feasible,gap_mean,gap_median,gap_best_mean,gap_std_mean,wall_mean,ttb_mean,rss_max
 ortools,hg1000,60.0000,6,18,18,18.4579,24.3597,16.4907,2.3892,65.6081,54.3641,208.1641
 pyvrp,hg1000,60.0000,6,18,18,1.2808,0.7523,0.9840,0.3414,60.5277,48.7728,198.4297
+vroom,hg1000,60.0000,6,18,18,19.7095,13.4562,19.2531,0.4753,60.7607,,233.6914
