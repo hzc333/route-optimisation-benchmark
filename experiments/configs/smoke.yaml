@@ -1,6 +1,6 @@
 # Pipeline check: both smoke instances + 2 Solomon, short limits.
 name: smoke
-solvers: [ortools, pyvrp]
+solvers: [ortools, pyvrp, vroom]
 instances: [smoke/*, solomon/C101, solomon/R101]
 time_limits_s: [1]
 seeds: [0, 1, 2]

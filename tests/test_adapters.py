@@ -49,8 +49,21 @@ def test_smoke_instances_feasible(adapter, factory):
     assert s.wall_runtime_s >= s.solver_runtime_s > 0
 
 
+def _far_optional_problem(cls) -> Problem:
+    pts = [0, 10, 1000]
+    m = [[abs(a - b) for b in pts] for a in pts]
+    return Problem(
+        name="drop", locations=[Location(id=str(i)) for i in range(3)], depot=0,
+        vehicles=[Vehicle(id="v0", capacity=10)],
+        jobs=[Job(id="near", location=1, demand=1),
+              Job(id="far", location=2, demand=1, required=False, priority_class=cls)],
+        distance_matrix=m, duration_matrix=m)
+
+
 def test_optional_far_job_dropped_by_class(adapter):
     """A LOW job 1000 away is dropped; the same job as CRITICAL is served."""
+    if "drop_penalty" in adapter.UNSUPPORTED:
+        pytest.skip(f"{adapter.NAME}: no drop penalty")
     pts = [0, 10, 1000]
     m = [[abs(a - b) for b in pts] for a in pts]
 
@@ -71,6 +84,13 @@ def test_optional_far_job_dropped_by_class(adapter):
         assert (rep.unserved == {"far"}) is dropped
 
 
+def test_vroom_serves_every_servable_job():
+    """VROOM maximises assigned jobs before cost: even a far LOW job is served."""
+    p = _far_optional_problem(PriorityClass.LOW)
+    rep = validate(p, get_adapter("vroom").solve(p, time_limit_s=0.5))
+    assert rep.feasible and not rep.unserved
+
+
 def test_time_windows_force_order(adapter):
     """c1 must be served before c3 even though c3-first is not worse by distance."""
     jobs = [Job(id="c1", location=1, demand=1, time_window=(0, 10)),
@@ -83,41 +103,49 @@ def test_time_windows_force_order(adapter):
     assert s.routes[0].job_ids == ["c1", "c3"]
 
 
-def test_skills():
+def test_skills(adapter):
     jobs = [Job(id="c1", location=1, demand=1, skills=[7]),
             Job(id="c2", location=2, demand=1)]
     vehicles = [Vehicle(id="plain", capacity=2), Vehicle(id="cool", capacity=2, skills=[7])]
     p = square_problem(jobs=jobs, vehicles=vehicles)
-
-    s = get_adapter("ortools").solve(p, time_limit_s=0.5)
+    if "skills" in adapter.UNSUPPORTED:
+        with pytest.raises(UnsupportedFeature, match="skills"):
+            adapter.solve(p, time_limit_s=0.5)
+        return
+    s = adapter.solve(p, time_limit_s=0.5)
     rep = validate(p, s)
     assert rep.feasible, rep.violations
     assert any(r.vehicle_id == "cool" and "c1" in r.job_ids for r in s.routes)
 
-    with pytest.raises(UnsupportedFeature, match="skills"):
-        get_adapter("pyvrp").solve(p, time_limit_s=0.5)
 
-
-def test_skill_nobody_has():
-    """No vehicle has skill 9: required -> no solution; optional -> dropped.
-    (Guards against OR-Tools treating an empty allowed-set as 'all vehicles'.)"""
-    ortools = get_adapter("ortools")
-    for required in (True, False):
-        jobs = [Job(id="c1", location=1, demand=1, skills=[9], required=required),
-                Job(id="c2", location=2, demand=1)]
-        p = square_problem(jobs=jobs)
-        s = ortools.solve(p, time_limit_s=0.5)
-        if required:
-            assert s.status == "NO_SOLUTION"
-        else:
-            rep = validate(p, s)
-            assert rep.feasible and rep.unserved == {"c1"}
+@pytest.mark.parametrize("required", [True, False])
+def test_skill_nobody_has(adapter, required):
+    """No vehicle has skill 9. Optional -> dropped. Required -> OR-Tools returns
+    no solution, VROOM leaves it unassigned (validator: UNSERVED_REQUIRED).
+    Guards against OR-Tools treating an empty allowed-set as 'all vehicles'."""
+    if "skills" in adapter.UNSUPPORTED:
+        pytest.skip(f"{adapter.NAME}: no skills")
+    jobs = [Job(id="c1", location=1, demand=1, skills=[9], required=required),
+            Job(id="c2", location=2, demand=1)]
+    p = square_problem(jobs=jobs)
+    s = adapter.solve(p, time_limit_s=0.5)
+    rep = validate(p, s)
+    if not required:
+        assert rep.feasible and rep.unserved == {"c1"}
+    elif adapter.NAME == "ortools":
+        assert s.status == "NO_SOLUTION"
+    else:
+        assert [v.kind for v in rep.violations] == ["UNSERVED_REQUIRED"]
 
 
 def test_warm_start_from_feasible_routes(adapter):
     """A feasible (suboptimal) start is accepted and improved, never worsened."""
     p = square_problem()
     start = [("v0", ["c1", "c3"]), ("v1", ["c2", "c4"])]  # crosses quadrants: 2*(10+14+10)+...
+    if "warm_start" in adapter.UNSUPPORTED:
+        with pytest.raises(UnsupportedFeature):
+            adapter.solve(p, time_limit_s=0.5, initial_routes=start)
+        return
     s = adapter.solve(p, time_limit_s=0.5, initial_routes=start)
     rep = validate(p, s)
     assert rep.feasible, rep.violations

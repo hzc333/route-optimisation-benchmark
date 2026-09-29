@@ -29,6 +29,8 @@ from .base import UnsupportedFeature, build_solution, default_penalties
 
 NAME = "pyvrp"
 VERSION = metadata.version("pyvrp")
+# Features of the shared contract this adapter cannot honour.
+UNSUPPORTED = frozenset({"skills"})
 
 _INT_MAX = np.iinfo(np.int64).max
 

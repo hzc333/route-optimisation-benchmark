@@ -125,6 +125,9 @@ def solve_sequential(adapter, problem: Problem, *, time_limit_s: float, seed: in
 
 
 STRATEGIES = {
+    # The solver's own priority handling, no penalties passed (used for VROOM,
+    # whose 0-100 priorities are maximised before cost).
+    "native": lambda a, p, **kw: a.solve(p, **kw),
     "weighted": solve_weighted,
     "weighted_fixed": lambda a, p, **kw: solve_weighted(a, p, penalties=FIXED_TABLE, **kw),
     "stacked": solve_stacked,

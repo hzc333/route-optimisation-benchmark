@@ -3,6 +3,7 @@ name: solomon
 solvers:
   - ortools                      # PARALLEL_CHEAPEST_INSERTION + GLS (benchmark config)
   - pyvrp
+  - vroom                        # pyvroom, exploration level 5, single thread
   - label: ortools_pca           # plan §8 / OR-Tools docs default, to quantify its failure rate
     adapter: ortools
     options: {first_solution: PATH_CHEAPEST_ARC}

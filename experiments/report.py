@@ -19,10 +19,18 @@ import pandas as pd  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY, PLOTS = ROOT / "results" / "summary", ROOT / "results" / "plots"
 
-# Reference palette, categorical slots 1-3 in fixed order (light mode).
-COLORS = {"ortools": "#2a78d6", "pyvrp": "#eb6834", "ortools_pca": "#1baf7a"}
-LABELS = {"ortools": "OR-Tools (PCI+GLS)", "pyvrp": "PyVRP",
-          "ortools_pca": "OR-Tools (PCA+GLS, docs default)"}
+# Reference palette, categorical slots in fixed order (light mode).
+COLORS = {"ortools": "#2a78d6", "pyvrp": "#eb6834", "vroom": "#1baf7a"}
+LABELS = {"ortools": "OR-Tools (PCI+GLS)", "pyvrp": "PyVRP", "vroom": "VROOM (x=5)"}
+MAIN = list(COLORS)  # solvers shown in figures, in palette order
+
+
+def _present(df: pd.DataFrame) -> list[str]:
+    return [s for s in MAIN if s in set(df.solver)]
+
+
+def _bar_offsets(n: int, width: float) -> list[float]:
+    return [(k - (n - 1) / 2) * (width + 0.02) for k in range(n)]
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 
 plt.rcParams.update({
@@ -46,7 +54,8 @@ def solomon_class(instance: str) -> str:
 
 
 def fig_solomon(runs: pd.DataFrame) -> None:
-    runs = runs[runs.solver.isin(["ortools", "pyvrp"])].copy()
+    solvers = _present(runs)
+    runs = runs[runs.solver.isin(solvers)].copy()
     runs["cls"] = runs.instance.map(solomon_class)
     per_inst = runs.groupby(["solver", "time_limit_s", "cls", "instance"]).gap_to_bks.mean()
     agg = per_inst.groupby(["solver", "time_limit_s", "cls"]).mean().reset_index()
@@ -54,10 +63,10 @@ def fig_solomon(runs: pd.DataFrame) -> None:
     tls = sorted(agg.time_limit_s.unique())
     fig, axes = plt.subplots(1, len(tls), figsize=(5.2 * len(tls), 3.6), sharey=True)
     for ax, tl in zip(axes if len(tls) > 1 else [axes], tls):
-        width = 0.38
-        for k, solver in enumerate(["ortools", "pyvrp"]):
+        width = 0.8 / len(solvers)
+        for off, solver in zip(_bar_offsets(len(solvers), width), solvers):
             d = agg[(agg.solver == solver) & (agg.time_limit_s == tl)].set_index("cls")
-            xs = [i + (k - 0.5) * (width + 0.02) for i in range(len(classes))]
+            xs = [i + off for i in range(len(classes))]
             ax.bar(xs, [d.gap_to_bks.get(c, float("nan")) for c in classes], width,
                    color=COLORS[solver], label=LABELS[solver])
         ax.set_xticks(range(len(classes)), classes)
@@ -75,7 +84,7 @@ def fig_x(inst: pd.DataFrame) -> None:
     tls = sorted(inst.time_limit_s.unique())
     fig, axes = plt.subplots(1, len(tls), figsize=(5.2 * len(tls), 3.6), sharey=True)
     for ax, tl in zip(axes if len(tls) > 1 else [axes], tls):
-        for solver in ["ortools", "pyvrp"]:
+        for solver in _present(inst):
             d = inst[(inst.solver == solver) & (inst.time_limit_s == tl)].sort_values("n_jobs")
             ax.fill_between(d.n_jobs, d.gap_best, d.gap_worst, color=COLORS[solver], alpha=0.15,
                             linewidth=0)
@@ -95,10 +104,11 @@ def fig_x(inst: pd.DataFrame) -> None:
 def fig_hg(inst: pd.DataFrame) -> None:
     names = sorted(inst.instance.unique())
     fig, ax = plt.subplots(figsize=(7.5, 3.6))
-    width = 0.38
-    for k, solver in enumerate(["ortools", "pyvrp"]):
+    solvers = _present(inst)
+    width = 0.8 / len(solvers)
+    for off, solver in zip(_bar_offsets(len(solvers), width), solvers):
         d = inst[inst.solver == solver].set_index("instance")
-        xs = [i + (k - 0.5) * (width + 0.02) for i in range(len(names))]
+        xs = [i + off for i in range(len(names))]
         ax.bar(xs, [d.gap_mean.get(n, float("nan")) for n in names], width,
                color=COLORS[solver], label=LABELS[solver])
     ax.set_xticks(range(len(names)), names)
@@ -132,17 +142,18 @@ def tables() -> str:
         inst = _read(f"{exp}_instances.csv")
         both = inst.pivot_table(index="instance", columns=["solver", "time_limit_s"],
                                 values="gap_mean")
-        if {"ortools", "pyvrp"} <= set(inst.solver):
-            wins = []
+        rows = []
+        for a, b in (("pyvrp", "ortools"), ("pyvrp", "vroom"), ("vroom", "ortools")):
             for tl in sorted(inst.time_limit_s.unique()):
-                try:
-                    o, p = both[("ortools", tl)], both[("pyvrp", tl)]
-                except KeyError:
+                if (a, tl) not in both or (b, tl) not in both:
                     continue
-                wins.append({"time_limit_s": tl, "pyvrp_better": int((p < o - 1e-9).sum()),
-                             "tie": int(((p - o).abs() <= 1e-9).sum()),
-                             "ortools_better": int((o < p - 1e-9).sum())})
-            out += ["Per-instance comparison of mean gap:\n", _md(pd.DataFrame(wins), ".0f"), ""]
+                ga, gb = both[(a, tl)], both[(b, tl)]
+                rows.append({"pair": f"{a} vs {b}", "time_limit_s": tl,
+                             "first_better": int((ga < gb - 1e-9).sum()),
+                             "tie": int(((ga - gb).abs() <= 1e-9).sum()),
+                             "second_better": int((gb < ga - 1e-9).sum())})
+        if rows:
+            out += ["Per-instance comparison of mean gap:\n", _md(pd.DataFrame(rows), ".0f"), ""]
 
     pc = _read("priority_cases.csv")
     if pc is not None:

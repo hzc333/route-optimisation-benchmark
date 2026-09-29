@@ -8,6 +8,10 @@ from experiments.run_priority_tests import CASES, PRIO_FIELDS, case_p1, random_i
 from priority import STRATEGIES, cost_upper_bound, stacked_penalties
 from schema.models import PRIORITY_ORDER
 
+# Strategies drive the solver through drop penalties (and warm starts).
+PENALTY_ADAPTERS = [a for a in ADAPTERS
+                    if not {"drop_penalty", "warm_start"} & get_adapter(a).UNSUPPORTED]
+
 
 def prio_vector(problem, solution):
     rep = validate(problem, solution)
@@ -33,7 +37,7 @@ def test_stacked_penalties_overflow_guard():
         stacked_penalties(big)
 
 
-@pytest.mark.parametrize("solver", ADAPTERS)
+@pytest.mark.parametrize("solver", PENALTY_ADAPTERS)
 @pytest.mark.parametrize("strategy", ["stacked", "sequential"])
 @pytest.mark.parametrize("case", CASES, ids=lambda c: c.__name__)
 def test_strict_strategies_meet_expected_vector(solver, strategy, case):
@@ -42,7 +46,7 @@ def test_strict_strategies_meet_expected_vector(solver, strategy, case):
     assert prio_vector(problem, sol) == expected
 
 
-@pytest.mark.parametrize("solver", ADAPTERS)
+@pytest.mark.parametrize("solver", PENALTY_ADAPTERS)
 @pytest.mark.parametrize("seed", [0, 1, 2])
 def test_sequential_feasible_on_tight_random(solver, seed):
     """Warm-started stages must keep the locked (tight) packing feasible."""
@@ -52,7 +56,17 @@ def test_sequential_feasible_on_tight_random(solver, seed):
     assert rep.feasible, (sol.notes, rep.violations[:3])
 
 
-@pytest.mark.parametrize("solver", ADAPTERS)
+def test_vroom_native_priority_is_a_weighted_sum():
+    """VROOM maximises the *sum* of 0-100 priorities: 20 NORMAL (1 each) beat
+    1 HIGH (10) in P1, but serving everything servable passes P2 and P4."""
+    vroom = get_adapter("vroom")
+    for case, strict in ((CASES[0], False), (CASES[1], True), (CASES[3], True)):
+        problem, expected = case()
+        got = prio_vector(problem, STRATEGIES["native"](vroom, problem, time_limit_s=0.5))
+        assert (got == expected) is strict, (problem.name, got)
+
+
+@pytest.mark.parametrize("solver", PENALTY_ADAPTERS)
 def test_weighted_10x_fails_high_vs_many_normal(solver):
     """Documents the counterexample: 10x spacing gives up the HIGH job."""
     problem, expected = case_p1()

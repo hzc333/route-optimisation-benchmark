@@ -24,10 +24,10 @@ Run status:
 
 Per-instance comparison of mean gap:
 
-|   time_limit_s |   pyvrp_better |   tie |   ortools_better |
-|---------------:|---------------:|------:|-----------------:|
-|              1 |             49 |     7 |                0 |
-|             10 |             44 |    12 |                0 |
+| pair             |   time_limit_s |   first_better |   tie |   second_better |
+|:-----------------|---------------:|---------------:|------:|----------------:|
+| pyvrp vs ortools |              1 |             49 |     7 |               0 |
+| pyvrp vs ortools |             10 |             44 |    12 |               0 |
 
 ## solomon_60s
 
@@ -45,9 +45,9 @@ Run status:
 
 Per-instance comparison of mean gap:
 
-|   time_limit_s |   pyvrp_better |   tie |   ortools_better |
-|---------------:|---------------:|------:|-----------------:|
-|             60 |              7 |     5 |                0 |
+| pair             |   time_limit_s |   first_better |   tie |   second_better |
+|:-----------------|---------------:|---------------:|------:|----------------:|
+| pyvrp vs ortools |             60 |              7 |     5 |               0 |
 
 ## x
 
@@ -69,10 +69,10 @@ Run status:
 
 Per-instance comparison of mean gap:
 
-|   time_limit_s |   pyvrp_better |   tie |   ortools_better |
-|---------------:|---------------:|------:|-----------------:|
-|             10 |             11 |     0 |                0 |
-|             60 |             11 |     0 |                0 |
+| pair             |   time_limit_s |   first_better |   tie |   second_better |
+|:-----------------|---------------:|---------------:|------:|----------------:|
+| pyvrp vs ortools |             10 |             11 |     0 |               0 |
+| pyvrp vs ortools |             60 |             11 |     0 |               0 |
 
 ## hg1000
 
@@ -90,9 +90,9 @@ Run status:
 
 Per-instance comparison of mean gap:
 
-|   time_limit_s |   pyvrp_better |   tie |   ortools_better |
-|---------------:|---------------:|------:|-----------------:|
-|             60 |              6 |     0 |                0 |
+| pair             |   time_limit_s |   first_better |   tie |   second_better |
+|:-----------------|---------------:|---------------:|------:|----------------:|
+| pyvrp vs ortools |             60 |              6 |     0 |               0 |
 
 ## hg1000_fleet
 
@@ -110,9 +110,9 @@ Run status:
 
 Per-instance comparison of mean gap:
 
-|   time_limit_s |   pyvrp_better |   tie |   ortools_better |
-|---------------:|---------------:|------:|-----------------:|
-|             60 |              6 |     0 |                0 |
+| pair             |   time_limit_s |   first_better |   tie |   second_better |
+|:-----------------|---------------:|---------------:|------:|----------------:|
+| pyvrp vs ortools |             60 |              6 |     0 |               0 |
 
 ## Strict priority: share of runs hitting the strict-optimal vector
 

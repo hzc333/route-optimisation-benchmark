@@ -9,7 +9,7 @@ PY=./.venv/Scripts/python
 
 $PY environments/record_env.py > /dev/null
 $PY -W ignore -m experiments.run_priority_tests
-for c in smoke solomon solomon_60s x hg1000; do
+for c in smoke solomon solomon_60s x hg1000 hg1000_fleet; do
   $PY -W ignore -m experiments.run_benchmark "experiments/configs/$c.yaml"
 done
 $PY -m experiments.report

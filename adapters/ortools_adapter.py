@@ -28,6 +28,8 @@ from .base import build_solution, default_penalties, has_time_constraints
 
 NAME = "ortools"
 VERSION = ortools.__version__
+# Features of the shared contract this adapter cannot honour.
+UNSUPPORTED = frozenset()
 
 
 def solve(

@@ -1,6 +1,6 @@
 # Plan §6 stage 3: Gehring & Homberger 1000-customer VRPTW, one per class.
 name: hg1000
-solvers: [ortools, pyvrp]
+solvers: [ortools, pyvrp, vroom]
 instances: [hg1000/C1_10_1, hg1000/C2_10_1, hg1000/R1_10_1,
             hg1000/R2_10_1, hg1000/RC1_10_1, hg1000/RC2_10_1]
 time_limits_s: [60]

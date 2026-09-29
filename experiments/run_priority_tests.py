@@ -31,7 +31,11 @@ C, H, N, L = (PriorityClass.CRITICAL, PriorityClass.HIGH,
 SUMMARY = Path(__file__).resolve().parents[1] / "results" / "summary"
 PRIO_FIELDS = ["hard_violations", "unserved_critical", "unserved_high",
                "unserved_normal", "unserved_low"]
-SOLVERS = ["ortools", "pyvrp"]
+# (solver, strategy) pairs: penalty-driven strategies for solvers with drop
+# penalties + warm start; VROOM only has its native priority handling.
+PENALTY_STRATEGIES = ["weighted", "weighted_fixed", "stacked", "sequential"]
+COMBOS = ([(s, st) for s in ("ortools", "pyvrp") for st in PENALTY_STRATEGIES]
+          + [("vroom", "native")])
 CPUS = [0, 2, 4, 6]
 
 
@@ -156,23 +160,21 @@ def main() -> None:
     ap.add_argument("--quick", action="store_true", help="fewer seeds/instances")
     ap.add_argument("--time-limit", type=float, default=2.0)
     args = ap.parse_args()
-    from priority import STRATEGIES
-
     seeds = range(2 if args.quick else 5)
     n_random = 6 if args.quick else 30
     tl = args.time_limit
     SUMMARY.mkdir(parents=True, exist_ok=True)
 
-    cases = run_all([("case", i, s, st, seed, tl) for i, s, st, seed in
-                     itertools.product(range(len(CASES)), SOLVERS, STRATEGIES, seeds)])
+    cases = run_all([("case", i, s, st, seed, tl) for i, (s, st), seed in
+                     itertools.product(range(len(CASES)), COMBOS, seeds)])
     cases.to_csv(SUMMARY / "priority_cases.csv", index=False, lineterminator="\n")
     table = cases.pivot_table(index=["instance", "solver"], columns="strategy",
                               values="strict_ok", aggfunc="mean")
     print("Share of runs matching the strict-optimal unserved vector:")
     print(table.to_string(float_format=lambda x: f"{x:.0%}"))
 
-    rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, s, st, seed in
-                   itertools.product(RANDOM_FAMILIES, range(n_random), SOLVERS, STRATEGIES, seeds)])
+    rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, (s, st), seed in
+                   itertools.product(RANDOM_FAMILIES, range(n_random), COMBOS, seeds)])
     rnd = rnd.rename(columns={"kind": "family"})
     # Reference = lexicographically smallest priority vector found by any
     # strategy/solver/seed on that instance (feasible runs only).
