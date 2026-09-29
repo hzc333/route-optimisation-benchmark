@@ -3,6 +3,13 @@
 Algorithm Track（Phase 0）求解器测试与选型仓库。执行方案见上级目录
 `Route_Optimisation_Algorithm_Solver_Benchmark_Plan_CN.md`。
 
+**结果报告：[docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md)**；
+生成的表格见 `results/summary/report_tables.md`，图见 `results/plots/`。
+
+完整复现：`python -m data.download` 后运行 `bash experiments/run_all.sh`（约 4.5 h，4 个 P 核）。
+单个实验：`python -m experiments.run_benchmark experiments/configs/<name>.yaml`（可断点续跑）；
+strict priority：`python -m experiments.run_priority_tests`。
+
 当前范围：**仅 Python 求解器**（OR-Tools、PyVRP）。VROOM / Timefold / jsprit 需要 Docker 或 JDK 21，后续再加。
 
 ## 环境
