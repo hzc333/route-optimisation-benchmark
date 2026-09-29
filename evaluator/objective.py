@@ -2,8 +2,8 @@
 
 Every solver's result is re-scored here; native objectives are recorded for
 reference only. Rich-instance comparisons use ``lex_key``: hard violations,
-then unserved jobs per priority class (most important first), then one soft
-cost term.
+then unserved value per priority class (most important first; equals the
+unserved count when every job has value 1), then one soft cost term.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ def objective_vector(problem: Problem, report: ValidationReport) -> dict[str, in
 
     vec: dict[str, int] = {"hard_violations": len(report.violations)}
     for cls, fname in zip(PRIORITY_ORDER, UNSERVED_FIELDS):
-        vec[fname] = sum(jobs[j].priority_class is cls for j in report.unserved)
+        vec[fname] = sum(jobs[j].value for j in report.unserved if jobs[j].priority_class is cls)
     vec.update(
         distance=sum(r.distance for r in used),
         travel_time=sum(r.travel_time for r in used),

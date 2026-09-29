@@ -77,7 +77,7 @@ def solve(
         clients.append(pyvrp.Client(
             location=job.location, delivery=[job.demand], service_duration=job.service,
             tw_early=early, tw_late=late, required=job.required,
-            prize=penalties[job.priority_class] if optional else 0, name=job.id))
+            prize=penalties[job.priority_class] * job.value if optional else 0, name=job.id))
 
     data = pyvrp.ProblemData(
         locations=[pyvrp.Location(x=loc.x or 0.0, y=loc.y or 0.0) for loc in problem.locations],
@@ -88,9 +88,21 @@ def solve(
         duration_matrices=[np.asarray(problem.duration_matrix, dtype=np.int64)],
     )
 
+    # PyVRP relaxes capacity/time windows with adaptive penalties capped at
+    # max_penalty (1e5 per unit). If a single cost coefficient (fixed cost,
+    # prize, arc) exceeds that, an infeasible solution becomes "cheaper" and is
+    # returned as best. Scale the cap with the largest coefficient; the default
+    # is kept whenever it already dominates (all standard benchmark sets).
+    scale = max([max(map(max, problem.distance_matrix)),
+                 *(v.fixed_cost for v in problem.vehicles),
+                 *(c.prize for c in clients)])
+    default = pyvrp.PenaltyParams()
+    params = pyvrp.SolveParams(penalty=pyvrp.PenaltyParams(
+        max_penalty=max(default.max_penalty, 10.0 * scale)))
+
     t_solve = perf_counter()
     res = pyvrp.solve(data, stop=MaxRuntime(time_limit_s), seed=seed,
-                      collect_stats=True, display=False)
+                      collect_stats=True, display=False, params=params)
     solver_runtime = perf_counter() - t_solve
 
     next_vehicle = [0] * len(type_ids)

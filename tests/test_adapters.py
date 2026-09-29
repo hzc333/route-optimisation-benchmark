@@ -114,6 +114,16 @@ def test_skill_nobody_has():
             assert rep.feasible and rep.unserved == {"c1"}
 
 
+def test_huge_fixed_cost_stays_feasible(adapter):
+    """Required load needs 2 vehicles with fixed cost 1e6 each. PyVRP's default
+    penalty cap (1e5/unit) would make an overloaded single route 'cheaper'."""
+    vehicles = [Vehicle(id=f"v{k}", capacity=3, fixed_cost=1_000_000) for k in range(2)]
+    p = square_problem(vehicles=vehicles)
+    rep = validate(p, adapter.solve(p, time_limit_s=0.5))
+    assert rep.feasible, rep.violations
+    assert objective_vector(p, rep)["vehicles_used"] == 2
+
+
 @pytest.mark.parametrize("fixed_cost, expected_vehicles", [(0, 2), (1000, 1)])
 def test_fixed_cost_trades_distance_for_vehicles(adapter, fixed_cost, expected_vehicles):
     """Non-metric matrix: a<->b costs 100, so two out-and-back routes (40) beat

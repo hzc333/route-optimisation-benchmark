@@ -57,6 +57,12 @@
           "$ref": "#/$defs/PriorityClass",
           "default": "NORMAL"
         },
+        "value": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Value",
+          "type": "integer"
+        },
         "skills": {
           "items": {
             "type": "integer"

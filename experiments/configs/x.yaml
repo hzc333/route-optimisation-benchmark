@@ -1,0 +1,9 @@
+# Plan §6 stage 1: CVRPLIB X, ~every 50 customers from 100 to 500, plus 700/1000 for scaling.
+name: x
+solvers: [ortools, pyvrp]
+instances: [x/X-n101-k25, x/X-n148-k46, x/X-n200-k36, x/X-n251-k28, x/X-n303-k21,
+            x/X-n351-k40, x/X-n401-k29, x/X-n459-k26, x/X-n502-k39, x/X-n701-k44,
+            x/X-n1001-k43]
+time_limits_s: [10, 60]
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+cpus: [0, 2, 4, 6]

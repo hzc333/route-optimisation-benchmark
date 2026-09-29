@@ -1,0 +1,7 @@
+# Pipeline check: both smoke instances + 2 Solomon, short limits.
+name: smoke
+solvers: [ortools, pyvrp]
+instances: [smoke/*, solomon/C101, solomon/R101]
+time_limits_s: [1]
+seeds: [0, 1, 2]
+cpus: [0, 2, 4, 6]   # one thread per physical P-core (i5-13500H: logical 0-7 = P-cores)

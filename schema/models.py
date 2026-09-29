@@ -77,6 +77,9 @@ class Job(_Strict):
     time_window: tuple[NonNegativeInt, NonNegativeInt] | None = None
     required: bool = True
     priority_class: PriorityClass = PriorityClass.NORMAL
+    # Business value *within* its class (plan §14 P3). Unserved cost per class
+    # is the sum of values, so with the default of 1 it is a plain count.
+    value: Annotated[int, Field(ge=1)] = 1
     skills: list[int] = Field(default_factory=list)
 
     @model_validator(mode="after")

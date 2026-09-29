@@ -1,0 +1,9 @@
+solver,family,instance,time_limit_s,n_runs,n_feasible,n_jobs,bks,gap_mean,gap_median,gap_best,gap_worst,gap_std,dist_best,wall_mean,ttb_mean,rss_max
+ortools,smoke,smoke_cvrp_20,1.0000,3,3,20,,,,,,,5151,1.0048,0.0056,48.9062
+ortools,smoke,smoke_vrptw_25,1.0000,3,3,25,,,,,,,6305,1.0057,0.1256,50.7500
+ortools,solomon,C101,1.0000,3,3,100,8273.0000,0.0000,0.0000,0.0000,0.0000,0.0000,8273,1.0133,0.1736,54.9062
+ortools,solomon,R101,1.0000,3,0,100,,,,,,,0,1.0066,,53.0039
+pyvrp,smoke,smoke_cvrp_20,1.0000,3,3,20,,,,,,,5151,1.0018,0.0012,48.0547
+pyvrp,smoke,smoke_vrptw_25,1.0000,3,3,25,,,,,,,6305,1.0023,0.0013,48.4531
+pyvrp,solomon,C101,1.0000,3,3,100,8273.0000,0.0000,0.0000,0.0000,0.0000,0.0000,8273,1.0084,0.0145,52.5391
+pyvrp,solomon,R101,1.0000,3,3,100,16377.0000,0.4254,0.2504,0.2259,0.7999,0.3246,16414,1.0090,0.8845,52.7070

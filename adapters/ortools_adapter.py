@@ -37,7 +37,10 @@ def solve(
     seed: int = 0,
     threads: int = 1,
     penalties: dict[PriorityClass, int] | None = None,
-    first_solution: str = "PATH_CHEAPEST_ARC",
+    # PATH_CHEAPEST_ARC (the docs' default) finds no feasible start on tight
+    # Solomon windows (R101, RC101) even in 10 s; parallel cheapest insertion
+    # was the only strategy feasible and near-best on Solomon, X and HG1000.
+    first_solution: str = "PARALLEL_CHEAPEST_INSERTION",
     metaheuristic: str = "GUIDED_LOCAL_SEARCH",
 ) -> Solution:
     t_wall = perf_counter()
@@ -89,7 +92,7 @@ def solve(
             allowed = [v for v, veh in enumerate(vehicles) if need <= set(veh.skills)]
             routing.VehicleVar(index).SetValues(allowed + ([] if job.required else [-1]))
         if not job.required:
-            routing.AddDisjunction([index], penalties[job.priority_class])
+            routing.AddDisjunction([index], penalties[job.priority_class] * job.value)
 
     params = pywrapcp.DefaultRoutingSearchParameters()
     params.first_solution_strategy = getattr(

@@ -31,7 +31,8 @@ CLASS_WEIGHT = {
 
 
 def default_penalties(problem: Problem) -> dict[PriorityClass, int]:
-    """Drop penalty per class. NORMAL costs one farthest out-and-back trip."""
+    """Drop penalty per class and unit of job value. NORMAL costs one farthest
+    out-and-back trip, so any single detour is worth serving a NORMAL job."""
     unit = 2 * max(max(row) for row in problem.distance_matrix) or 1
     return {cls: max(1, unit * w // CLASS_WEIGHT[PriorityClass.NORMAL])
             for cls, w in CLASS_WEIGHT.items()}

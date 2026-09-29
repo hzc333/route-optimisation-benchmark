@@ -1,0 +1,5 @@
+solver,family,time_limit_s,n_instances,runs,feasible,gap_mean,gap_median,gap_best_mean,gap_std_mean,wall_mean,ttb_mean,rss_max
+ortools,smoke,1.0000,2,6,6,,,,,1.0053,0.0656,50.7500
+ortools,solomon,1.0000,2,6,3,0.0000,0.0000,0.0000,0.0000,1.0099,0.1736,54.9062
+pyvrp,smoke,1.0000,2,6,6,,,,,1.0021,0.0012,48.4531
+pyvrp,solomon,1.0000,2,6,6,0.2127,0.1252,0.1130,0.1623,1.0087,0.4495,52.7070
