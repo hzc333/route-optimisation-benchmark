@@ -43,6 +43,16 @@ def test_strict_strategies_meet_expected_vector(solver, strategy, case):
 
 
 @pytest.mark.parametrize("solver", ADAPTERS)
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_sequential_feasible_on_tight_random(solver, seed):
+    """Warm-started stages must keep the locked (tight) packing feasible."""
+    problem = random_instance(seed, "adversarial")
+    sol = STRATEGIES["sequential"](get_adapter(solver), problem, time_limit_s=1, seed=0)
+    rep = validate(problem, sol)
+    assert rep.feasible, (sol.notes, rep.violations[:3])
+
+
+@pytest.mark.parametrize("solver", ADAPTERS)
 def test_weighted_10x_fails_high_vs_many_normal(solver):
     """Documents the counterexample: 10x spacing gives up the HIGH job."""
     problem, expected = case_p1()

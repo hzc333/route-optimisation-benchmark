@@ -42,7 +42,9 @@ def solve(
     # was the only strategy feasible and near-best on Solomon, X and HG1000.
     first_solution: str = "PARALLEL_CHEAPEST_INSERTION",
     metaheuristic: str = "GUIDED_LOCAL_SEARCH",
+    initial_routes: list[tuple[str, list[str]]] | None = None,
 ) -> Solution:
+    """``initial_routes`` = [(vehicle_id, job_ids)] warm start; must be feasible."""
     t_wall = perf_counter()
     penalties = penalties or default_penalties(problem)
 
@@ -111,14 +113,26 @@ def solve(
     routing.AddAtSolutionCallback(on_solution)
 
     t_solve = perf_counter()
-    assignment = routing.SolveWithParameters(params)
+    warm = ""
+    if initial_routes is not None:
+        routing.CloseModelWithParameters(params)
+        node_of = {j.id: node for node, j in enumerate(jobs, start=1)}
+        by_vehicle = dict(initial_routes)
+        start = routing.ReadAssignmentFromRoutes(
+            [[manager.NodeToIndex(node_of[j]) for j in by_vehicle.get(veh.id, [])]
+             for veh in vehicles], True)
+        warm = "; warm=ok" if start is not None else "; warm=rejected"
+    if initial_routes is not None and start is not None:
+        assignment = routing.SolveFromAssignmentWithParameters(start, params)
+    else:
+        assignment = routing.SolveWithParameters(params)
     solver_runtime = perf_counter() - t_solve
     status = routing.status()
     status_name = routing_enums_pb2.RoutingSearchStatus.Value.Name(status)
     meta = dict(
         seed=seed, time_limit_s=time_limit_s, threads=1,
         solver_runtime_s=solver_runtime,
-        notes=f"status={status_name}; fs={first_solution}; ls={metaheuristic}",
+        notes=f"status={status_name}; fs={first_solution}; ls={metaheuristic}{warm}",
     )
 
     if assignment is None:

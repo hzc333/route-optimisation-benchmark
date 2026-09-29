@@ -53,7 +53,9 @@ def solve(
     seed: int = 0,
     threads: int = 1,
     penalties: dict[PriorityClass, int] | None = None,
+    initial_routes: list[tuple[str, list[str]]] | None = None,
 ) -> Solution:
+    """``initial_routes`` = [(vehicle_id, job_ids)] warm start."""
     t_wall = perf_counter()
     if any(j.skills for j in problem.jobs):
         raise UnsupportedFeature("skills (no native vehicle-client compatibility)")
@@ -100,9 +102,18 @@ def solve(
     params = pyvrp.SolveParams(penalty=pyvrp.PenaltyParams(
         max_penalty=max(default.max_penalty, 10.0 * scale)))
 
+    initial = None
+    if initial_routes is not None:
+        client_of = {j.id: k for k, j in enumerate(problem.jobs)}
+        type_of = {vid: t for t, ids in enumerate(type_ids) for vid in ids}
+        initial = pyvrp.Solution(data, [
+            pyvrp.Route(data, [client_of[j] for j in js], type_of[vid])
+            for vid, js in initial_routes if js])
+
     t_solve = perf_counter()
     res = pyvrp.solve(data, stop=MaxRuntime(time_limit_s), seed=seed,
-                      collect_stats=True, display=False, params=params)
+                      collect_stats=True, display=False, params=params,
+                      initial_solution=initial)
     solver_runtime = perf_counter() - t_solve
 
     next_vehicle = [0] * len(type_ids)

@@ -90,19 +90,33 @@ CASES = [case_p1, case_p2, case_p3, case_p4]
 
 # ------------------------------------------------------- random stress ---
 
-def random_instance(seed: int, n: int = 60) -> Problem:
-    """Capacity for ~2/3 of the demand; classes 10/20/40/30 % C/H/N/L."""
-    rng = np.random.default_rng(10_000 + seed)
+def random_instance(seed: int, family: str = "uniform", n: int = 60) -> Problem:
+    """Tight capacity, classes 10/20/40/30 % C/H/N/L, 3 vehicles.
+
+    uniform     - demand 1-5 for every class, capacity for ~2/3 of demand.
+    adversarial - important jobs are bulky (C/H demand 4-8, N/L 1-3) and
+                  capacity covers ~1/2 of demand: the P1 pattern, where many
+                  small low-priority jobs compete with a few big important ones.
+    """
+    rng = np.random.default_rng((10_000 if family == "uniform" else 20_000) + seed)
     coords = [(500, 500)] + [tuple(p) for p in rng.integers(0, 1001, size=(n, 2))]
     order = [C, H, N, L]
     classes = [order[k] for k in rng.choice(4, size=n, p=[0.1, 0.2, 0.4, 0.3])]
-    demand = rng.integers(1, 6, size=n)
+    if family == "uniform":
+        demand, share = rng.integers(1, 6, size=n), 0.66
+    else:
+        demand = np.array([rng.integers(4, 9) if c in (C, H) else rng.integers(1, 4)
+                           for c in classes])
+        share = 0.5
     n_veh = 3
-    cap = int(math.ceil(demand.sum() * 0.66 / n_veh))
+    cap = int(math.ceil(demand.sum() * share / n_veh))
     jobs = [Job(id=f"j{i}", location=i + 1, demand=int(demand[i]), required=False,
                 priority_class=classes[i]) for i in range(n)]
-    return _problem(f"R{seed:02d}", coords, jobs,
+    return _problem(f"{family[0].upper()}{seed:02d}", coords, jobs,
                     [Vehicle(id=f"v{k}", capacity=cap) for k in range(n_veh)])
+
+
+RANDOM_FAMILIES = ("uniform", "adversarial")
 
 
 # ------------------------------------------------------------- running ---
@@ -115,8 +129,8 @@ def run_one(args) -> dict:
     from priority import STRATEGIES
 
     problem, expected = (CASES[builder_arg]() if kind == "case"
-                         else (random_instance(builder_arg), None))
-    row = {"kind": kind, "instance": problem.name, "solver": solver, "strategy": strategy,
+                         else (random_instance(*builder_arg), None))
+    row = {"kind": kind if kind == "case" else builder_arg[1], "instance": problem.name, "solver": solver, "strategy": strategy,
            "seed": seed, "time_limit_s": time_limit}
     try:
         sol = STRATEGIES[strategy](get_adapter(solver), problem, time_limit_s=time_limit, seed=seed)
@@ -157,38 +171,42 @@ def main() -> None:
     print("Share of runs matching the strict-optimal unserved vector:")
     print(table.to_string(float_format=lambda x: f"{x:.0%}"))
 
-    rnd = run_all([("random", k, s, st, seed, tl) for k, s, st, seed in
-                   itertools.product(range(n_random), SOLVERS, STRATEGIES, seeds)])
-    ok = rnd[rnd.feasible]
-    best = ok.groupby("instance")[PRIO_FIELDS].apply(lambda g: min(map(tuple, g.to_numpy())))
-    rnd["best_vector"] = rnd.instance.map(best).astype(str)
-    rnd["vector"] = rnd[PRIO_FIELDS].apply(tuple, axis=1).astype(str)
-    rnd["lex_best"] = rnd.feasible & (rnd.vector == rnd.best_vector)
-    # Priority inversion: worse than best at the first differing class, i.e.
-    # a more important job was given up; report which class it happened at.
-    def first_worse(row):
+    rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, s, st, seed in
+                   itertools.product(RANDOM_FAMILIES, range(n_random), SOLVERS, STRATEGIES, seeds)])
+    rnd = rnd.rename(columns={"kind": "family"})
+    # Reference = lexicographically smallest priority vector found by any
+    # strategy/solver/seed on that instance (feasible runs only).
+    best = {inst: min(tuple(int(v) for v in row) for row in g[PRIO_FIELDS].to_numpy())
+            for inst, g in rnd[rnd.feasible].groupby("instance")}
+
+    def first_worse(row) -> str:
+        """Class at which the run first falls behind the reference ('' = ties it)."""
         if not row.feasible:
             return "infeasible"
         for f, b in zip(PRIO_FIELDS, best[row.instance]):
-            if row[f] != b:
-                return f.replace("unserved_", "") if row[f] > b else "better?"
+            if int(row[f]) != b:
+                return f.replace("unserved_", "")
         return ""
+
     rnd["first_worse_class"] = rnd.apply(first_worse, axis=1)
+    rnd["lex_best"] = rnd.first_worse_class == ""
     rnd.to_csv(SUMMARY / "priority_random.csv", index=False, lineterminator="\n")
 
-    summary = rnd.groupby(["solver", "strategy"]).agg(
+    share = lambda cls: (lambda s: (s == cls).mean())  # noqa: E731
+    feas = rnd[rnd.feasible]
+    summary = rnd.groupby(["family", "solver", "strategy"]).agg(
         runs=("seed", "size"), feasible=("feasible", "mean"), lex_best=("lex_best", "mean"),
-        worse_at_critical=("first_worse_class", lambda s: (s == "critical").mean()),
-        worse_at_high=("first_worse_class", lambda s: (s == "high").mean()),
-        worse_at_normal=("first_worse_class", lambda s: (s == "normal").mean()),
-        worse_at_low=("first_worse_class", lambda s: (s == "low").mean()),
-        mean_unserved_critical=("unserved_critical", "mean"),
-        mean_unserved_high=("unserved_high", "mean"),
-        mean_distance=("distance", "mean"),
-    ).reset_index()
+        worse_at_critical=("first_worse_class", share("critical")),
+        worse_at_high=("first_worse_class", share("high")),
+        worse_at_normal=("first_worse_class", share("normal")),
+        worse_at_low=("first_worse_class", share("low")),
+    ).join(feas.groupby(["family", "solver", "strategy"]).agg(
+        unserved_critical=("unserved_critical", "mean"), unserved_high=("unserved_high", "mean"),
+        unserved_normal=("unserved_normal", "mean"), unserved_low=("unserved_low", "mean"),
+        distance=("distance", "mean"))).reset_index()
     summary.to_csv(SUMMARY / "priority_random_summary.csv", index=False,
                    lineterminator="\n", float_format="%.4f")
-    print("\nRandom stress (share of runs):")
+    print("\nRandom stress (shares of runs; unserved/distance = mean over feasible runs):")
     print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"))
 
 

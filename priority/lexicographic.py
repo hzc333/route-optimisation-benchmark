@@ -13,9 +13,12 @@ Strategies compared by experiments/run_priority_tests.py:
               penalties may distort metaheuristic search.
 * sequential- one solve per class, most important first; each stage maximises
               served value of one class with lower classes removed, then the
-              served jobs become required for later stages. Locking the served
-              *set* (not just the count) is stricter than true lexicographic
-              optimisation and is a documented approximation.
+              served jobs become required for later stages, warm-started from
+              the previous stage. Locking the served *set* (not just the count)
+              is stricter than true lexicographic optimisation and is a
+              documented approximation. A stage solution that violates hard
+              constraints (possible with PyVRP) propagates; the validator
+              catches it at the end.
 """
 
 from __future__ import annotations
@@ -80,6 +83,11 @@ def solve_sequential(adapter, problem: Problem, *, time_limit_s: float, seed: in
     budget = time_limit_s / (len(levels) + 1)
     locked: set[str] = set()   # optional jobs fixed as served
     stage_notes = []
+    # Each stage is warm-started from the previous one: those routes serve
+    # exactly the locked jobs, so they are feasible for the next stage. Without
+    # this, re-packing the locked set from scratch can fail (OR-Tools found no
+    # first solution in ~20% of tight random instances).
+    start: list[tuple[str, list[str]]] | None = None
 
     def stage(active_cls: PriorityClass | None) -> tuple[Problem, Solution]:
         jobs = [j.model_copy(update={"required": True}) if j.id in locked else j
@@ -91,7 +99,8 @@ def solve_sequential(adapter, problem: Problem, *, time_limit_s: float, seed: in
         if m * (_optional_value(sub, active_cls) + 1 if active_cls else 1) >= INT_LIMIT:
             raise OverflowError("sequential stage penalty overflow")
         sol = adapter.solve(sub, time_limit_s=budget, seed=seed,
-                            penalties={c: m for c in PRIORITY_ORDER}, **kw)
+                            penalties={c: m for c in PRIORITY_ORDER},
+                            initial_routes=start, **kw)
         return sub, sol
 
     for cls in levels:
@@ -101,6 +110,7 @@ def solve_sequential(adapter, problem: Problem, *, time_limit_s: float, seed: in
         served = {jid for r in sol.routes for jid in r.job_ids}
         new = {j.id for j in sub.jobs if j.priority_class is cls and not j.required} & served
         locked |= new
+        start = [(r.vehicle_id, r.job_ids) for r in sol.routes]
         stage_notes.append(f"{cls.value}:{len(new)}")
 
     _, final = stage(None)

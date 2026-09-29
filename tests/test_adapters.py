@@ -114,6 +114,17 @@ def test_skill_nobody_has():
             assert rep.feasible and rep.unserved == {"c1"}
 
 
+def test_warm_start_from_feasible_routes(adapter):
+    """A feasible (suboptimal) start is accepted and improved, never worsened."""
+    p = square_problem()
+    start = [("v0", ["c1", "c3"]), ("v1", ["c2", "c4"])]  # crosses quadrants: 2*(10+14+10)+...
+    s = adapter.solve(p, time_limit_s=0.5, initial_routes=start)
+    rep = validate(p, s)
+    assert rep.feasible, rep.violations
+    assert objective_vector(p, rep)["distance"] == 80
+    assert "warm=rejected" not in s.notes
+
+
 def test_huge_fixed_cost_stays_feasible(adapter):
     """Required load needs 2 vehicles with fixed cost 1e6 each. PyVRP's default
     penalty cap (1e5/unit) would make an overloaded single route 'cheaper'."""
