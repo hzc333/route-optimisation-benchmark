@@ -1,0 +1,10 @@
+# Sensitivity: HG1000 with the fleet capped at ceil(1.2 x BKS routes) instead of
+# the file's 250 vehicles, to check whether fleet size drives OR-Tools' gap.
+name: hg1000_fleet
+fleet_bks_factor: 1.2
+solvers: [ortools, pyvrp]
+instances: [hg1000/C1_10_1, hg1000/C2_10_1, hg1000/R1_10_1,
+            hg1000/R2_10_1, hg1000/RC1_10_1, hg1000/RC2_10_1]
+time_limits_s: [60]
+seeds: [0, 1, 2]
+cpus: [0, 2, 4, 6]

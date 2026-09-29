@@ -37,6 +37,8 @@ def main() -> int:
     ap.add_argument("--cpu", type=int)
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--options", default="{}", help="JSON dict of adapter options")
+    ap.add_argument("--max-vehicles", type=int,
+                    help="keep only the first N vehicles (fleet-size sensitivity)")
     args = ap.parse_args()
 
     # Pin before importing solver libraries so every thread they start
@@ -50,6 +52,8 @@ def main() -> int:
 
     adapter = get_adapter(args.solver)
     problem = Problem.model_validate_json(args.instance.read_text(encoding="utf-8"))
+    if args.max_vehicles:
+        problem = problem.model_copy(update={"vehicles": problem.vehicles[:args.max_vehicles]})
     load_s = perf_counter() - t0
 
     try:
@@ -73,6 +77,7 @@ def main() -> int:
             "process_wall_s": perf_counter() - t0,
             "peak_rss_mb": peak_rss_mb(),
             "options": json.loads(args.options),
+            "max_vehicles": args.max_vehicles,
             "python": sys.version.split()[0],
         },
     }

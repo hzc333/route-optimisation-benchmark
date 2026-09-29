@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
+import math
 import random
 import subprocess
 import sys
@@ -26,7 +27,7 @@ from queue import Queue
 
 import yaml
 
-from data.convert import converted_path, instance_names, write_converted
+from data.convert import converted_path, instance_names, load_bks, write_converted
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_RESULTS = ROOT / "results" / "raw"
@@ -41,6 +42,7 @@ class Case:
     time_limit_s: float
     seed: int
     options: str  # JSON, part of the identity of a run
+    max_vehicles: int | None = None
 
     @property
     def out(self) -> Path:
@@ -72,9 +74,19 @@ def solver_variants(cfg: dict) -> list[tuple[str, str, dict]]:
     return out
 
 
+def fleet_cap(cfg: dict, instance: str) -> int | None:
+    """Optional sensitivity: cap the fleet at ceil(factor * BKS route count).
+    Uses BKS information, so only for labelled sensitivity experiments."""
+    factor = cfg.get("fleet_bks_factor")
+    if factor is None:
+        return None
+    return math.ceil(factor * int(load_bks()[instance]["bks_routes"]))
+
+
 def expand(cfg: dict) -> list[Case]:
     cases = [
-        Case(label, adapter, fam, name, float(tl), int(seed), json.dumps(opts, sort_keys=True))
+        Case(label, adapter, fam, name, float(tl), int(seed), json.dumps(opts, sort_keys=True),
+             fleet_cap(cfg, name))
         for label, adapter, opts in solver_variants(cfg)
         for fam, name in resolve_instances(cfg["instances"])
         for tl in cfg["time_limits_s"]
@@ -90,6 +102,8 @@ def run_case(case: Case, cpu: int, out_dir: Path) -> str:
            "--instance", str(converted_path(case.family, case.instance)),
            "--time-limit", str(case.time_limit_s), "--seed", str(case.seed),
            "--cpu", str(cpu), "--out", str(out), "--options", case.options]
+    if case.max_vehicles:
+        cmd += ["--max-vehicles", str(case.max_vehicles)]
     timeout = case.time_limit_s * 2 + 60
     t0 = time.perf_counter()
     try:
