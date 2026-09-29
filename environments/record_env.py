@@ -20,7 +20,8 @@ import psutil
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "metadata.json"
 
-PACKAGES = ["ortools", "pyvrp", "numpy", "pandas", "pydantic", "psutil", "vrplib"]
+PACKAGES = ["ortools", "pyvrp", "pyvroom", "numpy", "pandas", "pydantic", "psutil", "vrplib"]
+TOOLS = ROOT.parent / "tools"  # portable JDK / Maven (see environments/java_env.*)
 
 
 def _run(cmd: list[str]) -> str | None:
@@ -81,6 +82,21 @@ def on_ac_power() -> bool | None:
     return None if battery is None else battery.power_plugged
 
 
+def java_toolchain() -> dict:
+    """Versions of the portable JDK and Maven, if installed."""
+    jdk = next(TOOLS.glob("jdk-21*"), None)
+    mvn = next(TOOLS.glob("apache-maven-*"), None)
+    out = {"jdk": None, "maven": mvn.name.removeprefix("apache-maven-") if mvn else None}
+    if jdk:
+        java = jdk / "bin" / ("java.exe" if sys.platform == "win32" else "java")
+        try:
+            res = subprocess.run([str(java), "-version"], capture_output=True, text=True, timeout=30)
+            out["jdk"] = res.stderr.splitlines()[1].strip() if res.stderr else jdk.name
+        except (OSError, subprocess.SubprocessError, IndexError):
+            out["jdk"] = jdk.name
+    return out
+
+
 def collect() -> dict:
     freq = psutil.cpu_freq()
     return {
@@ -107,6 +123,7 @@ def collect() -> dict:
             "executable": sys.executable,
         },
         "packages": {p: metadata.version(p) for p in PACKAGES},
+        "java": java_toolchain(),
         "env": {k: os.environ.get(k) for k in ("OMP_NUM_THREADS",)},
     }
 

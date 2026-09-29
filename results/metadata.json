@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-09-29T07:03:06+02:00",
+  "recorded_at": "2026-09-29T15:39:45+02:00",
   "hostname": "LAPTOP-33TQHC2S",
   "os": {
     "system": "Windows",
@@ -18,7 +18,7 @@
     "ac": "best_performance",
     "dc": "best_performance"
   },
-  "on_ac_power": true,
+  "on_ac_power": false,
   "python": {
     "version": "3.13.7",
     "implementation": "CPython",
@@ -27,11 +27,16 @@
   "packages": {
     "ortools": "9.15.6755",
     "pyvrp": "0.14.0",
+    "pyvroom": "1.15.2",
     "numpy": "2.5.3",
     "pandas": "3.0.6",
     "pydantic": "2.13.5",
     "psutil": "7.2.2",
     "vrplib": "2.2.0"
+  },
+  "java": {
+    "jdk": "OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)",
+    "maven": "3.9.16"
   },
   "env": {
     "OMP_NUM_THREADS": null

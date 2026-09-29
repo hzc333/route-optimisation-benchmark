@@ -27,6 +27,7 @@ MATRIX = [[_dist(a, b) for b in COORDS] for a in COORDS]
 def test_pinned_versions():
     assert metadata.version("ortools") == "9.15.6755"
     assert metadata.version("pyvrp") == "0.14.0"
+    assert metadata.version("pyvroom") == "1.15.2"
 
 
 def test_ortools_solves_tiny_cvrp():

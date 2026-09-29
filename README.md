@@ -19,6 +19,12 @@ strict priority：`python -m experiments.run_priority_tests`。
 | Python | 3.13.7（Windows 11, x64） |
 | OR-Tools | 9.15.6755 |
 | PyVRP | 0.14.0 |
+| pyvroom（VROOM 1.15 C++ 核心的 Python 绑定，无需 Docker） | 1.15.2 |
+| JDK（Temurin，免安装 zip，`D:\route_opti\tools`） | 21.0.12.1 |
+| Maven（免安装 zip，`D:\route_opti\tools`） | 3.9.16 |
+
+Java 工具只对当前 shell 生效：`source environments/java_env.sh`（bash）或
+`. .\environments\java_env.ps1`（PowerShell）。Timefold 2.7.0 / jsprit 2.0.0 从 Maven Central 获取。
 
 完整依赖锁定在 `environments/requirements-python.txt`，机器信息见 `results/metadata.json`。
 
