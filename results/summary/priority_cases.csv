@@ -19,31 +19,56 @@ case,P1_high_vs_20_normal,ortools,sequential,1,2.0,SOLVED,True,0,0,0,20,0,200,20
 case,P1_high_vs_20_normal,ortools,sequential,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,ortools,sequential,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,ortools,sequential,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23556; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=25661; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26114; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=26009; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23440; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22404; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22599; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22943; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21949; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=22468; native_feasible=True,"(0, 0, 0, 20, 0)",False
-case,P1_high_vs_20_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27037; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=27003; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=25169; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26251; native_feasible=True,"(0, 0, 0, 20, 0)",True
-case,P1_high_vs_20_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=26749; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21297; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=19427; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=23858; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=24340; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=24373; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21324; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21158; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21164; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=21270; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,iterations=20066; native_feasible=True,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=24754; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=24314; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=24564; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=22966; native_feasible=True,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,iterations=24614; native_feasible=True,"(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-8240]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=158; move_eval_per_s=121184,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-8240]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=96361,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-8240]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=86724,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-8240]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=89174,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-8240]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.35; java_peak_heap_mb=154; move_eval_per_s=66861,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted_fixed,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20200]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.35; java_peak_heap_mb=154; move_eval_per_s=61014,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted_fixed,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=72353,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted_fixed,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=157; move_eval_per_s=85630,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted_fixed,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=157; move_eval_per_s=75150,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,weighted_fixed,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=91299,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,stacked,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-86380]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=89749,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,stacked,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-86380]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=91200,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,stacked,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-86380]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=106444,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,stacked,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-86380]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.36; java_peak_heap_mb=154; move_eval_per_s=83164,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,stacked,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-86380]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.35; java_peak_heap_mb=154; move_eval_per_s=88962,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,sequential,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,sequential,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,sequential,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,sequential,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,sequential,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,"served per stage HIGH:1,NORMAL:0","(0, 0, 0, 20, 0)",True
 case,P1_high_vs_20_normal,vroom,native,0,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
 case,P1_high_vs_20_normal,vroom,native,1,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
 case,P1_high_vs_20_normal,vroom,native,2,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
 case,P1_high_vs_20_normal,vroom,native,3,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
 case,P1_high_vs_20_normal,vroom,native,4,2.0,SOLVED,True,0,0,1,0,0,221,221,221,1,0,0,0,exploration=5; unassigned=1,"(0, 0, 0, 20, 0)",False
+case,P1_high_vs_20_normal,timefold,native,0,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/0/-200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.36; java_peak_heap_mb=154; move_eval_per_s=78042,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,native,1,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/0/-200]soft; warmup_s=2; jvm_startup_s=0.21; load_s=0.34; java_peak_heap_mb=157; move_eval_per_s=106738,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,native,2,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/0/-200]soft; warmup_s=2; jvm_startup_s=0.77; load_s=1.55; java_peak_heap_mb=41; move_eval_per_s=369,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,native,3,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/0/-200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.35; java_peak_heap_mb=154; move_eval_per_s=88997,"(0, 0, 0, 20, 0)",True
+case,P1_high_vs_20_normal,timefold,native,4,2.0,SOLVED,True,0,0,0,20,0,200,200,200,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/0/-200]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.35; java_peak_heap_mb=154; move_eval_per_s=72186,"(0, 0, 0, 20, 0)",True
 case,P2_far_critical,ortools,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",True
@@ -64,31 +89,56 @@ case,P2_far_critical,ortools,sequential,1,2.0,SOLVED,True,0,0,0,0,0,120084,12008
 case,P2_far_critical,ortools,sequential,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,sequential,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,ortools,sequential,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64489; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64697; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=66625; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=60745; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=64453; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=85696; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=82437; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=69129; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=65252; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=56997; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P2_far_critical,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=42137; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=36752; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=49598; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=45509; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P2_far_critical,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=44045; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=62209; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=60387; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=61772; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=62073; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=63119; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=77282; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=78610; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=77417; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=79000; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,iterations=78500; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=62708; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=60060; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=61659; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=60975; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,iterations=61325; native_feasible=True,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=98138,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.32; java_peak_heap_mb=156; move_eval_per_s=98251,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.35; java_peak_heap_mb=156; move_eval_per_s=83865,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=80392,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=97115,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,weighted_fixed,0,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-105000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=155; move_eval_per_s=53473,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,timefold,weighted_fixed,1,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-105000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=155; move_eval_per_s=43181,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,timefold,weighted_fixed,2,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-105000]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=155; move_eval_per_s=58286,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,timefold,weighted_fixed,3,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-105000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=154; move_eval_per_s=46204,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,timefold,weighted_fixed,4,2.0,SOLVED,True,0,1,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-105000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=160; move_eval_per_s=167722,"(0, 0, 0, 0, 0)",False
+case,P2_far_critical,timefold,stacked,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=96468,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,stacked,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=96848,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,stacked,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=96486,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,stacked,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=155; move_eval_per_s=94878,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,stacked,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=97172,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,sequential,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,sequential,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,sequential,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,sequential,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,sequential,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,"served per stage CRITICAL:1,NORMAL:5","(0, 0, 0, 0, 0)",True
 case,P2_far_critical,vroom,native,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,vroom,native,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,vroom,native,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,vroom,native,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P2_far_critical,vroom,native,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,native,0,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=96915,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,native,1,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.60; load_s=1.23; java_peak_heap_mb=156; move_eval_per_s=81134,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,native,2,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.74; load_s=1.46; java_peak_heap_mb=90; move_eval_per_s=26830,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,native,3,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=100923,"(0, 0, 0, 0, 0)",True
+case,P2_far_critical,timefold,native,4,2.0,SOLVED,True,0,0,0,0,0,120084,120084,120084,1,0,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-120084]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=96992,"(0, 0, 0, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 2, 0, 0)",True
@@ -109,31 +159,56 @@ case,P3_value_within_high,ortools,sequential,1,2.0,SOLVED,True,0,0,2,0,0,900,900
 case,P3_value_within_high,ortools,sequential,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,sequential,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,ortools,sequential,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=56801; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58394; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=35696; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58679; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=62503; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=58459; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=38339; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=61931; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=43544; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=41621; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=25911; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=49018; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=46523; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=45579; native_feasible=True,"(0, 0, 2, 0, 0)",True
-case,P3_value_within_high,pyvrp,stacked,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=30838; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=82998; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=84197; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=84473; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83091; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=84220; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=82821; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83645; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=82500; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=84613; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83259; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83692; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=84100; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=82702; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83775; native_feasible=True,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,pyvrp,stacked,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,iterations=83821; native_feasible=True,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,pyvrp,sequential,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-18900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=141; move_eval_per_s=56274,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-18900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=69; move_eval_per_s=2512,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-18900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=85; move_eval_per_s=2533,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-18900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=76; move_eval_per_s=509,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-18900]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=77; move_eval_per_s=7399,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted_fixed,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=104; move_eval_per_s=20901,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted_fixed,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=155; move_eval_per_s=67283,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted_fixed,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=84737,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted_fixed,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20900]soft; warmup_s=2; jvm_startup_s=0.16; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=74751,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,weighted_fixed,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-20900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=156; move_eval_per_s=73013,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,stacked,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5142]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=104036,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,stacked,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5142]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=83; move_eval_per_s=1557,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,stacked,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5142]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.35; java_peak_heap_mb=141; move_eval_per_s=27819,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,stacked,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5142]soft; warmup_s=2; jvm_startup_s=0.18; load_s=0.35; java_peak_heap_mb=49; move_eval_per_s=120,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,stacked,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5142]soft; warmup_s=2; jvm_startup_s=0.16; load_s=0.39; java_peak_heap_mb=141; move_eval_per_s=45855,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,sequential,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,sequential,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,sequential,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,sequential,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,sequential,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,"served per stage CRITICAL:1,HIGH:1","(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,vroom,native,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,vroom,native,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,vroom,native,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,vroom,native,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
 case,P3_value_within_high,vroom,native,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,exploration=5; unassigned=2,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,native,0,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/0/0/-900]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=64; move_eval_per_s=510,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,native,1,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/0/0/-900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=145; move_eval_per_s=59782,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,native,2,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/0/0/-900]soft; warmup_s=2; jvm_startup_s=0.65; load_s=1.25; java_peak_heap_mb=41; move_eval_per_s=3234,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,native,3,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/0/0/-900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=76; move_eval_per_s=4699,"(0, 0, 2, 0, 0)",True
+case,P3_value_within_high,timefold,native,4,2.0,SOLVED,True,0,0,2,0,0,900,900,900,1,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/0/0/-900]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=60; move_eval_per_s=2555,"(0, 0, 2, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
 case,P4_softcost_vs_one_normal,ortools,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
 case,P4_softcost_vs_one_normal,ortools,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,status=ROUTING_SUCCESS; fs=PARALLEL_CHEAPEST_INSERTION; ls=GUIDED_LOCAL_SEARCH,"(0, 0, 0, 0, 0)",False
@@ -154,28 +229,53 @@ case,P4_softcost_vs_one_normal,ortools,sequential,1,2.0,SOLVED,True,0,0,0,0,0,43
 case,P4_softcost_vs_one_normal,ortools,sequential,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,sequential,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,ortools,sequential,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=58245; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=31535; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=57510; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=58383; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=50746; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=42448; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=49554; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=48858; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=53602; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=48555; native_feasible=True,"(0, 0, 0, 0, 0)",False
-case,P4_softcost_vs_one_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38866; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=37908; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38046; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=33807; native_feasible=True,"(0, 0, 0, 0, 0)",True
-case,P4_softcost_vs_one_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=38659; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=74407; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=74041; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=73543; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=74075; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=73029; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=73381; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=73777; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=74440; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=71726; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,weighted_fixed,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,iterations=70225; native_feasible=True,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,pyvrp,stacked,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=52044; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=52558; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=52433; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=51776; native_feasible=True,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,pyvrp,stacked,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,iterations=51618; native_feasible=True,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,pyvrp,sequential,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,weighted,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-1080]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=174; move_eval_per_s=5826,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-1080]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.32; java_peak_heap_mb=158; move_eval_per_s=86808,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-1080]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=172; move_eval_per_s=117012,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-1080]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=171; move_eval_per_s=111346,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-1080]soft; warmup_s=2; jvm_startup_s=0.20; load_s=0.33; java_peak_heap_mb=188; move_eval_per_s=79241,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted_fixed,0,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.32; java_peak_heap_mb=154; move_eval_per_s=2990,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted_fixed,1,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5000]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.33; java_peak_heap_mb=160; move_eval_per_s=90498,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted_fixed,2,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=188; move_eval_per_s=87816,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted_fixed,3,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5000]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.35; java_peak_heap_mb=189; move_eval_per_s=220008,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,weighted_fixed,4,2.0,SOLVED,True,0,0,0,5,0,0,0,0,0,0,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-5000]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=216; move_eval_per_s=244207,"(0, 0, 0, 0, 0)",False
+case,P4_softcost_vs_one_normal,timefold,stacked,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=125; move_eval_per_s=25671,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,stacked,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.35; java_peak_heap_mb=118; move_eval_per_s=22869,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,stacked,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.35; java_peak_heap_mb=105; move_eval_per_s=17301,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,stacked,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.36; java_peak_heap_mb=107; move_eval_per_s=17490,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,stacked,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=weighted; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.39; java_peak_heap_mb=99; move_eval_per_s=14750,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,sequential,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,sequential,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,sequential,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,sequential,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,sequential,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,served per stage NORMAL:5,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,vroom,native,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,vroom,native,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,vroom,native,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,vroom,native,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
 case,P4_softcost_vs_one_normal,vroom,native,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,exploration=5; unassigned=0,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,native,0,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=93277,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,native,1,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.15; load_s=0.34; java_peak_heap_mb=140; move_eval_per_s=63903,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,native,2,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.31; load_s=0.72; java_peak_heap_mb=41; move_eval_per_s=9207,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,native,3,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.34; java_peak_heap_mb=155; move_eval_per_s=100773,"(0, 0, 0, 0, 0)",True
+case,P4_softcost_vs_one_normal,timefold,native,4,2.0,SOLVED,True,0,0,0,0,0,438,438,438,2,2000000,0,0,mode=lexicographic; score=[0]hard/[0/0/0/0/-2000438]soft; warmup_s=2; jvm_startup_s=0.14; load_s=0.33; java_peak_heap_mb=156; move_eval_per_s=117216,"(0, 0, 0, 0, 0)",True

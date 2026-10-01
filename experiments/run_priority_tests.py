@@ -17,6 +17,8 @@ from __future__ import annotations
 import argparse
 import itertools
 import math
+import sys
+import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -134,12 +136,17 @@ def run_one(args) -> dict:
 
     problem, expected = (CASES[builder_arg]() if kind == "case"
                          else (random_instance(*builder_arg), None))
-    row = {"kind": kind if kind == "case" else builder_arg[1], "instance": problem.name, "solver": solver, "strategy": strategy,
-           "seed": seed, "time_limit_s": time_limit}
+    row = {"kind": kind if kind == "case" else builder_arg[1], "instance": problem.name,
+           "solver": solver, "strategy": strategy, "seed": seed, "time_limit_s": time_limit}
+    t0 = time.perf_counter()
     try:
         sol = STRATEGIES[strategy](get_adapter(solver), problem, time_limit_s=time_limit, seed=seed)
     except OverflowError as exc:
         return row | {"status": "OVERFLOW", "feasible": False, "notes": str(exc)}
+    except Exception as exc:  # one failed run must not abort the experiment
+        print(f"ERROR {row}: {type(exc).__name__}: {str(exc)[:300]}", file=sys.stderr, flush=True)
+        return row | {"status": "ERROR", "feasible": False,
+                      "notes": f"{type(exc).__name__} after {time.perf_counter() - t0:.0f}s"}
     rep = validate(problem, sol)
     vec = objective_vector(problem, rep)
     row |= {"status": sol.status.value, "feasible": rep.feasible, **vec, "notes": sol.notes}
@@ -170,8 +177,8 @@ def main() -> None:
     cases.to_csv(SUMMARY / "priority_cases.csv", index=False, lineterminator="\n")
     table = cases.pivot_table(index=["instance", "solver"], columns="strategy",
                               values="strict_ok", aggfunc="mean")
-    print("Share of runs matching the strict-optimal unserved vector:")
-    print(table.to_string(float_format=lambda x: f"{x:.0%}"))
+    print("Share of runs matching the strict-optimal unserved vector:", flush=True)
+    print(table.to_string(float_format=lambda x: f"{x:.0%}"), flush=True)
 
     rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, (s, st), seed in
                    itertools.product(RANDOM_FAMILIES, range(n_random), COMBOS, seeds)])
@@ -209,7 +216,7 @@ def main() -> None:
     summary.to_csv(SUMMARY / "priority_random_summary.csv", index=False,
                    lineterminator="\n", float_format="%.4f")
     print("\nRandom stress (shares of runs; unserved/distance = mean over feasible runs):")
-    print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"))
+    print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"), flush=True)
 
 
 if __name__ == "__main__":

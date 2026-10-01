@@ -28,6 +28,11 @@ def peak_rss_mb() -> float:
     return peak / 2**20
 
 
+def on_ac_power() -> bool | None:
+    battery = psutil.sensors_battery()
+    return None if battery is None else battery.power_plugged
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--solver", required=True)
@@ -47,6 +52,7 @@ def main() -> int:
         psutil.Process().cpu_affinity([args.cpu])
 
     t0 = perf_counter()
+    ac_at_start = on_ac_power()
     from adapters import UnsupportedFeature, get_adapter
     from schema.models import Problem, Solution, SolverStatus
 
@@ -78,6 +84,8 @@ def main() -> int:
             "peak_rss_mb": peak_rss_mb(),
             "options": json.loads(args.options),
             "max_vehicles": args.max_vehicles,
+            # False if on battery at start or end: timings not comparable.
+            "on_ac": None if ac_at_start is None else bool(ac_at_start and on_ac_power()),
             "python": sys.version.split()[0],
         },
     }

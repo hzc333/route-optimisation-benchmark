@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-09-29T15:51:42+02:00",
+  "recorded_at": "2026-10-01T16:27:11+02:00",
   "hostname": "LAPTOP-33TQHC2S",
   "os": {
     "system": "Windows",
@@ -18,7 +18,7 @@
     "ac": "best_performance",
     "dc": "best_performance"
   },
-  "on_ac_power": true,
+  "on_ac_power": false,
   "python": {
     "version": "3.13.7",
     "implementation": "CPython",

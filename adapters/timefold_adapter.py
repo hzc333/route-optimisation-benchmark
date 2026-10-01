@@ -82,7 +82,7 @@ def solve(
                        encoding="utf-8")
         cmd = [java_executable(), f"-Xmx{heap}", "-jar", str(JAR), str(src), str(dst)]
         proc = subprocess.run(cmd, capture_output=True, text=True,
-                              timeout=time_limit_s + warmup_s + 300)
+                              timeout=time_limit_s + warmup_s + 60)
         if proc.returncode != 0 or not dst.exists():
             raise RuntimeError(f"timefold jar exit {proc.returncode}: {proc.stderr[-2000:]}")
         out = json.loads(dst.read_text(encoding="utf-8"))
