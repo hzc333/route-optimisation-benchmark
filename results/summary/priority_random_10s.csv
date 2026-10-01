@@ -1,0 +1,751 @@
+family,instance,solver,strategy,seed,time_limit_s,status,feasible,hard_violations,unserved_critical,unserved_high,unserved_normal,unserved_low,distance,travel_time,duration,vehicles_used,fixed_cost,lateness,overtime,notes,first_worse_class,lex_best
+adversarial,A00,pyvrp,sequential,0,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,pyvrp,sequential,1,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,pyvrp,sequential,2,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,pyvrp,sequential,3,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,pyvrp,sequential,4,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,ortools,sequential,0,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,ortools,sequential,1,10.0,SOLVED,True,0,0,2,21,19,4806,4806,4806,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,ortools,sequential,2,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,ortools,sequential,3,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,ortools,sequential,4,10.0,SOLVED,True,0,0,2,21,19,4188,4188,4188,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,vroom,native,0,10.0,SOLVED,True,0,0,3,15,18,4654,4654,4654,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A00,vroom,native,1,10.0,SOLVED,True,0,0,2,21,19,4596,4596,4596,3,0,0,0,exploration=5; unassigned=42,normal,False
+adversarial,A00,vroom,native,2,10.0,SOLVED,True,0,0,3,15,18,4758,4758,4758,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A00,vroom,native,3,10.0,SOLVED,True,0,0,2,21,19,4727,4727,4727,3,0,0,0,exploration=5; unassigned=42,normal,False
+adversarial,A00,vroom,native,4,10.0,SOLVED,True,0,0,2,21,19,4596,4596,4596,3,0,0,0,exploration=5; unassigned=42,normal,False
+adversarial,A00,timefold,native,0,10.0,SOLVED,True,0,0,3,16,16,4710,4710,4710,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-16/-16/-4710]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.40; java_peak_heap_mb=156; move_eval_per_s=90872,high,False
+adversarial,A00,timefold,native,1,10.0,SOLVED,True,0,0,3,16,16,5889,5889,5889,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-16/-16/-5889]soft; warmup_s=3; jvm_startup_s=0.57; load_s=1.53; java_peak_heap_mb=155; move_eval_per_s=74928,high,False
+adversarial,A00,timefold,native,2,10.0,SOLVED,True,0,0,3,16,16,4598,4598,4598,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-16/-16/-4598]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.40; java_peak_heap_mb=156; move_eval_per_s=82432,high,False
+adversarial,A00,timefold,native,3,10.0,SOLVED,True,0,0,3,16,16,10231,10231,10231,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-16/-16/-10231]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.40; java_peak_heap_mb=155; move_eval_per_s=83104,high,False
+adversarial,A00,timefold,native,4,10.0,SOLVED,True,0,0,3,15,18,12408,12408,12408,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-15/-18/-12408]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.43; java_peak_heap_mb=155; move_eval_per_s=76206,high,False
+adversarial,A00,timefold,sequential,0,10.0,SOLVED,True,0,0,2,21,19,4401,4401,4401,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A00,timefold,sequential,1,10.0,SOLVED,True,0,0,2,19,19,4368,4368,4368,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:4,LOW:0",,True
+adversarial,A00,timefold,sequential,2,10.0,SOLVED,True,0,0,2,19,19,4368,4368,4368,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:4,LOW:0",,True
+adversarial,A00,timefold,sequential,3,10.0,SOLVED,True,0,0,2,19,19,4551,4551,4551,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:4,LOW:0",,True
+adversarial,A00,timefold,sequential,4,10.0,SOLVED,True,0,0,2,21,19,4584,4584,4584,3,0,0,0,"served per stage CRITICAL:5,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A01,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,ortools,sequential,0,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,ortools,sequential,1,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,ortools,sequential,2,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,ortools,sequential,3,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,ortools,sequential,4,10.0,SOLVED,True,0,0,0,23,20,5245,5245,5245,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,vroom,native,0,10.0,SOLVED,True,0,0,1,17,20,5352,5352,5352,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A01,vroom,native,1,10.0,SOLVED,True,0,0,1,17,20,5928,5928,5928,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A01,vroom,native,2,10.0,SOLVED,True,0,0,1,17,20,5431,5431,5431,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A01,vroom,native,3,10.0,SOLVED,True,0,0,1,17,20,5431,5431,5431,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A01,vroom,native,4,10.0,SOLVED,True,0,0,1,17,20,5288,5288,5288,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A01,timefold,native,0,10.0,SOLVED,True,0,0,0,23,20,6557,6557,6557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-20/-6557]soft; warmup_s=3; jvm_startup_s=0.71; load_s=0.89; java_peak_heap_mb=155; move_eval_per_s=69306,,True
+adversarial,A01,timefold,native,1,10.0,SOLVED,True,0,0,0,23,20,6557,6557,6557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-20/-6557]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.41; java_peak_heap_mb=156; move_eval_per_s=116403,,True
+adversarial,A01,timefold,native,2,10.0,SOLVED,True,0,0,0,23,20,6557,6557,6557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-20/-6557]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=117199,,True
+adversarial,A01,timefold,native,3,10.0,SOLVED,True,0,0,0,23,20,6557,6557,6557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-20/-6557]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.41; java_peak_heap_mb=155; move_eval_per_s=107173,,True
+adversarial,A01,timefold,native,4,10.0,SOLVED,True,0,0,0,23,20,6557,6557,6557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-20/-6557]soft; warmup_s=3; jvm_startup_s=0.56; load_s=0.80; java_peak_heap_mb=155; move_eval_per_s=116124,,True
+adversarial,A01,timefold,sequential,0,10.0,SOLVED,True,0,0,0,23,20,6180,6180,6180,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,timefold,sequential,1,10.0,SOLVED,True,0,0,0,23,20,6180,6180,6180,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,timefold,sequential,2,10.0,SOLVED,True,0,0,0,23,20,6180,6180,6180,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,timefold,sequential,3,10.0,SOLVED,True,0,0,0,23,20,6180,6180,6180,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A01,timefold,sequential,4,10.0,SOLVED,True,0,0,0,23,20,6180,6180,6180,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",,True
+adversarial,A02,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,26,17,4341,4341,4341,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,ortools,sequential,0,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,ortools,sequential,1,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,ortools,sequential,2,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,ortools,sequential,3,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,ortools,sequential,4,10.0,SOLVED,True,0,0,1,26,17,4340,4340,4340,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,vroom,native,0,10.0,SOLVED,True,0,0,2,18,17,4491,4491,4491,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A02,vroom,native,1,10.0,SOLVED,True,0,0,2,18,17,4491,4491,4491,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A02,vroom,native,2,10.0,SOLVED,True,0,0,2,18,17,5021,5021,5021,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A02,vroom,native,3,10.0,SOLVED,True,0,0,2,18,17,4658,4658,4658,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A02,vroom,native,4,10.0,SOLVED,True,0,0,2,18,17,4658,4658,4658,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A02,timefold,native,0,10.0,SOLVED,True,0,0,2,17,17,5012,5012,5012,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-17/-17/-5012]soft; warmup_s=3; jvm_startup_s=0.80; load_s=1.46; java_peak_heap_mb=155; move_eval_per_s=62114,high,False
+adversarial,A02,timefold,native,1,10.0,SOLVED,True,0,0,2,17,17,5298,5298,5298,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-17/-17/-5298]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.40; java_peak_heap_mb=156; move_eval_per_s=97551,high,False
+adversarial,A02,timefold,native,2,10.0,SOLVED,True,0,0,2,17,17,4835,4835,4835,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-17/-17/-4835]soft; warmup_s=3; jvm_startup_s=0.45; load_s=0.47; java_peak_heap_mb=155; move_eval_per_s=65333,high,False
+adversarial,A02,timefold,native,3,10.0,SOLVED,True,0,0,2,17,17,4995,4995,4995,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-17/-17/-4995]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.42; java_peak_heap_mb=155; move_eval_per_s=86838,high,False
+adversarial,A02,timefold,native,4,10.0,SOLVED,True,0,0,2,17,17,4894,4894,4894,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-17/-17/-4894]soft; warmup_s=3; jvm_startup_s=0.61; load_s=1.80; java_peak_heap_mb=155; move_eval_per_s=83810,high,False
+adversarial,A02,timefold,sequential,0,10.0,SOLVED,True,0,0,1,26,17,4341,4341,4341,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,timefold,sequential,1,10.0,SOLVED,True,0,0,1,27,17,4915,4915,4915,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:0,LOW:0",normal,False
+adversarial,A02,timefold,sequential,2,10.0,SOLVED,True,0,0,1,25,17,4621,4621,4621,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:2,LOW:0",,True
+adversarial,A02,timefold,sequential,3,10.0,SOLVED,True,0,0,1,26,17,4456,4456,4456,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:1,LOW:0",normal,False
+adversarial,A02,timefold,sequential,4,10.0,SOLVED,True,0,0,1,25,17,4702,4702,4702,3,0,0,0,"served per stage CRITICAL:9,HIGH:6,NORMAL:2,LOW:0",,True
+adversarial,A03,pyvrp,sequential,0,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,pyvrp,sequential,1,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,pyvrp,sequential,2,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,pyvrp,sequential,3,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,pyvrp,sequential,4,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,ortools,sequential,0,10.0,SOLVED,True,0,0,3,18,20,4948,4948,4948,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,ortools,sequential,1,10.0,SOLVED,True,0,0,4,15,20,4333,4333,4333,3,0,0,0,"served per stage CRITICAL:8,HIGH:7,NORMAL:6,LOW:0",high,False
+adversarial,A03,ortools,sequential,2,10.0,SOLVED,True,0,0,4,15,20,4333,4333,4333,3,0,0,0,"served per stage CRITICAL:8,HIGH:7,NORMAL:6,LOW:0",high,False
+adversarial,A03,ortools,sequential,3,10.0,SOLVED,True,0,0,4,15,20,4333,4333,4333,3,0,0,0,"served per stage CRITICAL:8,HIGH:7,NORMAL:6,LOW:0",high,False
+adversarial,A03,ortools,sequential,4,10.0,SOLVED,True,0,0,3,18,20,4939,4939,4939,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,vroom,native,0,10.0,SOLVED,True,0,0,4,12,20,4974,4974,4974,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A03,vroom,native,1,10.0,SOLVED,True,0,0,4,13,18,5357,5357,5357,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A03,vroom,native,2,10.0,SOLVED,True,0,0,4,13,18,5357,5357,5357,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A03,vroom,native,3,10.0,SOLVED,True,0,0,4,12,20,4974,4974,4974,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A03,vroom,native,4,10.0,SOLVED,True,0,0,4,13,18,5357,5357,5357,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A03,timefold,native,0,10.0,SOLVED,True,0,0,5,11,16,5263,5263,5263,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-11/-16/-5263]soft; warmup_s=3; jvm_startup_s=0.77; load_s=0.76; java_peak_heap_mb=155; move_eval_per_s=45779,high,False
+adversarial,A03,timefold,native,1,10.0,SOLVED,True,0,0,5,10,18,4930,4930,4930,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-18/-4930]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.42; java_peak_heap_mb=156; move_eval_per_s=88780,high,False
+adversarial,A03,timefold,native,2,10.0,SOLVED,True,0,0,5,11,16,4966,4966,4966,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-11/-16/-4966]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.41; java_peak_heap_mb=156; move_eval_per_s=90266,high,False
+adversarial,A03,timefold,native,3,10.0,SOLVED,True,0,0,5,11,17,14163,14163,14163,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-11/-17/-14163]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.40; java_peak_heap_mb=156; move_eval_per_s=82082,high,False
+adversarial,A03,timefold,native,4,10.0,SOLVED,True,0,0,5,10,18,10618,10618,10618,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-18/-10618]soft; warmup_s=3; jvm_startup_s=0.35; load_s=0.42; java_peak_heap_mb=155; move_eval_per_s=80478,high,False
+adversarial,A03,timefold,sequential,0,10.0,SOLVED,True,0,0,3,18,20,5170,5170,5170,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,timefold,sequential,1,10.0,SOLVED,True,0,0,3,18,20,4937,4937,4937,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,timefold,sequential,2,10.0,SOLVED,True,0,0,3,20,20,4965,4965,4965,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:1,LOW:0",normal,False
+adversarial,A03,timefold,sequential,3,10.0,SOLVED,True,0,0,3,18,20,4873,4873,4873,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A03,timefold,sequential,4,10.0,SOLVED,True,0,0,3,18,20,5258,5258,5258,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",,True
+adversarial,A04,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,ortools,sequential,0,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,ortools,sequential,1,10.0,SOLVED,True,0,0,0,24,16,5254,5254,5254,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,ortools,sequential,2,10.0,SOLVED,True,0,0,0,24,16,5294,5294,5294,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,ortools,sequential,3,10.0,SOLVED,True,0,0,0,24,16,5365,5365,5365,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,ortools,sequential,4,10.0,SOLVED,True,0,0,0,24,16,5142,5142,5142,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,vroom,native,0,10.0,SOLVED,True,0,0,0,24,16,5434,5434,5434,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A04,vroom,native,1,10.0,SOLVED,True,0,0,0,24,16,5434,5434,5434,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A04,vroom,native,2,10.0,SOLVED,True,0,0,0,24,16,5215,5215,5215,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A04,vroom,native,3,10.0,SOLVED,True,0,0,0,24,16,5434,5434,5434,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A04,vroom,native,4,10.0,SOLVED,True,0,0,0,24,16,5434,5434,5434,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A04,timefold,native,0,10.0,SOLVED,True,0,0,0,24,16,5217,5217,5217,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-5217]soft; warmup_s=3; jvm_startup_s=0.78; load_s=1.84; java_peak_heap_mb=155; move_eval_per_s=74738,,True
+adversarial,A04,timefold,native,1,10.0,SOLVED,True,0,0,0,24,16,5067,5067,5067,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-5067]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=113716,,True
+adversarial,A04,timefold,native,2,10.0,SOLVED,True,0,0,0,24,16,5202,5202,5202,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-5202]soft; warmup_s=3; jvm_startup_s=0.54; load_s=0.69; java_peak_heap_mb=155; move_eval_per_s=101036,,True
+adversarial,A04,timefold,native,3,10.0,SOLVED,True,0,0,0,24,16,5196,5196,5196,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-5196]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.41; java_peak_heap_mb=156; move_eval_per_s=94840,,True
+adversarial,A04,timefold,native,4,10.0,SOLVED,True,0,0,0,24,16,5062,5062,5062,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-5062]soft; warmup_s=3; jvm_startup_s=0.53; load_s=1.39; java_peak_heap_mb=155; move_eval_per_s=87426,,True
+adversarial,A04,timefold,sequential,0,10.0,SOLVED,True,0,0,0,24,16,5415,5415,5415,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,timefold,sequential,1,10.0,SOLVED,True,0,0,0,24,16,5426,5426,5426,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,timefold,sequential,2,10.0,SOLVED,True,0,0,0,24,16,5360,5360,5360,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,timefold,sequential,3,10.0,SOLVED,True,0,0,0,24,16,5522,5522,5522,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A04,timefold,sequential,4,10.0,SOLVED,True,0,0,0,24,16,5939,5939,5939,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:7,LOW:0",,True
+adversarial,A05,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,ortools,sequential,0,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,ortools,sequential,1,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,ortools,sequential,2,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,ortools,sequential,3,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,ortools,sequential,4,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,vroom,native,0,10.0,SOLVED,True,0,0,1,24,13,5561,5561,5561,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A05,vroom,native,1,10.0,SOLVED,True,0,0,1,24,13,5561,5561,5561,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A05,vroom,native,2,10.0,SOLVED,True,0,0,1,24,13,5561,5561,5561,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A05,vroom,native,3,10.0,SOLVED,True,0,0,1,24,13,5419,5419,5419,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A05,vroom,native,4,10.0,SOLVED,True,0,0,1,24,13,5561,5561,5561,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A05,timefold,native,0,10.0,SOLVED,True,0,0,1,24,11,6071,6071,6071,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-24/-11/-6071]soft; warmup_s=3; jvm_startup_s=0.31; load_s=0.98; java_peak_heap_mb=155; move_eval_per_s=62783,high,False
+adversarial,A05,timefold,native,1,10.0,SOLVED,True,0,0,1,23,13,10681,10681,10681,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-23/-13/-10681]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=101319,high,False
+adversarial,A05,timefold,native,2,10.0,SOLVED,True,0,0,1,23,13,12947,12947,12947,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-23/-13/-12947]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=156; move_eval_per_s=99135,high,False
+adversarial,A05,timefold,native,3,10.0,SOLVED,True,0,0,1,24,11,5909,5909,5909,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-24/-11/-5909]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=70759,high,False
+adversarial,A05,timefold,native,4,10.0,SOLVED,True,0,0,1,23,13,5618,5618,5618,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-23/-13/-5618]soft; warmup_s=3; jvm_startup_s=0.55; load_s=1.63; java_peak_heap_mb=155; move_eval_per_s=76093,high,False
+adversarial,A05,timefold,sequential,0,10.0,SOLVED,True,0,0,0,30,13,5331,5331,5331,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,timefold,sequential,1,10.0,SOLVED,True,0,0,0,30,13,5188,5188,5188,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,timefold,sequential,2,10.0,SOLVED,True,0,0,0,30,13,5162,5162,5162,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,timefold,sequential,3,10.0,SOLVED,True,0,0,0,30,13,5260,5260,5260,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A05,timefold,sequential,4,10.0,SOLVED,True,0,0,0,30,13,5798,5798,5798,3,0,0,0,"served per stage CRITICAL:10,HIGH:6,NORMAL:1,LOW:0",,True
+adversarial,A06,pyvrp,sequential,0,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,pyvrp,sequential,1,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,pyvrp,sequential,2,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,pyvrp,sequential,3,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,pyvrp,sequential,4,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,ortools,sequential,0,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,ortools,sequential,1,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,ortools,sequential,2,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,ortools,sequential,3,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,ortools,sequential,4,10.0,SOLVED,True,0,0,3,24,15,4612,4612,4612,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:1,LOW:0",normal,False
+adversarial,A06,vroom,native,0,10.0,SOLVED,True,0,0,3,22,15,4731,4731,4731,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A06,vroom,native,1,10.0,SOLVED,True,0,0,3,22,15,4731,4731,4731,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A06,vroom,native,2,10.0,SOLVED,True,0,0,3,22,15,4731,4731,4731,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A06,vroom,native,3,10.0,SOLVED,True,0,0,4,15,15,6021,6021,6021,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A06,vroom,native,4,10.0,SOLVED,True,0,0,3,21,15,5248,5248,5248,3,0,0,0,exploration=5; unassigned=39,,True
+adversarial,A06,timefold,native,0,10.0,SOLVED,True,0,0,4,15,15,12672,12672,12672,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-15/-15/-12672]soft; warmup_s=3; jvm_startup_s=0.69; load_s=1.91; java_peak_heap_mb=155; move_eval_per_s=74744,high,False
+adversarial,A06,timefold,native,1,10.0,SOLVED,True,0,0,4,15,15,5758,5758,5758,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-15/-15/-5758]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=90144,high,False
+adversarial,A06,timefold,native,2,10.0,SOLVED,True,0,0,4,16,13,5600,5600,5600,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-16/-13/-5600]soft; warmup_s=3; jvm_startup_s=0.53; load_s=1.51; java_peak_heap_mb=155; move_eval_per_s=61945,high,False
+adversarial,A06,timefold,native,3,10.0,SOLVED,True,0,0,4,16,13,5691,5691,5691,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-16/-13/-5691]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.39; java_peak_heap_mb=156; move_eval_per_s=84246,high,False
+adversarial,A06,timefold,native,4,10.0,SOLVED,True,0,0,4,16,13,5595,5595,5595,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-16/-13/-5595]soft; warmup_s=3; jvm_startup_s=0.62; load_s=1.67; java_peak_heap_mb=155; move_eval_per_s=72666,high,False
+adversarial,A06,timefold,sequential,0,10.0,SOLVED,True,0,0,3,25,15,5085,5085,5085,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",normal,False
+adversarial,A06,timefold,sequential,1,10.0,SOLVED,True,0,0,3,25,15,4657,4657,4657,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",normal,False
+adversarial,A06,timefold,sequential,2,10.0,SOLVED,True,0,0,3,22,15,5274,5274,5274,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:3,LOW:0",normal,False
+adversarial,A06,timefold,sequential,3,10.0,SOLVED,True,0,0,3,25,15,4657,4657,4657,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:0,LOW:0",normal,False
+adversarial,A06,timefold,sequential,4,10.0,SOLVED,True,0,0,3,21,15,5720,5720,5720,3,0,0,0,"served per stage CRITICAL:8,HIGH:9,NORMAL:4,LOW:0",,True
+adversarial,A07,pyvrp,sequential,0,10.0,SOLVED,True,0,0,3,25,13,5437,5437,5437,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,pyvrp,sequential,1,10.0,SOLVED,True,0,0,3,25,13,5437,5437,5437,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,pyvrp,sequential,2,10.0,SOLVED,True,0,0,3,25,13,5437,5437,5437,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,pyvrp,sequential,3,10.0,SOLVED,True,0,0,3,25,13,5437,5437,5437,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,pyvrp,sequential,4,10.0,SOLVED,True,0,0,3,25,13,5437,5437,5437,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,ortools,sequential,0,10.0,SOLVED,True,0,0,3,25,13,5541,5541,5541,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,ortools,sequential,1,10.0,SOLVED,True,0,0,3,25,13,5541,5541,5541,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,ortools,sequential,2,10.0,SOLVED,True,0,0,3,25,13,5541,5541,5541,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,ortools,sequential,3,10.0,SOLVED,True,0,0,3,25,13,5541,5541,5541,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,ortools,sequential,4,10.0,SOLVED,True,0,0,4,22,13,5099,5099,5099,3,0,0,0,"served per stage CRITICAL:11,HIGH:6,NORMAL:4,LOW:0",high,False
+adversarial,A07,vroom,native,0,10.0,SOLVED,True,0,0,4,19,13,5581,5581,5581,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A07,vroom,native,1,10.0,SOLVED,True,0,0,4,18,13,6737,6737,6737,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A07,vroom,native,2,10.0,SOLVED,True,0,0,4,19,13,6236,6236,6236,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A07,vroom,native,3,10.0,SOLVED,True,0,0,4,19,13,5260,5260,5260,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A07,vroom,native,4,10.0,SOLVED,True,0,0,4,19,13,5581,5581,5581,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A07,timefold,native,0,10.0,SOLVED,True,0,0,5,14,13,5402,5402,5402,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-14/-13/-5402]soft; warmup_s=3; jvm_startup_s=0.27; load_s=0.79; java_peak_heap_mb=155; move_eval_per_s=48836,high,False
+adversarial,A07,timefold,native,1,10.0,SOLVED,True,0,0,5,14,13,9829,9829,9829,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-14/-13/-9829]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.35; java_peak_heap_mb=156; move_eval_per_s=71619,high,False
+adversarial,A07,timefold,native,2,10.0,SOLVED,True,0,0,5,15,11,5479,5479,5479,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-15/-11/-5479]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=85466,high,False
+adversarial,A07,timefold,native,3,10.0,SOLVED,True,0,0,5,15,11,5446,5446,5446,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-15/-11/-5446]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=75064,high,False
+adversarial,A07,timefold,native,4,10.0,SOLVED,True,0,0,5,14,13,14938,14938,14938,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-14/-13/-14938]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=74752,high,False
+adversarial,A07,timefold,sequential,0,10.0,SOLVED,True,0,0,3,25,13,5559,5559,5559,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,timefold,sequential,1,10.0,SOLVED,True,0,0,3,25,13,5535,5535,5535,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,timefold,sequential,2,10.0,SOLVED,True,0,0,3,26,13,5605,5605,5605,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:0,LOW:0",normal,False
+adversarial,A07,timefold,sequential,3,10.0,SOLVED,True,0,0,3,25,13,5550,5550,5550,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A07,timefold,sequential,4,10.0,SOLVED,True,0,0,3,25,13,5672,5672,5672,3,0,0,0,"served per stage CRITICAL:11,HIGH:7,NORMAL:1,LOW:0",,True
+adversarial,A08,pyvrp,sequential,0,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,pyvrp,sequential,1,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,pyvrp,sequential,2,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,pyvrp,sequential,3,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,pyvrp,sequential,4,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,ortools,sequential,0,10.0,SOLVED,True,0,0,4,18,20,4850,4850,4850,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,ortools,sequential,1,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,ortools,sequential,2,10.0,SOLVED,True,0,0,4,18,20,4850,4850,4850,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,ortools,sequential,3,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,ortools,sequential,4,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,vroom,native,0,10.0,SOLVED,True,0,0,5,11,20,5321,5321,5321,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A08,vroom,native,1,10.0,SOLVED,True,0,0,5,13,20,4674,4674,4674,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A08,vroom,native,2,10.0,SOLVED,True,0,0,5,13,20,4674,4674,4674,3,0,0,0,exploration=5; unassigned=38,high,False
+adversarial,A08,vroom,native,3,10.0,SOLVED,True,0,0,5,12,20,4526,4526,4526,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A08,vroom,native,4,10.0,SOLVED,True,0,0,5,12,20,5353,5353,5353,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A08,timefold,native,0,10.0,SOLVED,True,0,0,6,8,18,5114,5114,5114,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-18/-5114]soft; warmup_s=3; jvm_startup_s=0.31; load_s=0.75; java_peak_heap_mb=155; move_eval_per_s=39825,high,False
+adversarial,A08,timefold,native,1,10.0,SOLVED,True,0,0,6,7,20,8058,8058,8058,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-7/-20/-8058]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=83949,high,False
+adversarial,A08,timefold,native,2,10.0,SOLVED,True,0,0,6,8,18,10084,10084,10084,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-18/-10084]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=80599,high,False
+adversarial,A08,timefold,native,3,10.0,SOLVED,True,0,0,6,8,18,4901,4901,4901,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-18/-4901]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=74959,high,False
+adversarial,A08,timefold,native,4,10.0,SOLVED,True,0,0,6,8,18,5151,5151,5151,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-18/-5151]soft; warmup_s=3; jvm_startup_s=0.20; load_s=0.43; java_peak_heap_mb=155; move_eval_per_s=61277,high,False
+adversarial,A08,timefold,sequential,0,10.0,SOLVED,True,0,0,4,18,20,4876,4876,4876,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,timefold,sequential,1,10.0,SOLVED,True,0,0,4,18,20,4716,4716,4716,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,timefold,sequential,2,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,timefold,sequential,3,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A08,timefold,sequential,4,10.0,SOLVED,True,0,0,4,18,20,4664,4664,4664,3,0,0,0,"served per stage CRITICAL:8,HIGH:10,NORMAL:0,LOW:0",,True
+adversarial,A09,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,21,17,4822,4822,4822,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,21,17,4822,4822,4822,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,21,17,4822,4822,4822,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,21,17,4822,4822,4822,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,21,17,4822,4822,4822,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,ortools,sequential,0,10.0,SOLVED,True,0,0,0,23,17,4484,4484,4484,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A09,ortools,sequential,1,10.0,SOLVED,True,0,0,0,22,17,4651,4651,4651,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",normal,False
+adversarial,A09,ortools,sequential,2,10.0,SOLVED,True,0,0,0,23,17,4588,4588,4588,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A09,ortools,sequential,3,10.0,SOLVED,True,0,0,0,21,17,4969,4969,4969,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,ortools,sequential,4,10.0,SOLVED,True,0,0,0,24,17,4478,4478,4478,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:6,LOW:0",normal,False
+adversarial,A09,vroom,native,0,10.0,SOLVED,True,0,0,0,21,17,4884,4884,4884,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A09,vroom,native,1,10.0,SOLVED,True,0,0,0,21,17,4884,4884,4884,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A09,vroom,native,2,10.0,SOLVED,True,0,0,0,22,17,4611,4611,4611,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A09,vroom,native,3,10.0,SOLVED,True,0,0,0,21,17,4884,4884,4884,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A09,vroom,native,4,10.0,SOLVED,True,0,0,0,21,17,4884,4884,4884,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A09,timefold,native,0,10.0,SOLVED,True,0,0,0,21,17,4874,4874,4874,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-21/-17/-4874]soft; warmup_s=3; jvm_startup_s=0.49; load_s=1.23; java_peak_heap_mb=156; move_eval_per_s=95440,,True
+adversarial,A09,timefold,native,1,10.0,SOLVED,True,0,0,0,21,17,4839,4839,4839,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-21/-17/-4839]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=102534,,True
+adversarial,A09,timefold,native,2,10.0,SOLVED,True,0,0,0,21,17,4904,4904,4904,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-21/-17/-4904]soft; warmup_s=3; jvm_startup_s=0.59; load_s=1.63; java_peak_heap_mb=156; move_eval_per_s=82571,,True
+adversarial,A09,timefold,native,3,10.0,SOLVED,True,0,0,0,21,17,4839,4839,4839,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-21/-17/-4839]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=156; move_eval_per_s=84906,,True
+adversarial,A09,timefold,native,4,10.0,SOLVED,True,0,0,0,21,17,4839,4839,4839,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-21/-17/-4839]soft; warmup_s=3; jvm_startup_s=0.57; load_s=1.40; java_peak_heap_mb=155; move_eval_per_s=84319,,True
+adversarial,A09,timefold,sequential,0,10.0,SOLVED,True,0,0,0,21,17,5039,5039,5039,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,timefold,sequential,1,10.0,SOLVED,True,0,0,0,21,17,5102,5102,5102,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,timefold,sequential,2,10.0,SOLVED,True,0,0,0,21,17,5402,5402,5402,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,timefold,sequential,3,10.0,SOLVED,True,0,0,0,21,17,5267,5267,5267,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A09,timefold,sequential,4,10.0,SOLVED,True,0,0,0,21,17,5921,5921,5921,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:9,LOW:0",,True
+adversarial,A10,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,ortools,sequential,0,10.0,SOLVED,True,0,0,0,21,19,5493,5493,5493,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A10,ortools,sequential,1,10.0,SOLVED,True,0,0,0,21,19,5493,5493,5493,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A10,ortools,sequential,2,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,ortools,sequential,3,10.0,SOLVED,True,0,0,0,21,19,5469,5469,5469,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A10,ortools,sequential,4,10.0,SOLVED,True,0,0,0,21,19,5599,5599,5599,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:7,LOW:0",normal,False
+adversarial,A10,vroom,native,0,10.0,SOLVED,True,0,0,0,21,19,5391,5391,5391,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A10,vroom,native,1,10.0,SOLVED,True,0,0,0,21,19,5391,5391,5391,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A10,vroom,native,2,10.0,SOLVED,True,0,0,0,21,19,5391,5391,5391,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A10,vroom,native,3,10.0,SOLVED,True,0,0,0,21,19,5391,5391,5391,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A10,vroom,native,4,10.0,SOLVED,True,0,0,0,21,19,5391,5391,5391,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A10,timefold,native,0,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-19/-5958]soft; warmup_s=3; jvm_startup_s=0.90; load_s=1.26; java_peak_heap_mb=155; move_eval_per_s=98925,,True
+adversarial,A10,timefold,native,1,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-19/-5958]soft; warmup_s=3; jvm_startup_s=0.59; load_s=0.81; java_peak_heap_mb=155; move_eval_per_s=87194,,True
+adversarial,A10,timefold,native,2,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-19/-5958]soft; warmup_s=3; jvm_startup_s=0.53; load_s=0.62; java_peak_heap_mb=155; move_eval_per_s=80884,,True
+adversarial,A10,timefold,native,3,10.0,SOLVED,True,0,0,0,20,19,6242,6242,6242,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-19/-6242]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.43; java_peak_heap_mb=156; move_eval_per_s=105372,,True
+adversarial,A10,timefold,native,4,10.0,SOLVED,True,0,0,0,20,19,6148,6148,6148,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-19/-6148]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=81729,,True
+adversarial,A10,timefold,sequential,0,10.0,SOLVED,True,0,0,0,20,19,6183,6183,6183,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,timefold,sequential,1,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,timefold,sequential,2,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,timefold,sequential,3,10.0,SOLVED,True,0,0,0,20,19,5958,5958,5958,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A10,timefold,sequential,4,10.0,SOLVED,True,0,0,0,20,19,6055,6055,6055,3,0,0,0,"served per stage CRITICAL:4,HIGH:9,NORMAL:8,LOW:0",,True
+adversarial,A11,pyvrp,sequential,0,10.0,SOLVED,True,0,0,5,14,22,5392,5392,5392,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,pyvrp,sequential,1,10.0,SOLVED,True,0,0,5,14,22,5392,5392,5392,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,pyvrp,sequential,2,10.0,SOLVED,True,0,0,5,14,22,5392,5392,5392,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,pyvrp,sequential,3,10.0,SOLVED,True,0,0,5,14,22,5392,5392,5392,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,pyvrp,sequential,4,10.0,SOLVED,True,0,0,5,14,22,5392,5392,5392,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,ortools,sequential,0,10.0,SOLVED,True,0,0,6,14,22,4408,4408,4408,3,0,0,0,"served per stage CRITICAL:6,HIGH:12,NORMAL:0,LOW:0",high,False
+adversarial,A11,ortools,sequential,1,10.0,SOLVED,True,0,0,6,14,22,4408,4408,4408,3,0,0,0,"served per stage CRITICAL:6,HIGH:12,NORMAL:0,LOW:0",high,False
+adversarial,A11,ortools,sequential,2,10.0,SOLVED,True,0,0,5,13,22,5611,5611,5611,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A11,ortools,sequential,3,10.0,SOLVED,True,0,0,6,12,22,4802,4802,4802,3,0,0,0,"served per stage CRITICAL:6,HIGH:12,NORMAL:2,LOW:0",high,False
+adversarial,A11,ortools,sequential,4,10.0,SOLVED,True,0,0,6,12,22,4802,4802,4802,3,0,0,0,"served per stage CRITICAL:6,HIGH:12,NORMAL:2,LOW:0",high,False
+adversarial,A11,vroom,native,0,10.0,SOLVED,True,0,0,6,7,21,6060,6060,6060,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A11,vroom,native,1,10.0,SOLVED,True,0,0,6,7,21,6060,6060,6060,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A11,vroom,native,2,10.0,SOLVED,True,0,0,6,7,21,6060,6060,6060,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A11,vroom,native,3,10.0,SOLVED,True,0,0,6,7,21,6060,6060,6060,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A11,vroom,native,4,10.0,SOLVED,True,0,0,6,7,21,6060,6060,6060,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A11,timefold,native,0,10.0,SOLVED,True,0,0,8,5,14,6828,6828,6828,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-8/-5/-14/-6828]soft; warmup_s=3; jvm_startup_s=0.21; load_s=1.95; java_peak_heap_mb=155; move_eval_per_s=40561,high,False
+adversarial,A11,timefold,native,1,10.0,SOLVED,True,0,0,8,4,16,11039,11039,11039,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-8/-4/-16/-11039]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=72192,high,False
+adversarial,A11,timefold,native,2,10.0,SOLVED,True,0,0,7,9,20,14918,14918,14918,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-9/-20/-14918]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=86698,high,False
+adversarial,A11,timefold,native,3,10.0,SOLVED,True,0,0,8,3,19,11005,11005,11005,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-8/-3/-19/-11005]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=67741,high,False
+adversarial,A11,timefold,native,4,10.0,SOLVED,True,0,0,8,4,16,18322,18322,18322,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-8/-4/-16/-18322]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=69453,high,False
+adversarial,A11,timefold,sequential,0,10.0,SOLVED,True,0,0,5,12,22,6104,6104,6104,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A11,timefold,sequential,1,10.0,SOLVED,True,0,0,5,13,22,5629,5629,5629,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A11,timefold,sequential,2,10.0,SOLVED,True,0,0,5,14,22,5946,5946,5946,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A11,timefold,sequential,3,10.0,SOLVED,True,0,0,5,13,22,5788,5788,5788,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A11,timefold,sequential,4,10.0,SOLVED,True,0,0,5,14,22,5639,5639,5639,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A12,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,ortools,sequential,0,10.0,SOLVED,True,0,0,0,20,17,5379,5379,5379,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:8,LOW:0",normal,False
+adversarial,A12,ortools,sequential,1,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,ortools,sequential,2,10.0,SOLVED,True,0,0,0,20,17,5379,5379,5379,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:8,LOW:0",normal,False
+adversarial,A12,ortools,sequential,3,10.0,SOLVED,True,0,0,0,20,17,5749,5749,5749,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:8,LOW:0",normal,False
+adversarial,A12,ortools,sequential,4,10.0,SOLVED,True,0,0,0,20,17,5379,5379,5379,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:8,LOW:0",normal,False
+adversarial,A12,vroom,native,0,10.0,SOLVED,True,0,0,0,20,17,5379,5379,5379,3,0,0,0,exploration=5; unassigned=37,normal,False
+adversarial,A12,vroom,native,1,10.0,SOLVED,True,0,0,0,19,17,6100,6100,6100,3,0,0,0,exploration=5; unassigned=36,,True
+adversarial,A12,vroom,native,2,10.0,SOLVED,True,0,0,0,19,17,6236,6236,6236,3,0,0,0,exploration=5; unassigned=36,,True
+adversarial,A12,vroom,native,3,10.0,SOLVED,True,0,0,0,19,17,6100,6100,6100,3,0,0,0,exploration=5; unassigned=36,,True
+adversarial,A12,vroom,native,4,10.0,SOLVED,True,0,0,0,19,17,6100,6100,6100,3,0,0,0,exploration=5; unassigned=36,,True
+adversarial,A12,timefold,native,0,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-19/-17/-5636]soft; warmup_s=3; jvm_startup_s=0.81; load_s=1.35; java_peak_heap_mb=155; move_eval_per_s=67943,,True
+adversarial,A12,timefold,native,1,10.0,SOLVED,True,0,0,0,19,17,11007,11007,11007,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-19/-17/-11007]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.35; java_peak_heap_mb=156; move_eval_per_s=98237,,True
+adversarial,A12,timefold,native,2,10.0,SOLVED,True,0,0,0,19,17,5669,5669,5669,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-19/-17/-5669]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=104002,,True
+adversarial,A12,timefold,native,3,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-19/-17/-5636]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=84175,,True
+adversarial,A12,timefold,native,4,10.0,SOLVED,True,0,0,0,20,15,5927,5927,5927,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-20/-15/-5927]soft; warmup_s=3; jvm_startup_s=0.56; load_s=1.51; java_peak_heap_mb=155; move_eval_per_s=69701,normal,False
+adversarial,A12,timefold,sequential,0,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,timefold,sequential,1,10.0,SOLVED,True,0,0,0,19,17,5636,5636,5636,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,timefold,sequential,2,10.0,SOLVED,True,0,0,0,19,17,6502,6502,6502,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,timefold,sequential,3,10.0,SOLVED,True,0,0,0,19,17,6028,6028,6028,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A12,timefold,sequential,4,10.0,SOLVED,True,0,0,0,19,17,6804,6804,6804,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:9,LOW:0",,True
+adversarial,A13,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,16,23,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,16,23,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,16,23,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,16,23,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,16,23,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,ortools,sequential,0,10.0,SOLVED,True,0,0,1,17,23,4807,4807,4807,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:5,LOW:0",normal,False
+adversarial,A13,ortools,sequential,1,10.0,SOLVED,True,0,0,1,20,23,4271,4271,4271,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:2,LOW:0",normal,False
+adversarial,A13,ortools,sequential,2,10.0,SOLVED,True,0,0,1,17,23,4807,4807,4807,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:5,LOW:0",normal,False
+adversarial,A13,ortools,sequential,3,10.0,SOLVED,True,0,0,1,17,23,4589,4589,4589,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:5,LOW:0",normal,False
+adversarial,A13,ortools,sequential,4,10.0,SOLVED,True,0,0,1,17,23,4807,4807,4807,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:5,LOW:0",normal,False
+adversarial,A13,vroom,native,0,10.0,SOLVED,True,0,0,1,16,23,4711,4711,4711,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A13,vroom,native,1,10.0,SOLVED,True,0,0,1,16,23,4711,4711,4711,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A13,vroom,native,2,10.0,SOLVED,True,0,0,1,16,23,4711,4711,4711,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A13,vroom,native,3,10.0,SOLVED,True,0,0,1,16,23,4711,4711,4711,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A13,vroom,native,4,10.0,SOLVED,True,0,0,1,16,23,4711,4711,4711,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A13,timefold,native,0,10.0,SOLVED,True,0,0,1,16,23,4917,4917,4917,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-16/-23/-4917]soft; warmup_s=3; jvm_startup_s=0.69; load_s=2.43; java_peak_heap_mb=155; move_eval_per_s=93990,,True
+adversarial,A13,timefold,native,1,10.0,SOLVED,True,0,0,1,16,23,5122,5122,5122,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-16/-23/-5122]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=115712,,True
+adversarial,A13,timefold,native,2,10.0,SOLVED,True,0,0,1,16,23,4769,4769,4769,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-16/-23/-4769]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=101814,,True
+adversarial,A13,timefold,native,3,10.0,SOLVED,True,0,0,1,16,23,4907,4907,4907,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-16/-23/-4907]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.44; java_peak_heap_mb=156; move_eval_per_s=81902,,True
+adversarial,A13,timefold,native,4,10.0,SOLVED,True,0,0,1,16,23,4933,4933,4933,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-16/-23/-4933]soft; warmup_s=3; jvm_startup_s=0.61; load_s=1.72; java_peak_heap_mb=155; move_eval_per_s=82988,,True
+adversarial,A13,timefold,sequential,0,10.0,SOLVED,True,0,0,1,16,23,5334,5334,5334,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,timefold,sequential,1,10.0,SOLVED,True,0,0,1,16,23,5278,5278,5278,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,timefold,sequential,2,10.0,SOLVED,True,0,0,1,16,23,5383,5383,5383,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,timefold,sequential,3,10.0,SOLVED,True,0,0,1,16,23,4895,4895,4895,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A13,timefold,sequential,4,10.0,SOLVED,True,0,0,1,16,23,5321,5321,5321,3,0,0,0,"served per stage CRITICAL:5,HIGH:9,NORMAL:6,LOW:0",,True
+adversarial,A14,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,ortools,sequential,0,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,ortools,sequential,1,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,ortools,sequential,2,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,ortools,sequential,3,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,ortools,sequential,4,10.0,SOLVED,True,0,0,1,23,18,4254,4254,4254,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,vroom,native,0,10.0,SOLVED,True,0,0,1,21,18,4580,4580,4580,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A14,vroom,native,1,10.0,SOLVED,True,0,0,1,21,18,4580,4580,4580,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A14,vroom,native,2,10.0,SOLVED,True,0,0,1,22,18,4270,4270,4270,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A14,vroom,native,3,10.0,SOLVED,True,0,0,1,21,18,4580,4580,4580,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A14,vroom,native,4,10.0,SOLVED,True,0,0,1,21,18,4580,4580,4580,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A14,timefold,native,0,10.0,SOLVED,True,0,0,2,15,17,5124,5124,5124,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-15/-17/-5124]soft; warmup_s=3; jvm_startup_s=0.35; load_s=1.99; java_peak_heap_mb=155; move_eval_per_s=81534,high,False
+adversarial,A14,timefold,native,1,10.0,SOLVED,True,0,0,2,15,17,5156,5156,5156,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-15/-17/-5156]soft; warmup_s=3; jvm_startup_s=0.11; load_s=0.35; java_peak_heap_mb=156; move_eval_per_s=85137,high,False
+adversarial,A14,timefold,native,2,10.0,SOLVED,True,0,0,2,15,17,5124,5124,5124,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-15/-17/-5124]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=156; move_eval_per_s=73901,high,False
+adversarial,A14,timefold,native,3,10.0,SOLVED,True,0,0,2,15,17,5156,5156,5156,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-15/-17/-5156]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.43; java_peak_heap_mb=156; move_eval_per_s=90405,high,False
+adversarial,A14,timefold,native,4,10.0,SOLVED,True,0,0,2,15,17,5124,5124,5124,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-15/-17/-5124]soft; warmup_s=3; jvm_startup_s=0.60; load_s=1.73; java_peak_heap_mb=155; move_eval_per_s=68454,high,False
+adversarial,A14,timefold,sequential,0,10.0,SOLVED,True,0,0,1,22,18,4556,4556,4556,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:4,LOW:0",normal,False
+adversarial,A14,timefold,sequential,1,10.0,SOLVED,True,0,0,1,23,18,4256,4256,4256,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,timefold,sequential,2,10.0,SOLVED,True,0,0,1,23,18,4256,4256,4256,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A14,timefold,sequential,3,10.0,SOLVED,True,0,0,1,22,18,4680,4680,4680,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:4,LOW:0",normal,False
+adversarial,A14,timefold,sequential,4,10.0,SOLVED,True,0,0,1,23,18,4312,4312,4312,3,0,0,0,"served per stage CRITICAL:7,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A15,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,18,20,4759,4759,4759,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,18,20,4759,4759,4759,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,18,20,4759,4759,4759,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,18,20,4759,4759,4759,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,18,20,4759,4759,4759,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,ortools,sequential,0,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:5,LOW:0",normal,False
+adversarial,A15,ortools,sequential,1,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:5,LOW:0",normal,False
+adversarial,A15,ortools,sequential,2,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:5,LOW:0",normal,False
+adversarial,A15,ortools,sequential,3,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:5,LOW:0",normal,False
+adversarial,A15,ortools,sequential,4,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:5,LOW:0",normal,False
+adversarial,A15,vroom,native,0,10.0,SOLVED,True,0,0,1,19,20,4429,4429,4429,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A15,vroom,native,1,10.0,SOLVED,True,0,0,1,18,20,4819,4819,4819,3,0,0,0,exploration=5; unassigned=39,low,False
+adversarial,A15,vroom,native,2,10.0,SOLVED,True,0,0,1,18,20,4819,4819,4819,3,0,0,0,exploration=5; unassigned=39,low,False
+adversarial,A15,vroom,native,3,10.0,SOLVED,True,0,0,1,18,20,4819,4819,4819,3,0,0,0,exploration=5; unassigned=39,low,False
+adversarial,A15,vroom,native,4,10.0,SOLVED,True,0,0,1,18,20,4819,4819,4819,3,0,0,0,exploration=5; unassigned=39,low,False
+adversarial,A15,timefold,native,0,10.0,SOLVED,True,0,0,1,18,19,4951,4951,4951,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-18/-19/-4951]soft; warmup_s=3; jvm_startup_s=0.79; load_s=1.29; java_peak_heap_mb=155; move_eval_per_s=82778,,True
+adversarial,A15,timefold,native,1,10.0,SOLVED,True,0,0,1,18,19,4951,4951,4951,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-18/-19/-4951]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=79797,,True
+adversarial,A15,timefold,native,2,10.0,SOLVED,True,0,0,1,18,19,4951,4951,4951,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-18/-19/-4951]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=104566,,True
+adversarial,A15,timefold,native,3,10.0,SOLVED,True,0,0,1,18,19,4951,4951,4951,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-18/-19/-4951]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.42; java_peak_heap_mb=156; move_eval_per_s=96756,,True
+adversarial,A15,timefold,native,4,10.0,SOLVED,True,0,0,1,18,19,4951,4951,4951,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-18/-19/-4951]soft; warmup_s=3; jvm_startup_s=0.59; load_s=1.55; java_peak_heap_mb=155; move_eval_per_s=83144,,True
+adversarial,A15,timefold,sequential,0,10.0,SOLVED,True,0,0,1,18,20,4937,4937,4937,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,timefold,sequential,1,10.0,SOLVED,True,0,0,1,18,20,4923,4923,4923,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,timefold,sequential,2,10.0,SOLVED,True,0,0,1,18,20,4834,4834,4834,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,timefold,sequential,3,10.0,SOLVED,True,0,0,1,18,20,5001,5001,5001,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A15,timefold,sequential,4,10.0,SOLVED,True,0,0,1,18,20,5181,5181,5181,3,0,0,0,"served per stage CRITICAL:4,HIGH:11,NORMAL:6,LOW:0",low,False
+adversarial,A16,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,ortools,sequential,0,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,ortools,sequential,1,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,ortools,sequential,2,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,ortools,sequential,3,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,ortools,sequential,4,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,vroom,native,0,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,exploration=5; unassigned=43,,True
+adversarial,A16,vroom,native,1,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,exploration=5; unassigned=43,,True
+adversarial,A16,vroom,native,2,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,exploration=5; unassigned=43,,True
+adversarial,A16,vroom,native,3,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,exploration=5; unassigned=43,,True
+adversarial,A16,vroom,native,4,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,exploration=5; unassigned=43,,True
+adversarial,A16,timefold,native,0,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-27/-16/-4272]soft; warmup_s=3; jvm_startup_s=0.72; load_s=2.49; java_peak_heap_mb=155; move_eval_per_s=81648,,True
+adversarial,A16,timefold,native,1,10.0,SOLVED,True,0,0,0,27,16,4281,4281,4281,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-27/-16/-4281]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=106935,,True
+adversarial,A16,timefold,native,2,10.0,SOLVED,True,0,0,0,27,16,4272,4272,4272,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-27/-16/-4272]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=107377,,True
+adversarial,A16,timefold,native,3,10.0,SOLVED,True,0,0,0,27,16,4281,4281,4281,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-27/-16/-4281]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.42; java_peak_heap_mb=156; move_eval_per_s=94802,,True
+adversarial,A16,timefold,native,4,10.0,SOLVED,True,0,0,0,27,16,4291,4291,4291,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-27/-16/-4291]soft; warmup_s=3; jvm_startup_s=0.57; load_s=1.61; java_peak_heap_mb=155; move_eval_per_s=84371,,True
+adversarial,A16,timefold,sequential,0,10.0,SOLVED,True,0,0,0,27,16,4281,4281,4281,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,timefold,sequential,1,10.0,SOLVED,True,0,0,0,27,16,4533,4533,4533,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,timefold,sequential,2,10.0,SOLVED,True,0,0,0,27,16,4477,4477,4477,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,timefold,sequential,3,10.0,SOLVED,True,0,0,0,27,16,4375,4375,4375,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A16,timefold,sequential,4,10.0,SOLVED,True,0,0,0,27,16,4523,4523,4523,3,0,0,0,"served per stage CRITICAL:5,HIGH:8,NORMAL:4,LOW:0",,True
+adversarial,A17,pyvrp,sequential,0,10.0,SOLVED,True,0,0,3,21,17,4162,4162,4162,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,pyvrp,sequential,1,10.0,SOLVED,True,0,0,3,21,17,4162,4162,4162,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,pyvrp,sequential,2,10.0,SOLVED,True,0,0,3,21,17,4162,4162,4162,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,pyvrp,sequential,3,10.0,SOLVED,True,0,0,3,21,17,4162,4162,4162,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,pyvrp,sequential,4,10.0,SOLVED,True,0,0,3,21,17,4162,4162,4162,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,ortools,sequential,0,10.0,SOLVED,True,0,0,3,21,17,4213,4213,4213,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,ortools,sequential,1,10.0,SOLVED,True,0,0,3,21,17,4244,4244,4244,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,ortools,sequential,2,10.0,SOLVED,True,0,0,3,21,17,4213,4213,4213,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,ortools,sequential,3,10.0,SOLVED,True,0,0,3,21,17,4213,4213,4213,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,ortools,sequential,4,10.0,SOLVED,True,0,0,3,21,17,4213,4213,4213,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,vroom,native,0,10.0,SOLVED,True,0,0,3,20,17,4476,4476,4476,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A17,vroom,native,1,10.0,SOLVED,True,0,0,3,20,17,4476,4476,4476,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A17,vroom,native,2,10.0,SOLVED,True,0,0,3,20,17,4476,4476,4476,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A17,vroom,native,3,10.0,SOLVED,True,0,0,3,20,17,4476,4476,4476,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A17,vroom,native,4,10.0,SOLVED,True,0,0,3,20,17,4476,4476,4476,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A17,timefold,native,0,10.0,SOLVED,True,0,0,5,9,17,14162,14162,14162,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-9/-17/-14162]soft; warmup_s=3; jvm_startup_s=0.82; load_s=1.48; java_peak_heap_mb=155; move_eval_per_s=73520,high,False
+adversarial,A17,timefold,native,1,10.0,SOLVED,True,0,0,5,10,15,5220,5220,5220,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-15/-5220]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=86045,high,False
+adversarial,A17,timefold,native,2,10.0,SOLVED,True,0,0,5,10,15,5313,5313,5313,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-15/-5313]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=74579,high,False
+adversarial,A17,timefold,native,3,10.0,SOLVED,True,0,0,5,10,15,5330,5330,5330,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-15/-5330]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.45; java_peak_heap_mb=155; move_eval_per_s=63676,high,False
+adversarial,A17,timefold,native,4,10.0,SOLVED,True,0,0,5,10,15,5230,5230,5230,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-10/-15/-5230]soft; warmup_s=3; jvm_startup_s=0.58; load_s=1.37; java_peak_heap_mb=155; move_eval_per_s=66428,high,False
+adversarial,A17,timefold,sequential,0,10.0,SOLVED,True,0,0,3,21,17,4223,4223,4223,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,timefold,sequential,1,10.0,SOLVED,True,0,0,3,19,17,4939,4939,4939,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:4,LOW:0",,True
+adversarial,A17,timefold,sequential,2,10.0,SOLVED,True,0,0,3,21,17,4861,4861,4861,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,timefold,sequential,3,10.0,SOLVED,True,0,0,3,21,17,4718,4718,4718,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:2,LOW:0",normal,False
+adversarial,A17,timefold,sequential,4,10.0,SOLVED,True,0,0,3,20,17,5232,5232,5232,3,0,0,0,"served per stage CRITICAL:6,HIGH:11,NORMAL:3,LOW:0",normal,False
+adversarial,A18,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,ortools,sequential,0,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,ortools,sequential,1,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,ortools,sequential,2,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,ortools,sequential,3,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,ortools,sequential,4,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,vroom,native,0,10.0,SOLVED,True,0,0,1,22,17,4369,4369,4369,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A18,vroom,native,1,10.0,SOLVED,True,0,0,1,20,17,5382,5382,5382,3,0,0,0,exploration=5; unassigned=38,low,False
+adversarial,A18,vroom,native,2,10.0,SOLVED,True,0,0,1,22,17,4369,4369,4369,3,0,0,0,exploration=5; unassigned=40,normal,False
+adversarial,A18,vroom,native,3,10.0,SOLVED,True,0,0,1,20,17,5382,5382,5382,3,0,0,0,exploration=5; unassigned=38,low,False
+adversarial,A18,vroom,native,4,10.0,SOLVED,True,0,0,1,21,17,5502,5502,5502,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A18,timefold,native,0,10.0,SOLVED,True,0,0,1,20,16,5947,5947,5947,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-20/-16/-5947]soft; warmup_s=3; jvm_startup_s=0.67; load_s=1.36; java_peak_heap_mb=155; move_eval_per_s=91299,,True
+adversarial,A18,timefold,native,1,10.0,SOLVED,True,0,0,1,20,16,5836,5836,5836,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-20/-16/-5836]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=87962,,True
+adversarial,A18,timefold,native,2,10.0,SOLVED,True,0,0,1,20,16,5425,5425,5425,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-20/-16/-5425]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.40; java_peak_heap_mb=156; move_eval_per_s=84166,,True
+adversarial,A18,timefold,native,3,10.0,SOLVED,True,0,0,1,20,16,5836,5836,5836,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-20/-16/-5836]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.42; java_peak_heap_mb=156; move_eval_per_s=93866,,True
+adversarial,A18,timefold,native,4,10.0,SOLVED,True,0,0,1,20,16,5706,5706,5706,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-20/-16/-5706]soft; warmup_s=3; jvm_startup_s=0.64; load_s=1.79; java_peak_heap_mb=155; move_eval_per_s=78917,,True
+adversarial,A18,timefold,sequential,0,10.0,SOLVED,True,0,0,1,20,17,5454,5454,5454,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,timefold,sequential,1,10.0,SOLVED,True,0,0,1,20,17,5580,5580,5580,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,timefold,sequential,2,10.0,SOLVED,True,0,0,1,20,17,5408,5408,5408,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,timefold,sequential,3,10.0,SOLVED,True,0,0,1,20,17,5769,5769,5769,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A18,timefold,sequential,4,10.0,SOLVED,True,0,0,1,20,17,6516,6516,6516,3,0,0,0,"served per stage CRITICAL:6,HIGH:10,NORMAL:6,LOW:0",low,False
+adversarial,A19,pyvrp,sequential,0,10.0,SOLVED,True,0,0,4,15,20,5033,5033,5033,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,pyvrp,sequential,1,10.0,SOLVED,True,0,0,4,15,20,5033,5033,5033,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,pyvrp,sequential,2,10.0,SOLVED,True,0,0,4,15,20,5033,5033,5033,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,pyvrp,sequential,3,10.0,SOLVED,True,0,0,4,15,20,5033,5033,5033,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,pyvrp,sequential,4,10.0,SOLVED,True,0,0,4,15,20,5033,5033,5033,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,ortools,sequential,0,10.0,SOLVED,True,0,0,4,15,20,5039,5039,5039,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,ortools,sequential,1,10.0,SOLVED,True,0,0,4,17,20,4925,4925,4925,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A19,ortools,sequential,2,10.0,SOLVED,True,0,0,4,14,20,5140,5140,5140,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:3,LOW:0",,True
+adversarial,A19,ortools,sequential,3,10.0,SOLVED,True,0,0,4,14,20,5295,5295,5295,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:3,LOW:0",,True
+adversarial,A19,ortools,sequential,4,10.0,SOLVED,True,0,0,4,17,20,4925,4925,4925,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A19,vroom,native,0,10.0,SOLVED,True,0,0,5,10,20,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A19,vroom,native,1,10.0,SOLVED,True,0,0,5,10,19,5244,5244,5244,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A19,vroom,native,2,10.0,SOLVED,True,0,0,5,10,20,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A19,vroom,native,3,10.0,SOLVED,True,0,0,5,10,19,5244,5244,5244,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A19,vroom,native,4,10.0,SOLVED,True,0,0,5,10,20,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A19,timefold,native,0,10.0,SOLVED,True,0,0,7,4,17,7898,7898,7898,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-4/-17/-7898]soft; warmup_s=3; jvm_startup_s=0.35; load_s=2.20; java_peak_heap_mb=155; move_eval_per_s=65213,high,False
+adversarial,A19,timefold,native,1,10.0,SOLVED,True,0,0,7,4,17,14774,14774,14774,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-4/-17/-14774]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=57818,high,False
+adversarial,A19,timefold,native,2,10.0,SOLVED,True,0,0,7,4,17,5229,5229,5229,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-4/-17/-5229]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=78171,high,False
+adversarial,A19,timefold,native,3,10.0,SOLVED,True,0,0,7,4,17,5557,5557,5557,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-4/-17/-5557]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.43; java_peak_heap_mb=155; move_eval_per_s=79134,high,False
+adversarial,A19,timefold,native,4,10.0,SOLVED,True,0,0,7,4,17,5216,5216,5216,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-7/-4/-17/-5216]soft; warmup_s=3; jvm_startup_s=0.68; load_s=1.42; java_peak_heap_mb=155; move_eval_per_s=62838,high,False
+adversarial,A19,timefold,sequential,0,10.0,SOLVED,True,0,0,4,16,20,5375,5375,5375,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A19,timefold,sequential,1,10.0,SOLVED,True,0,0,4,15,20,5698,5698,5698,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,timefold,sequential,2,10.0,SOLVED,True,0,0,4,15,20,5157,5157,5157,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",normal,False
+adversarial,A19,timefold,sequential,3,10.0,SOLVED,True,0,0,4,14,20,5178,5178,5178,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:3,LOW:0",,True
+adversarial,A19,timefold,sequential,4,10.0,SOLVED,True,0,0,4,17,20,5407,5407,5407,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A20,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,20,22,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,20,22,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,20,22,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,20,22,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,20,22,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,ortools,sequential,0,10.0,SOLVED,True,0,0,1,19,22,4720,4720,4720,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:4,LOW:0",normal,False
+adversarial,A20,ortools,sequential,1,10.0,SOLVED,True,0,0,1,19,22,4628,4628,4628,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:4,LOW:0",normal,False
+adversarial,A20,ortools,sequential,2,10.0,SOLVED,True,0,0,1,19,22,4628,4628,4628,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:4,LOW:0",normal,False
+adversarial,A20,ortools,sequential,3,10.0,SOLVED,True,0,0,1,19,22,4628,4628,4628,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:4,LOW:0",normal,False
+adversarial,A20,ortools,sequential,4,10.0,SOLVED,True,0,0,1,19,22,4628,4628,4628,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:4,LOW:0",normal,False
+adversarial,A20,vroom,native,0,10.0,SOLVED,True,0,0,1,18,22,4682,4682,4682,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A20,vroom,native,1,10.0,SOLVED,True,0,0,1,18,22,4682,4682,4682,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A20,vroom,native,2,10.0,SOLVED,True,0,0,1,18,22,4682,4682,4682,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A20,vroom,native,3,10.0,SOLVED,True,0,0,1,18,22,4940,4940,4940,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A20,vroom,native,4,10.0,SOLVED,True,0,0,1,18,22,4682,4682,4682,3,0,0,0,exploration=5; unassigned=41,normal,False
+adversarial,A20,timefold,native,0,10.0,SOLVED,True,0,0,1,17,22,5048,5048,5048,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-17/-22/-5048]soft; warmup_s=3; jvm_startup_s=0.37; load_s=2.02; java_peak_heap_mb=155; move_eval_per_s=80960,,True
+adversarial,A20,timefold,native,1,10.0,SOLVED,True,0,0,1,17,22,5048,5048,5048,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-17/-22/-5048]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=103800,,True
+adversarial,A20,timefold,native,2,10.0,SOLVED,True,0,0,1,17,22,5048,5048,5048,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-17/-22/-5048]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=108105,,True
+adversarial,A20,timefold,native,3,10.0,SOLVED,True,0,0,1,17,22,5076,5076,5076,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-17/-22/-5076]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.42; java_peak_heap_mb=156; move_eval_per_s=90649,,True
+adversarial,A20,timefold,native,4,10.0,SOLVED,True,0,0,1,17,22,5048,5048,5048,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-1/-17/-22/-5048]soft; warmup_s=3; jvm_startup_s=0.56; load_s=1.59; java_peak_heap_mb=155; move_eval_per_s=77542,,True
+adversarial,A20,timefold,sequential,0,10.0,SOLVED,True,0,0,1,21,22,4572,4572,4572,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:2,LOW:0",normal,False
+adversarial,A20,timefold,sequential,1,10.0,SOLVED,True,0,0,1,20,22,4997,4997,4997,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A20,timefold,sequential,2,10.0,SOLVED,True,0,0,1,21,22,4572,4572,4572,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:2,LOW:0",normal,False
+adversarial,A20,timefold,sequential,3,10.0,SOLVED,True,0,0,1,21,22,4572,4572,4572,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:2,LOW:0",normal,False
+adversarial,A20,timefold,sequential,4,10.0,SOLVED,True,0,0,1,20,22,4894,4894,4894,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:3,LOW:0",normal,False
+adversarial,A21,pyvrp,sequential,0,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,pyvrp,sequential,1,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,pyvrp,sequential,2,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,pyvrp,sequential,3,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,pyvrp,sequential,4,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,ortools,sequential,0,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,ortools,sequential,1,10.0,SOLVED,True,0,0,2,23,18,4186,4186,4186,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,ortools,sequential,2,10.0,SOLVED,True,0,0,3,17,18,3795,3795,3795,3,0,0,0,"served per stage CRITICAL:7,HIGH:9,NORMAL:6,LOW:0",high,False
+adversarial,A21,ortools,sequential,3,10.0,SOLVED,True,0,0,3,17,18,3792,3792,3792,3,0,0,0,"served per stage CRITICAL:7,HIGH:9,NORMAL:6,LOW:0",high,False
+adversarial,A21,ortools,sequential,4,10.0,SOLVED,True,0,0,3,17,18,3795,3795,3795,3,0,0,0,"served per stage CRITICAL:7,HIGH:9,NORMAL:6,LOW:0",high,False
+adversarial,A21,vroom,native,0,10.0,SOLVED,True,0,0,3,16,18,4492,4492,4492,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A21,vroom,native,1,10.0,SOLVED,True,0,0,3,16,18,4492,4492,4492,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A21,vroom,native,2,10.0,SOLVED,True,0,0,3,16,18,4492,4492,4492,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A21,vroom,native,3,10.0,SOLVED,True,0,0,3,16,18,4492,4492,4492,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A21,vroom,native,4,10.0,SOLVED,True,0,0,3,16,18,4492,4492,4492,3,0,0,0,exploration=5; unassigned=37,high,False
+adversarial,A21,timefold,native,0,10.0,SOLVED,True,0,0,4,11,18,4771,4771,4771,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-11/-18/-4771]soft; warmup_s=3; jvm_startup_s=1.46; load_s=0.50; java_peak_heap_mb=155; move_eval_per_s=78356,high,False
+adversarial,A21,timefold,native,1,10.0,SOLVED,True,0,0,4,12,16,4924,4924,4924,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-12/-16/-4924]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=88608,high,False
+adversarial,A21,timefold,native,2,10.0,SOLVED,True,0,0,4,12,16,4804,4804,4804,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-12/-16/-4804]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=78527,high,False
+adversarial,A21,timefold,native,3,10.0,SOLVED,True,0,0,4,11,18,10758,10758,10758,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-11/-18/-10758]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.46; java_peak_heap_mb=155; move_eval_per_s=69186,high,False
+adversarial,A21,timefold,native,4,10.0,SOLVED,True,0,0,4,12,16,4805,4805,4805,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-12/-16/-4805]soft; warmup_s=3; jvm_startup_s=0.60; load_s=1.56; java_peak_heap_mb=155; move_eval_per_s=70957,high,False
+adversarial,A21,timefold,sequential,0,10.0,SOLVED,True,0,0,2,23,18,4321,4321,4321,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,timefold,sequential,1,10.0,SOLVED,True,0,0,2,23,18,4602,4602,4602,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,timefold,sequential,2,10.0,SOLVED,True,0,0,2,23,18,4611,4611,4611,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,timefold,sequential,3,10.0,SOLVED,True,0,0,2,23,18,4321,4321,4321,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:0,LOW:0",normal,False
+adversarial,A21,timefold,sequential,4,10.0,SOLVED,True,0,0,2,22,18,4910,4910,4910,3,0,0,0,"served per stage CRITICAL:7,HIGH:10,NORMAL:1,LOW:0",,True
+adversarial,A22,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,ortools,sequential,0,10.0,SOLVED,True,0,0,0,25,16,4573,4573,4573,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:3,LOW:0",normal,False
+adversarial,A22,ortools,sequential,1,10.0,SOLVED,True,0,0,0,25,16,4566,4566,4566,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:3,LOW:0",normal,False
+adversarial,A22,ortools,sequential,2,10.0,SOLVED,True,0,0,0,24,16,4890,4890,4890,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,ortools,sequential,3,10.0,SOLVED,True,0,0,0,25,16,4573,4573,4573,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:3,LOW:0",normal,False
+adversarial,A22,ortools,sequential,4,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,vroom,native,0,10.0,SOLVED,True,0,0,0,24,16,4845,4845,4845,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A22,vroom,native,1,10.0,SOLVED,True,0,0,0,24,16,4845,4845,4845,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A22,vroom,native,2,10.0,SOLVED,True,0,0,0,24,16,4845,4845,4845,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A22,vroom,native,3,10.0,SOLVED,True,0,0,0,24,16,4845,4845,4845,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A22,vroom,native,4,10.0,SOLVED,True,0,0,0,24,16,4845,4845,4845,3,0,0,0,exploration=5; unassigned=40,,True
+adversarial,A22,timefold,native,0,10.0,SOLVED,True,0,0,0,24,16,4645,4645,4645,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-4645]soft; warmup_s=3; jvm_startup_s=0.23; load_s=2.16; java_peak_heap_mb=155; move_eval_per_s=102843,,True
+adversarial,A22,timefold,native,1,10.0,SOLVED,True,0,0,0,24,16,4829,4829,4829,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-4829]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=156; move_eval_per_s=102101,,True
+adversarial,A22,timefold,native,2,10.0,SOLVED,True,0,0,0,24,16,4829,4829,4829,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-4829]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=155; move_eval_per_s=85685,,True
+adversarial,A22,timefold,native,3,10.0,SOLVED,True,0,0,0,24,16,4935,4935,4935,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-4935]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.45; java_peak_heap_mb=156; move_eval_per_s=105093,,True
+adversarial,A22,timefold,native,4,10.0,SOLVED,True,0,0,0,24,16,4903,4903,4903,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-24/-16/-4903]soft; warmup_s=3; jvm_startup_s=0.64; load_s=1.67; java_peak_heap_mb=155; move_eval_per_s=98664,,True
+adversarial,A22,timefold,sequential,0,10.0,SOLVED,True,0,0,0,24,16,4970,4970,4970,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,timefold,sequential,1,10.0,SOLVED,True,0,0,0,24,16,4870,4870,4870,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,timefold,sequential,2,10.0,SOLVED,True,0,0,0,24,16,4870,4870,4870,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,timefold,sequential,3,10.0,SOLVED,True,0,0,0,24,16,4992,4992,4992,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A22,timefold,sequential,4,10.0,SOLVED,True,0,0,0,24,16,4969,4969,4969,3,0,0,0,"served per stage CRITICAL:3,HIGH:13,NORMAL:4,LOW:0",,True
+adversarial,A23,pyvrp,sequential,0,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,pyvrp,sequential,1,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,pyvrp,sequential,2,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,pyvrp,sequential,3,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,pyvrp,sequential,4,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,ortools,sequential,0,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,ortools,sequential,1,10.0,SOLVED,True,0,0,2,27,13,5524,5524,5524,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,ortools,sequential,2,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,ortools,sequential,3,10.0,SOLVED,True,0,0,2,27,13,5442,5442,5442,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,ortools,sequential,4,10.0,SOLVED,True,0,0,2,27,13,5116,5116,5116,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,vroom,native,0,10.0,SOLVED,True,0,0,3,20,13,5552,5552,5552,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A23,vroom,native,1,10.0,SOLVED,True,0,0,3,19,13,5922,5922,5922,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A23,vroom,native,2,10.0,SOLVED,True,0,0,3,20,13,5552,5552,5552,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A23,vroom,native,3,10.0,SOLVED,True,0,0,3,20,13,5529,5529,5529,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A23,vroom,native,4,10.0,SOLVED,True,0,0,3,20,13,5441,5441,5441,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A23,timefold,native,0,10.0,SOLVED,True,0,0,4,14,13,6003,6003,6003,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-14/-13/-6003]soft; warmup_s=3; jvm_startup_s=0.55; load_s=1.52; java_peak_heap_mb=155; move_eval_per_s=62735,high,False
+adversarial,A23,timefold,native,1,10.0,SOLVED,True,0,0,4,15,11,5816,5816,5816,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-15/-11/-5816]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=68055,high,False
+adversarial,A23,timefold,native,2,10.0,SOLVED,True,0,0,4,14,13,14185,14185,14185,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-14/-13/-14185]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=155; move_eval_per_s=82058,high,False
+adversarial,A23,timefold,native,3,10.0,SOLVED,True,0,0,4,15,11,5948,5948,5948,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-15/-11/-5948]soft; warmup_s=3; jvm_startup_s=0.15; load_s=0.41; java_peak_heap_mb=156; move_eval_per_s=81272,high,False
+adversarial,A23,timefold,native,4,10.0,SOLVED,True,0,0,4,15,11,5910,5910,5910,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-4/-15/-11/-5910]soft; warmup_s=3; jvm_startup_s=0.63; load_s=1.64; java_peak_heap_mb=155; move_eval_per_s=58754,high,False
+adversarial,A23,timefold,sequential,0,10.0,SOLVED,True,0,0,2,27,13,6107,6107,6107,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,timefold,sequential,1,10.0,SOLVED,True,0,0,2,27,13,5118,5118,5118,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,timefold,sequential,2,10.0,SOLVED,True,0,0,2,27,13,5737,5737,5737,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A23,timefold,sequential,3,10.0,SOLVED,True,0,0,2,26,13,5139,5139,5139,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:1,LOW:0",,True
+adversarial,A23,timefold,sequential,4,10.0,SOLVED,True,0,0,2,27,13,5954,5954,5954,3,0,0,0,"served per stage CRITICAL:5,HIGH:13,NORMAL:0,LOW:0",normal,False
+adversarial,A24,pyvrp,sequential,0,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,pyvrp,sequential,1,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,pyvrp,sequential,2,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,pyvrp,sequential,3,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,pyvrp,sequential,4,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,ortools,sequential,0,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,ortools,sequential,1,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,ortools,sequential,2,10.0,SOLVED,True,0,0,2,18,22,4790,4790,4790,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,ortools,sequential,3,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,ortools,sequential,4,10.0,SOLVED,True,0,0,2,18,22,4770,4770,4770,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:2,LOW:0",normal,False
+adversarial,A24,vroom,native,0,10.0,SOLVED,True,0,0,2,15,22,4942,4942,4942,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A24,vroom,native,1,10.0,SOLVED,True,0,0,2,15,22,4942,4942,4942,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A24,vroom,native,2,10.0,SOLVED,True,0,0,2,15,22,4942,4942,4942,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A24,vroom,native,3,10.0,SOLVED,True,0,0,2,15,22,4942,4942,4942,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A24,vroom,native,4,10.0,SOLVED,True,0,0,2,15,22,4942,4942,4942,3,0,0,0,exploration=5; unassigned=39,normal,False
+adversarial,A24,timefold,native,0,10.0,SOLVED,True,0,0,3,11,19,5645,5645,5645,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-11/-19/-5645]soft; warmup_s=3; jvm_startup_s=1.00; load_s=1.13; java_peak_heap_mb=156; move_eval_per_s=77704,high,False
+adversarial,A24,timefold,native,1,10.0,SOLVED,True,0,0,3,11,19,5712,5712,5712,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-11/-19/-5712]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=84138,high,False
+adversarial,A24,timefold,native,2,10.0,SOLVED,True,0,0,3,11,19,5559,5559,5559,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-11/-19/-5559]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.38; java_peak_heap_mb=156; move_eval_per_s=86821,high,False
+adversarial,A24,timefold,native,3,10.0,SOLVED,True,0,0,3,10,21,5619,5619,5619,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-10/-21/-5619]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.43; java_peak_heap_mb=156; move_eval_per_s=90721,high,False
+adversarial,A24,timefold,native,4,10.0,SOLVED,True,0,0,3,10,21,12994,12994,12994,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-3/-10/-21/-12994]soft; warmup_s=3; jvm_startup_s=2.23; load_s=0.57; java_peak_heap_mb=155; move_eval_per_s=74707,high,False
+adversarial,A24,timefold,sequential,0,10.0,SOLVED,True,0,0,2,14,22,5723,5723,5723,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:6,LOW:0",,True
+adversarial,A24,timefold,sequential,1,10.0,SOLVED,True,0,0,2,15,22,5237,5237,5237,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:5,LOW:0",normal,False
+adversarial,A24,timefold,sequential,2,10.0,SOLVED,True,0,0,2,16,22,5834,5834,5834,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:4,LOW:0",normal,False
+adversarial,A24,timefold,sequential,3,10.0,SOLVED,True,0,0,2,15,22,5422,5422,5422,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:5,LOW:0",normal,False
+adversarial,A24,timefold,sequential,4,10.0,SOLVED,True,0,0,2,17,22,5606,5606,5606,3,0,0,0,"served per stage CRITICAL:8,HIGH:8,NORMAL:3,LOW:0",normal,False
+adversarial,A25,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,ortools,sequential,0,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,ortools,sequential,1,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,ortools,sequential,2,10.0,SOLVED,True,0,0,0,8,28,4620,4620,4620,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,ortools,sequential,3,10.0,SOLVED,True,0,0,0,8,28,4709,4709,4709,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,ortools,sequential,4,10.0,SOLVED,True,0,0,0,8,28,4483,4483,4483,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,vroom,native,0,10.0,SOLVED,True,0,0,0,8,27,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,,True
+adversarial,A25,vroom,native,1,10.0,SOLVED,True,0,0,0,8,27,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,,True
+adversarial,A25,vroom,native,2,10.0,SOLVED,True,0,0,0,8,27,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,,True
+adversarial,A25,vroom,native,3,10.0,SOLVED,True,0,0,0,8,27,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,,True
+adversarial,A25,vroom,native,4,10.0,SOLVED,True,0,0,0,8,27,4778,4778,4778,3,0,0,0,exploration=5; unassigned=35,,True
+adversarial,A25,timefold,native,0,10.0,SOLVED,True,0,0,0,10,22,8096,8096,8096,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-10/-22/-8096]soft; warmup_s=3; jvm_startup_s=0.24; load_s=2.16; java_peak_heap_mb=155; move_eval_per_s=70323,normal,False
+adversarial,A25,timefold,native,1,10.0,SOLVED,True,0,0,0,10,22,13606,13606,13606,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-10/-22/-13606]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=156; move_eval_per_s=80562,normal,False
+adversarial,A25,timefold,native,2,10.0,SOLVED,True,0,0,0,11,20,4702,4702,4702,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-11/-20/-4702]soft; warmup_s=3; jvm_startup_s=0.14; load_s=0.39; java_peak_heap_mb=155; move_eval_per_s=76266,normal,False
+adversarial,A25,timefold,native,3,10.0,SOLVED,True,0,0,0,10,22,12891,12891,12891,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-10/-22/-12891]soft; warmup_s=3; jvm_startup_s=0.16; load_s=0.49; java_peak_heap_mb=155; move_eval_per_s=70484,normal,False
+adversarial,A25,timefold,native,4,10.0,SOLVED,True,0,0,0,11,20,4765,4765,4765,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-11/-20/-4765]soft; warmup_s=3; jvm_startup_s=0.55; load_s=1.50; java_peak_heap_mb=155; move_eval_per_s=67220,normal,False
+adversarial,A25,timefold,sequential,0,10.0,SOLVED,True,0,0,0,8,28,4743,4743,4743,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,timefold,sequential,1,10.0,SOLVED,True,0,0,0,8,28,5254,5254,5254,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,timefold,sequential,2,10.0,SOLVED,True,0,0,0,8,27,4971,4971,4971,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:1",,True
+adversarial,A25,timefold,sequential,3,10.0,SOLVED,True,0,0,0,8,28,5260,5260,5260,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A25,timefold,sequential,4,10.0,SOLVED,True,0,0,0,8,28,4909,4909,4909,3,0,0,0,"served per stage CRITICAL:3,HIGH:7,NORMAL:14,LOW:0",low,False
+adversarial,A26,pyvrp,sequential,0,10.0,SOLVED,True,0,0,3,20,16,4611,4611,4611,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,pyvrp,sequential,1,10.0,SOLVED,True,0,0,3,21,16,4509,4509,4509,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A26,pyvrp,sequential,2,10.0,SOLVED,True,0,0,3,21,16,4509,4509,4509,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A26,pyvrp,sequential,3,10.0,SOLVED,True,0,0,3,21,16,4509,4509,4509,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A26,pyvrp,sequential,4,10.0,SOLVED,True,0,0,3,21,16,4509,4509,4509,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A26,ortools,sequential,0,10.0,SOLVED,True,0,0,3,20,16,4611,4611,4611,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,ortools,sequential,1,10.0,SOLVED,True,0,0,3,21,16,4509,4509,4509,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:1,LOW:0",normal,False
+adversarial,A26,ortools,sequential,2,10.0,SOLVED,True,0,0,3,20,16,4736,4736,4736,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,ortools,sequential,3,10.0,SOLVED,True,0,0,3,20,16,4691,4691,4691,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,ortools,sequential,4,10.0,SOLVED,True,0,0,3,20,16,4541,4541,4541,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,vroom,native,0,10.0,SOLVED,True,0,0,4,15,16,4827,4827,4827,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A26,vroom,native,1,10.0,SOLVED,True,0,0,4,14,16,5113,5113,5113,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A26,vroom,native,2,10.0,SOLVED,True,0,0,4,14,16,4884,4884,4884,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A26,vroom,native,3,10.0,SOLVED,True,0,0,4,15,16,4827,4827,4827,3,0,0,0,exploration=5; unassigned=35,high,False
+adversarial,A26,vroom,native,4,10.0,SOLVED,True,0,0,4,14,16,5161,5161,5161,3,0,0,0,exploration=5; unassigned=34,high,False
+adversarial,A26,timefold,native,0,10.0,SOLVED,True,0,0,6,9,12,5934,5934,5934,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-9/-12/-5934]soft; warmup_s=3; jvm_startup_s=0.60; load_s=1.25; java_peak_heap_mb=159; move_eval_per_s=146976,high,False
+adversarial,A26,timefold,native,1,10.0,SOLVED,True,0,0,6,8,14,5388,5388,5388,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-14/-5388]soft; warmup_s=3; jvm_startup_s=0.11; load_s=0.30; java_peak_heap_mb=159; move_eval_per_s=155769,high,False
+adversarial,A26,timefold,native,2,10.0,SOLVED,True,0,0,6,8,14,5659,5659,5659,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-6/-8/-14/-5659]soft; warmup_s=3; jvm_startup_s=0.11; load_s=0.30; java_peak_heap_mb=159; move_eval_per_s=156938,high,False
+adversarial,A26,timefold,native,3,10.0,SOLVED,True,0,0,5,14,14,14792,14792,14792,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-14/-14/-14792]soft; warmup_s=3; jvm_startup_s=0.11; load_s=0.32; java_peak_heap_mb=159; move_eval_per_s=149763,high,False
+adversarial,A26,timefold,native,4,10.0,SOLVED,True,0,0,5,11,13,16347,16347,16347,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-5/-11/-13/-16347]soft; warmup_s=3; jvm_startup_s=0.56; load_s=0.88; java_peak_heap_mb=159; move_eval_per_s=127485,high,False
+adversarial,A26,timefold,sequential,0,10.0,SOLVED,True,0,0,3,20,16,4611,4611,4611,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,timefold,sequential,1,10.0,SOLVED,True,0,0,3,20,16,4943,4943,4943,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,timefold,sequential,2,10.0,SOLVED,True,0,0,3,20,16,4691,4691,4691,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,timefold,sequential,3,10.0,SOLVED,True,0,0,3,20,16,4691,4691,4691,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A26,timefold,sequential,4,10.0,SOLVED,True,0,0,3,20,16,4714,4714,4714,3,0,0,0,"served per stage CRITICAL:6,HIGH:13,NORMAL:2,LOW:0",,True
+adversarial,A27,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,15,23,4506,4506,4506,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,15,23,4506,4506,4506,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,15,23,4506,4506,4506,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,15,23,4506,4506,4506,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,15,23,4506,4506,4506,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,ortools,sequential,0,10.0,SOLVED,True,0,0,0,15,23,4587,4587,4587,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,ortools,sequential,1,10.0,SOLVED,True,0,0,0,15,23,4587,4587,4587,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,ortools,sequential,2,10.0,SOLVED,True,0,0,0,15,23,4790,4790,4790,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,ortools,sequential,3,10.0,SOLVED,True,0,0,0,15,23,4587,4587,4587,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,ortools,sequential,4,10.0,SOLVED,True,0,0,0,15,23,4942,4942,4942,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,vroom,native,0,10.0,SOLVED,True,0,0,0,15,22,4599,4599,4599,3,0,0,0,exploration=5; unassigned=37,,True
+adversarial,A27,vroom,native,1,10.0,SOLVED,True,0,0,0,15,22,4599,4599,4599,3,0,0,0,exploration=5; unassigned=37,,True
+adversarial,A27,vroom,native,2,10.0,SOLVED,True,0,0,0,15,22,4599,4599,4599,3,0,0,0,exploration=5; unassigned=37,,True
+adversarial,A27,vroom,native,3,10.0,SOLVED,True,0,0,0,15,22,4599,4599,4599,3,0,0,0,exploration=5; unassigned=37,,True
+adversarial,A27,vroom,native,4,10.0,SOLVED,True,0,0,0,15,22,4599,4599,4599,3,0,0,0,exploration=5; unassigned=37,,True
+adversarial,A27,timefold,native,0,10.0,SOLVED,True,0,0,0,16,20,8533,8533,8533,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-16/-20/-8533]soft; warmup_s=3; jvm_startup_s=0.88; load_s=1.42; java_peak_heap_mb=159; move_eval_per_s=122540,normal,False
+adversarial,A27,timefold,native,1,10.0,SOLVED,True,0,0,0,15,22,6731,6731,6731,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-15/-22/-6731]soft; warmup_s=3; jvm_startup_s=0.11; load_s=0.33; java_peak_heap_mb=159; move_eval_per_s=121644,,True
+adversarial,A27,timefold,native,2,10.0,SOLVED,True,0,0,0,17,18,4965,4965,4965,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-17/-18/-4965]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.33; java_peak_heap_mb=159; move_eval_per_s=135125,normal,False
+adversarial,A27,timefold,native,3,10.0,SOLVED,True,0,0,0,17,18,5083,5083,5083,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-17/-18/-5083]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.35; java_peak_heap_mb=159; move_eval_per_s=133175,normal,False
+adversarial,A27,timefold,native,4,10.0,SOLVED,True,0,0,0,16,20,7514,7514,7514,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-16/-20/-7514]soft; warmup_s=3; jvm_startup_s=0.62; load_s=0.59; java_peak_heap_mb=159; move_eval_per_s=122459,normal,False
+adversarial,A27,timefold,sequential,0,10.0,SOLVED,True,0,0,0,15,23,4803,4803,4803,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,timefold,sequential,1,10.0,SOLVED,True,0,0,0,15,23,4569,4569,4569,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,timefold,sequential,2,10.0,SOLVED,True,0,0,0,15,22,4954,4954,4954,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:1",,True
+adversarial,A27,timefold,sequential,3,10.0,SOLVED,True,0,0,0,15,23,4828,4828,4828,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A27,timefold,sequential,4,10.0,SOLVED,True,0,0,0,15,23,4982,4982,4982,3,0,0,0,"served per stage CRITICAL:2,HIGH:9,NORMAL:11,LOW:0",low,False
+adversarial,A28,pyvrp,sequential,0,10.0,SOLVED,True,0,0,0,22,17,5799,5799,5799,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,pyvrp,sequential,1,10.0,SOLVED,True,0,0,0,22,17,5799,5799,5799,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,pyvrp,sequential,2,10.0,SOLVED,True,0,0,0,22,17,5799,5799,5799,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,pyvrp,sequential,3,10.0,SOLVED,True,0,0,0,22,17,5799,5799,5799,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,pyvrp,sequential,4,10.0,SOLVED,True,0,0,0,22,17,5799,5799,5799,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,ortools,sequential,0,10.0,SOLVED,True,0,0,0,23,17,5788,5788,5788,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:6,LOW:0",normal,False
+adversarial,A28,ortools,sequential,1,10.0,SOLVED,True,0,0,0,23,17,5788,5788,5788,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:6,LOW:0",normal,False
+adversarial,A28,ortools,sequential,2,10.0,SOLVED,True,0,0,0,23,17,5662,5662,5662,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:6,LOW:0",normal,False
+adversarial,A28,ortools,sequential,3,10.0,SOLVED,True,0,0,0,23,17,5775,5775,5775,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:6,LOW:0",normal,False
+adversarial,A28,ortools,sequential,4,10.0,SOLVED,True,0,0,0,23,17,5788,5788,5788,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:6,LOW:0",normal,False
+adversarial,A28,vroom,native,0,10.0,SOLVED,True,0,0,0,22,16,6124,6124,6124,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A28,vroom,native,1,10.0,SOLVED,True,0,0,0,22,16,6124,6124,6124,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A28,vroom,native,2,10.0,SOLVED,True,0,0,0,22,16,6130,6130,6130,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A28,vroom,native,3,10.0,SOLVED,True,0,0,0,22,16,6130,6130,6130,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A28,vroom,native,4,10.0,SOLVED,True,0,0,0,22,16,6124,6124,6124,3,0,0,0,exploration=5; unassigned=38,,True
+adversarial,A28,timefold,native,0,10.0,SOLVED,True,0,0,0,23,14,5972,5972,5972,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-23/-14/-5972]soft; warmup_s=3; jvm_startup_s=0.58; load_s=1.00; java_peak_heap_mb=157; move_eval_per_s=119072,normal,False
+adversarial,A28,timefold,native,1,10.0,SOLVED,True,0,0,0,22,16,5930,5930,5930,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-22/-16/-5930]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.35; java_peak_heap_mb=159; move_eval_per_s=151832,,True
+adversarial,A28,timefold,native,2,10.0,SOLVED,True,0,0,0,22,16,10630,10630,10630,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-22/-16/-10630]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.34; java_peak_heap_mb=159; move_eval_per_s=139230,,True
+adversarial,A28,timefold,native,3,10.0,SOLVED,True,0,0,0,22,16,5964,5964,5964,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-22/-16/-5964]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.36; java_peak_heap_mb=159; move_eval_per_s=133595,,True
+adversarial,A28,timefold,native,4,10.0,SOLVED,True,0,0,0,22,16,6287,6287,6287,3,0,0,0,mode=lexicographic; score=[0]hard/[0/0/-22/-16/-6287]soft; warmup_s=3; jvm_startup_s=0.52; load_s=1.08; java_peak_heap_mb=155; move_eval_per_s=112347,,True
+adversarial,A28,timefold,sequential,0,10.0,SOLVED,True,0,0,0,22,17,5969,5969,5969,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,timefold,sequential,1,10.0,SOLVED,True,0,0,0,22,17,5930,5930,5930,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,timefold,sequential,2,10.0,SOLVED,True,0,0,0,22,17,5965,5965,5965,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A28,timefold,sequential,3,10.0,SOLVED,True,0,0,0,22,16,6018,6018,6018,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:1",,True
+adversarial,A28,timefold,sequential,4,10.0,SOLVED,True,0,0,0,22,17,6349,6349,6349,3,0,0,0,"served per stage CRITICAL:7,HIGH:7,NORMAL:7,LOW:0",low,False
+adversarial,A29,pyvrp,sequential,0,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,pyvrp,sequential,1,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,pyvrp,sequential,2,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,pyvrp,sequential,3,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,pyvrp,sequential,4,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,ortools,sequential,0,10.0,SOLVED,True,0,0,1,20,21,3555,3555,3555,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,ortools,sequential,1,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,ortools,sequential,2,10.0,SOLVED,True,0,0,1,20,21,3555,3555,3555,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,ortools,sequential,3,10.0,SOLVED,True,0,0,1,20,21,3507,3507,3507,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,ortools,sequential,4,10.0,SOLVED,True,0,0,1,20,21,3555,3555,3555,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,vroom,native,0,10.0,SOLVED,True,0,0,1,20,21,3856,3856,3856,3,0,0,0,exploration=5; unassigned=42,,True
+adversarial,A29,vroom,native,1,10.0,SOLVED,True,0,0,1,20,21,3595,3595,3595,3,0,0,0,exploration=5; unassigned=42,,True
+adversarial,A29,vroom,native,2,10.0,SOLVED,True,0,0,1,21,21,3847,3847,3847,3,0,0,0,exploration=5; unassigned=43,normal,False
+adversarial,A29,vroom,native,3,10.0,SOLVED,True,0,0,2,14,20,4946,4946,4946,3,0,0,0,exploration=5; unassigned=36,high,False
+adversarial,A29,vroom,native,4,10.0,SOLVED,True,0,0,1,20,21,3990,3990,3990,3,0,0,0,exploration=5; unassigned=42,,True
+adversarial,A29,timefold,native,0,10.0,SOLVED,True,0,0,2,14,20,10239,10239,10239,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-14/-20/-10239]soft; warmup_s=3; jvm_startup_s=0.66; load_s=1.32; java_peak_heap_mb=155; move_eval_per_s=99884,high,False
+adversarial,A29,timefold,native,1,10.0,SOLVED,True,0,0,2,14,20,8808,8808,8808,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-14/-20/-8808]soft; warmup_s=3; jvm_startup_s=0.12; load_s=0.33; java_peak_heap_mb=158; move_eval_per_s=109876,high,False
+adversarial,A29,timefold,native,2,10.0,SOLVED,True,0,0,2,14,20,4432,4432,4432,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-14/-20/-4432]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.35; java_peak_heap_mb=159; move_eval_per_s=119236,high,False
+adversarial,A29,timefold,native,3,10.0,SOLVED,True,0,0,2,14,20,4447,4447,4447,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-14/-20/-4447]soft; warmup_s=3; jvm_startup_s=0.13; load_s=0.37; java_peak_heap_mb=156; move_eval_per_s=99349,high,False
+adversarial,A29,timefold,native,4,10.0,SOLVED,True,0,0,2,14,20,7431,7431,7431,3,0,0,0,mode=lexicographic; score=[0]hard/[0/-2/-14/-20/-7431]soft; warmup_s=3; jvm_startup_s=0.56; load_s=2.09; java_peak_heap_mb=155; move_eval_per_s=65233,high,False
+adversarial,A29,timefold,sequential,0,10.0,SOLVED,True,0,0,1,20,21,3623,3623,3623,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,timefold,sequential,1,10.0,SOLVED,True,0,0,1,20,21,3559,3559,3559,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,timefold,sequential,2,10.0,SOLVED,True,0,0,1,23,21,3321,3321,3321,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:0,LOW:0",normal,False
+adversarial,A29,timefold,sequential,3,10.0,SOLVED,True,0,0,1,20,21,3555,3555,3555,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True
+adversarial,A29,timefold,sequential,4,10.0,SOLVED,True,0,0,1,20,21,3555,3555,3555,3,0,0,0,"served per stage CRITICAL:3,HIGH:12,NORMAL:3,LOW:0",,True

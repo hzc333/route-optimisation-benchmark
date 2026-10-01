@@ -15,7 +15,10 @@ first - required, then higher class, then larger demand. Timefold's default
 construction inserts in input order; with tight capacity, small low-priority
 visits then fill the vehicles and no single local-search move can fit a bulky
 critical visit later, so critical jobs stay unassigned even after 20 s.
-"default" keeps Timefold's own phases for comparison.
+"default" keeps Timefold's own phases. The standard-benchmark configs use
+"default": their jobs are all required NORMAL, so the sorted order reduces
+to largest-demand-first, which ignores geography and time windows (Solomon
+10 s: 44.7 % gap vs default construction; see results/summary).
 
 JVM handling (plan §11): every solve starts a fresh JVM. ``warmup_s`` first
 runs a discarded solve on the same instance in that JVM so the timed solve is

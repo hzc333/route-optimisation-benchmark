@@ -6,9 +6,9 @@ solvers:
   - ortools
   - pyvrp
   - vroom
-  - label: timefold              # Timefold 2.7.0 CE, defaults, JIT-warm (5 s warm-up solve)
+  - label: timefold              # Timefold 2.7.0 CE, default phases, JIT-warm (5 s warm-up solve)
     adapter: timefold
-    options: {warmup_s: 5}
+    options: {warmup_s: 5, construction: default}
 instances: [hg1000/C1_10_1, hg1000/C2_10_1, hg1000/R1_10_1,
             hg1000/R2_10_1, hg1000/RC1_10_1, hg1000/RC2_10_1]
 time_limits_s: [60]

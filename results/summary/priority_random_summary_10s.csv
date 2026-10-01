@@ -1,0 +1,6 @@
+family,solver,strategy,runs,feasible,lex_best,worse_at_critical,worse_at_high,worse_at_normal,worse_at_low,unserved_critical,unserved_high,unserved_normal,unserved_low,distance
+adversarial,ortools,sequential,150,1.0000,0.3133,0.0000,0.0733,0.5133,0.1000,0.0000,1.5067,20.6667,18.5000,4765.4533
+adversarial,pyvrp,sequential,150,1.0000,0.4400,0.0000,0.0000,0.3933,0.1667,0.0000,1.4333,20.6933,18.5000,4814.8200
+adversarial,timefold,native,150,1.0000,0.3933,0.0000,0.5333,0.0733,0.0000,0.0000,2.3467,15.9067,17.0733,6733.3333
+adversarial,timefold,sequential,150,1.0000,0.5467,0.0000,0.0000,0.3067,0.1467,0.0000,1.4333,20.5200,18.4800,5145.3467
+adversarial,vroom,native,150,1.0000,0.3400,0.0000,0.3933,0.2267,0.0400,0.0000,1.8267,17.9533,18.2933,5029.8200

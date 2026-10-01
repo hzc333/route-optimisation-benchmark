@@ -4,9 +4,9 @@ solvers:
   - ortools
   - pyvrp
   - vroom
-  - label: timefold              # Timefold 2.7.0 CE, defaults, JIT-warm (5 s warm-up solve)
+  - label: timefold              # Timefold 2.7.0 CE, default phases, JIT-warm (5 s warm-up solve)
     adapter: timefold
-    options: {warmup_s: 5}
+    options: {warmup_s: 5, construction: default}
 instances: [smoke/*, solomon/C101, solomon/R101]
 time_limits_s: [1]
 seeds: [0, 1, 2]

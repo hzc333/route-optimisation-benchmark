@@ -167,7 +167,11 @@ def tables() -> str:
                 _md(t, ".0%"), ""]
     pr = _read("priority_random_summary.csv")
     if pr is not None:
-        out += ["## Strict priority: random stress instances\n", _md(pr, ".3f"), ""]
+        out += ["## Strict priority: random stress instances (2 s)\n", _md(pr, ".3f"), ""]
+    pr10 = _read("priority_random_summary_10s.csv")
+    if pr10 is not None:
+        out += ["## Strict priority: adversarial instances, key strategies (10 s)\n",
+                _md(pr10, ".3f"), ""]
     return "\n".join(out)
 
 
