@@ -10,6 +10,13 @@ semantics. Score = BendableScore with 1 hard and 5 soft levels
 * mode "lexicographic": unassigned value is charged on the class's own soft
   level, i.e. Timefold's *native* strict priority.
 
+Construction: "first_fit_decreasing" (default) inserts the hardest visits
+first - required, then higher class, then larger demand. Timefold's default
+construction inserts in input order; with tight capacity, small low-priority
+visits then fill the vehicles and no single local-search move can fit a bulky
+critical visit later, so critical jobs stay unassigned even after 20 s.
+"default" keeps Timefold's own phases for comparison.
+
 JVM handling (plan §11): every solve starts a fresh JVM. ``warmup_s`` first
 runs a discarded solve on the same instance in that JVM so the timed solve is
 JIT-warm; JVM start-up and warm-up are reported separately and are not part of
@@ -63,16 +70,19 @@ def solve(
     initial_routes: list[tuple[str, list[str]]] | None = None,
     mode: str = "weighted",
     warmup_s: float | None = None,
+    construction: str = "first_fit_decreasing",
     heap: str = "2g",
 ) -> Solution:
     t_wall = perf_counter()
-    if not JAR.exists():
+    jar = Path(os.environ.get("ROB_TIMEFOLD_JAR", JAR))  # override for experiments
+    if not jar.exists():
         raise UnsupportedFeature(f"{JAR.name} not built (mvn package in adapters/timefold_java)")
     if warmup_s is None:  # env override lets tests skip the warm-up
         warmup_s = float(os.environ.get("ROB_TIMEFOLD_WARMUP_S", DEFAULT_WARMUP_S))
     penalties = penalties or default_penalties(problem)
     options = {
         "time_limit_s": time_limit_s, "seed": seed, "mode": mode, "warmup_s": warmup_s,
+        "construction": construction,
         "penalties": {c.value: int(p) for c, p in penalties.items()},
         "initial_routes": [[v, list(js)] for v, js in initial_routes] if initial_routes else None,
     }
@@ -80,7 +90,7 @@ def solve(
         src, dst = Path(tmp) / "in.json", Path(tmp) / "out.json"
         src.write_text(json.dumps({"problem": problem.model_dump(mode="json"), "options": options}),
                        encoding="utf-8")
-        cmd = [java_executable(), f"-Xmx{heap}", "-jar", str(JAR), str(src), str(dst)]
+        cmd = [java_executable(), f"-Xmx{heap}", "-jar", str(jar), str(src), str(dst)]
         proc = subprocess.run(cmd, capture_output=True, text=True,
                               timeout=time_limit_s + warmup_s + 60)
         if proc.returncode != 0 or not dst.exists():

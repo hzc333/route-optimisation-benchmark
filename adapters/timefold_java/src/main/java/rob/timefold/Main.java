@@ -18,6 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.timefold.solver.core.api.solver.Solver;
 import ai.timefold.solver.core.api.solver.SolverFactory;
+import ai.timefold.solver.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
+import ai.timefold.solver.core.config.constructionheuristic.ConstructionHeuristicType;
+import ai.timefold.solver.core.config.heuristic.selector.value.ValueSorterManner;
+import ai.timefold.solver.core.config.localsearch.LocalSearchPhaseConfig;
 import ai.timefold.solver.core.config.solver.EnvironmentMode;
 import ai.timefold.solver.core.config.solver.SolverConfig;
 import ai.timefold.solver.core.impl.solver.DefaultSolver;
@@ -48,14 +52,15 @@ public final class Main {
         double timeLimit = opt.get("time_limit_s").asDouble();
         long seed = opt.path("seed").asLong(0);
         double warmup = opt.path("warmup_s").asDouble(0);
+        String construction = opt.path("construction").asText("default");
         double loadS = (System.nanoTime() - t0) / 1e9;
 
         if (warmup > 0) {  // JIT warm-up on a fresh copy; result discarded
-            solver(seed + 1000, warmup).solve(build(problem, opt));
+            solver(seed + 1000, warmup, construction).solve(build(problem, opt));
         }
 
         RoutePlan plan = build(problem, opt);
-        Solver<RoutePlan> solver = solver(seed, timeLimit);
+        Solver<RoutePlan> solver = solver(seed, timeLimit, construction);
         long[] lastBestMs = {-1};
         solver.addEventListener(e -> lastBestMs[0] = e.getTimeMillisSpent());
         long ts = System.nanoTime();
@@ -97,7 +102,12 @@ public final class Main {
         return bytes / 1048576.0;
     }
 
-    private static Solver<RoutePlan> solver(long seed, double seconds) {
+    /**
+     * construction "default": Timefold's default phases (construction in input
+     * order). "first_fit_decreasing": construction inserts the hardest visits
+     * first (VisitDifficultyComparator), then the default local search.
+     */
+    private static Solver<RoutePlan> solver(long seed, double seconds, String construction) {
         SolverConfig config = new SolverConfig()
                 .withSolutionClass(RoutePlan.class)
                 .withEntityClasses(Vehicle.class, Visit.class)
@@ -105,6 +115,15 @@ public final class Main {
                 .withEnvironmentMode(EnvironmentMode.NO_ASSERT)
                 .withRandomSeed(seed)
                 .withTerminationSpentLimit(Duration.ofMillis(Math.max(1, Math.round(seconds * 1000))));
+        if ("first_fit_decreasing".equals(construction)) {
+            config.withPhases(
+                    new ConstructionHeuristicPhaseConfig()
+                            .withConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT_DECREASING)
+                            .withValueSorterManner(ValueSorterManner.DESCENDING),
+                    new LocalSearchPhaseConfig());
+        } else if (!"default".equals(construction)) {
+            throw new IllegalArgumentException("construction: " + construction);
+        }
         return SolverFactory.<RoutePlan>create(config).buildSolver();
     }
 
@@ -158,7 +177,8 @@ public final class Main {
             Visit visit = new Visit(j.get("id").asText(), data, j.get("location").asInt(),
                     j.path("demand").asInt(0), j.path("service").asLong(0),
                     hasTw ? tw.get(0).asLong() : 0, hasTw ? tw.get(1).asLong() : NO_LIMIT,
-                    j.path("required").asBoolean(true), ints(j.get("skills")), level, amount);
+                    j.path("required").asBoolean(true), ints(j.get("skills")), level, amount,
+                    CLASSES.length - 1 - classLevel);
             visits.add(visit);
             visitById.put(visit.getId(), visit);
         }

@@ -19,7 +19,8 @@ public class Vehicle {
     private long fixedCost;
     private Set<Integer> skills;
 
-    @PlanningListVariable(allowsUnassignedValues = true)
+    @PlanningListVariable(allowsUnassignedValues = true,
+            comparatorClass = VisitDifficultyComparator.class)
     private List<Visit> visits = new ArrayList<>();
 
     public Vehicle() {

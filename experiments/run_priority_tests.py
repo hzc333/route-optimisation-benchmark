@@ -162,31 +162,21 @@ def run_all(jobs: list[tuple]) -> pd.DataFrame:
         return pd.DataFrame(pool.map(run_one, tagged, chunksize=1))
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--quick", action="store_true", help="fewer seeds/instances")
-    ap.add_argument("--time-limit", type=float, default=2.0)
-    args = ap.parse_args()
-    seeds = range(2 if args.quick else 5)
-    n_random = 6 if args.quick else 30
-    tl = args.time_limit
-    SUMMARY.mkdir(parents=True, exist_ok=True)
+def _merge(path: Path, new: pd.DataFrame, combos: list[tuple[str, str]], merge: bool) -> pd.DataFrame:
+    """Replace the rows of the re-run (solver, strategy) pairs in an existing CSV."""
+    if not (merge and path.exists()):
+        return new
+    old = pd.read_csv(path)
+    keep = ~old.set_index(["solver", "strategy"]).index.isin(combos)
+    return pd.concat([old[keep], new], ignore_index=True)
 
-    cases = run_all([("case", i, s, st, seed, tl) for i, (s, st), seed in
-                     itertools.product(range(len(CASES)), COMBOS, seeds)])
-    cases.to_csv(SUMMARY / "priority_cases.csv", index=False, lineterminator="\n")
-    table = cases.pivot_table(index=["instance", "solver"], columns="strategy",
-                              values="strict_ok", aggfunc="mean")
-    print("Share of runs matching the strict-optimal unserved vector:", flush=True)
-    print(table.to_string(float_format=lambda x: f"{x:.0%}"), flush=True)
 
-    rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, (s, st), seed in
-                   itertools.product(RANDOM_FAMILIES, range(n_random), COMBOS, seeds)])
-    rnd = rnd.rename(columns={"kind": "family"})
-    # Reference = lexicographically smallest priority vector found by any
-    # strategy/solver/seed on that instance (feasible runs only).
+def summarise_random(rnd: pd.DataFrame) -> pd.DataFrame:
+    """Reference = lexicographically smallest priority vector found by any
+    strategy/solver/seed on that instance (feasible runs only)."""
+    rnd = rnd.drop(columns=["first_worse_class", "lex_best"], errors="ignore")
     best = {inst: min(tuple(int(v) for v in row) for row in g[PRIO_FIELDS].to_numpy())
-            for inst, g in rnd[rnd.feasible].groupby("instance")}
+            for inst, g in rnd[rnd.feasible.astype(bool)].groupby("instance")}
 
     def first_worse(row) -> str:
         """Class at which the run first falls behind the reference ('' = ties it)."""
@@ -197,12 +187,48 @@ def main() -> None:
                 return f.replace("unserved_", "")
         return ""
 
-    rnd["first_worse_class"] = rnd.apply(first_worse, axis=1)
+    rnd["first_worse_class"] = rnd.apply(first_worse, axis=1).fillna("")
     rnd["lex_best"] = rnd.first_worse_class == ""
-    rnd.to_csv(SUMMARY / "priority_random.csv", index=False, lineterminator="\n")
+    return rnd
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--quick", action="store_true", help="fewer seeds/instances")
+    ap.add_argument("--time-limit", type=float, default=2.0)
+    ap.add_argument("--combos", help="comma list of solver:strategy (default: all)")
+    ap.add_argument("--families", default=",".join(RANDOM_FAMILIES))
+    ap.add_argument("--no-cases", action="store_true", help="skip the P1-P4 cases")
+    ap.add_argument("--tag", default="", help="suffix for output files, e.g. _10s")
+    ap.add_argument("--merge", action="store_true",
+                    help="replace only the re-run combos' rows in existing outputs")
+    args = ap.parse_args()
+    seeds = range(2 if args.quick else 5)
+    n_random = 6 if args.quick else 30
+    tl = args.time_limit
+    combos = ([tuple(c.split(":")) for c in args.combos.split(",")] if args.combos else COMBOS)
+    families = args.families.split(",")
+    out = {k: SUMMARY / f"priority_{k}{args.tag}.csv" for k in ("cases", "random", "random_summary")}
+    SUMMARY.mkdir(parents=True, exist_ok=True)
+
+    if not args.no_cases:
+        cases = run_all([("case", i, s, st, seed, tl) for i, (s, st), seed in
+                         itertools.product(range(len(CASES)), combos, seeds)])
+        cases = _merge(out["cases"], cases, combos, args.merge)
+        cases.to_csv(out["cases"], index=False, lineterminator="\n")
+        table = cases.pivot_table(index=["instance", "solver"], columns="strategy",
+                                  values="strict_ok", aggfunc="mean")
+        print("Share of runs matching the strict-optimal unserved vector:", flush=True)
+        print(table.to_string(float_format=lambda x: f"{x:.0%}"), flush=True)
+
+    rnd = run_all([("random", (k, fam), s, st, seed, tl) for fam, k, (s, st), seed in
+                   itertools.product(families, range(n_random), combos, seeds)])
+    rnd = rnd.rename(columns={"kind": "family"})
+    rnd = summarise_random(_merge(out["random"], rnd, combos, args.merge))
+    rnd.to_csv(out["random"], index=False, lineterminator="\n")
 
     share = lambda cls: (lambda s: (s == cls).mean())  # noqa: E731
-    feas = rnd[rnd.feasible]
+    feas = rnd[rnd.feasible.astype(bool)]
     summary = rnd.groupby(["family", "solver", "strategy"]).agg(
         runs=("seed", "size"), feasible=("feasible", "mean"), lex_best=("lex_best", "mean"),
         worse_at_critical=("first_worse_class", share("critical")),
@@ -213,8 +239,7 @@ def main() -> None:
         unserved_critical=("unserved_critical", "mean"), unserved_high=("unserved_high", "mean"),
         unserved_normal=("unserved_normal", "mean"), unserved_low=("unserved_low", "mean"),
         distance=("distance", "mean"))).reset_index()
-    summary.to_csv(SUMMARY / "priority_random_summary.csv", index=False,
-                   lineterminator="\n", float_format="%.4f")
+    summary.to_csv(out["random_summary"], index=False, lineterminator="\n", float_format="%.4f")
     print("\nRandom stress (shares of runs; unserved/distance = mean over feasible runs):")
     print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"), flush=True)
 

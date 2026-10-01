@@ -26,6 +26,8 @@ public class Visit {
     /** Soft level (0-3 = class, 4 = cost) and amount charged when unassigned. */
     private int unassignedLevel;
     private long unassignedAmount;
+    /** 3 = CRITICAL ... 0 = LOW: higher is more important (for sorting). */
+    private int priorityRank;
 
     @InverseRelationShadowVariable(sourceVariableName = "visits")
     private Vehicle vehicle;
@@ -38,7 +40,8 @@ public class Visit {
     }
 
     public Visit(String id, Data data, int location, int demand, long service, long twStart, long twEnd,
-                 boolean required, Set<Integer> skills, int unassignedLevel, long unassignedAmount) {
+                 boolean required, Set<Integer> skills, int unassignedLevel, long unassignedAmount,
+                 int priorityRank) {
         this.id = id;
         this.data = data;
         this.location = location;
@@ -50,6 +53,7 @@ public class Visit {
         this.skills = skills;
         this.unassignedLevel = unassignedLevel;
         this.unassignedAmount = unassignedAmount;
+        this.priorityRank = priorityRank;
     }
 
     @ShadowSources({"vehicle", "previousVisit.arrivalTime"})
@@ -93,6 +97,7 @@ public class Visit {
     public boolean isRequired() { return required; }
     public int getUnassignedLevel() { return unassignedLevel; }
     public long getUnassignedAmount() { return unassignedAmount; }
+    public int getPriorityRank() { return priorityRank; }
     public Vehicle getVehicle() { return vehicle; }
     public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
     public Visit getPreviousVisit() { return previousVisit; }

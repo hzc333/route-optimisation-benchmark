@@ -96,6 +96,18 @@ def expand(cfg: dict) -> list[Case]:
     return cases
 
 
+def is_done(path: Path) -> bool:
+    """A result exists and is not a runner-written crash/timeout record
+    (solver_version "?"): those are retried on resume, e.g. after the runner
+    itself was interrupted mid-launch."""
+    if not path.exists():
+        return False
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))["solution"]["solver_version"] != "?"
+    except (ValueError, KeyError):
+        return False
+
+
 def run_case(case: Case, cpu: int, out_dir: Path) -> str:
     out = out_dir / case.out
     cmd = [sys.executable, "-m", "experiments.run_one", "--solver", case.adapter,
@@ -136,7 +148,7 @@ def main() -> None:
     out_dir = RAW_RESULTS / name
 
     cases = expand(cfg)
-    todo = [c for c in cases if not (out_dir / c.out).exists()]
+    todo = [c for c in cases if not is_done(out_dir / c.out)]
     budget = sum(c.time_limit_s for c in todo) / len(cfg["cpus"])
     print(f"[{name}] {len(cases)} runs, {len(todo)} to do, "
           f"~{budget / 60:.0f} min on {len(cfg['cpus'])} cpus {cfg['cpus']}", flush=True)

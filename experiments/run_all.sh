@@ -19,14 +19,24 @@ echo "chain start $START"
 $CHECK wait-ac
 $PY environments/record_env.py > /dev/null
 
-# Timefold: 2 s JIT warm-up per JVM in the (2 s) priority runs.
-for attempt in 1 2 3; do
-  $CHECK wait-ac
-  T=$(now)
-  ROB_TIMEFOLD_WARMUP_S=2 $PY -W ignore -m experiments.run_priority_tests
-  if [ "$($CHECK window --since "$T")" = "0" ]; then break; fi
-  echo "priority pass $attempt overlapped standby/battery: repeating"
-done
+# run_priority with retry: repeat a pass that overlapped standby/battery.
+# Timefold gets a same-JVM JIT warm-up (not counted in the budget).
+run_priority() {
+  local warmup=$1; shift
+  for attempt in 1 2 3; do
+    $CHECK wait-ac
+    T=$(now)
+    ROB_TIMEFOLD_WARMUP_S=$warmup $PY -W ignore -m experiments.run_priority_tests "$@"
+    if [ "$($CHECK window --since "$T")" = "0" ]; then return; fi
+    echo "priority pass $attempt overlapped standby/battery: repeating"
+  done
+}
+# 2 s, all solvers x strategies, cases + both random families.
+run_priority 2
+# 10 s on the adversarial family for the key strategies: 2 s mostly measures
+# JVM start-up for Timefold, so every solver also gets a longer budget here.
+run_priority 3 --time-limit 10 --no-cases --families adversarial --tag _10s \
+  --combos pyvrp:sequential,ortools:sequential,vroom:native,timefold:native,timefold:sequential
 
 for round in 1 2 3; do
   for c in $CONFIGS; do

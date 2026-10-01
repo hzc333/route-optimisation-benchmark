@@ -56,6 +56,18 @@ def test_sequential_feasible_on_tight_random(solver, seed):
     assert rep.feasible, (sol.notes, rep.violations[:3])
 
 
+def test_timefold_sorted_construction_serves_critical_first():
+    """With input-order construction, small LOW/NORMAL visits fill the vehicles
+    and bulky CRITICAL visits stay unassigned; the sorted construction must
+    serve every CRITICAL visit on a tight adversarial instance."""
+    problem = random_instance(0, "adversarial")
+    tf = get_adapter("timefold")
+    sol = STRATEGIES["native"](tf, problem, time_limit_s=2)
+    assert prio_vector(problem, sol)[1] == 0  # unserved_critical
+    naive = tf.solve(problem, time_limit_s=2, mode="lexicographic", construction="default")
+    assert prio_vector(problem, naive)[1] > 0
+
+
 def test_vroom_native_priority_is_a_weighted_sum():
     """VROOM maximises the *sum* of 0-100 priorities: 20 NORMAL (1 each) beat
     1 HIGH (10) in P1, but serving everything servable passes P2 and P4."""
