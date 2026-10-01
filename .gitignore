@@ -9,3 +9,6 @@ data/raw/
 # Raw run outputs can be large; summaries and metadata are versioned.
 results/raw/
 results/*.log
+
+# Maven build output
+adapters/timefold_java/target/

@@ -2,7 +2,13 @@
 # the file's 250 vehicles, to check whether fleet size drives OR-Tools' gap.
 name: hg1000_fleet
 fleet_bks_factor: 1.2
-solvers: [ortools, pyvrp, vroom]
+solvers:
+  - ortools
+  - pyvrp
+  - vroom
+  - label: timefold              # Timefold 2.7.0 CE, defaults, JIT-warm (5 s warm-up solve)
+    adapter: timefold
+    options: {warmup_s: 5}
 instances: [hg1000/C1_10_1, hg1000/C2_10_1, hg1000/R1_10_1,
             hg1000/R2_10_1, hg1000/RC1_10_1, hg1000/RC2_10_1]
 time_limits_s: [60]

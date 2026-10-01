@@ -1,0 +1,11 @@
+# Timefold cold JVM (no warm-up solve) on Solomon at 1 s: isolates the JIT
+# start-up penalty that the main "timefold" runs remove (plan §11).
+name: solomon_tf_cold
+solvers:
+  - label: timefold_cold
+    adapter: timefold
+    options: {warmup_s: 0}
+instances: [solomon/*]
+time_limits_s: [1]
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+cpus: [0, 2, 4, 6]

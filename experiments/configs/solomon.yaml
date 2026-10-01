@@ -4,6 +4,9 @@ solvers:
   - ortools                      # PARALLEL_CHEAPEST_INSERTION + GLS (benchmark config)
   - pyvrp
   - vroom                        # pyvroom, exploration level 5, single thread
+  - label: timefold              # Timefold 2.7.0 CE, defaults, JIT-warm (5 s warm-up solve)
+    adapter: timefold
+    options: {warmup_s: 5}
   - label: ortools_pca           # plan §8 / OR-Tools docs default, to quantify its failure rate
     adapter: ortools
     options: {first_solution: PATH_CHEAPEST_ARC}

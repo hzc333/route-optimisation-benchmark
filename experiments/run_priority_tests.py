@@ -34,8 +34,8 @@ PRIO_FIELDS = ["hard_violations", "unserved_critical", "unserved_high",
 # (solver, strategy) pairs: penalty-driven strategies for solvers with drop
 # penalties + warm start; VROOM only has its native priority handling.
 PENALTY_STRATEGIES = ["weighted", "weighted_fixed", "stacked", "sequential"]
-COMBOS = ([(s, st) for s in ("ortools", "pyvrp") for st in PENALTY_STRATEGIES]
-          + [("vroom", "native")])
+COMBOS = ([(s, st) for s in ("ortools", "pyvrp", "timefold") for st in PENALTY_STRATEGIES]
+          + [("vroom", "native"), ("timefold", "native")])
 CPUS = [0, 2, 4, 6]
 
 

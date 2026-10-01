@@ -84,6 +84,22 @@ def test_optional_far_job_dropped_by_class(adapter):
         assert (rep.unserved == {"far"}) is dropped
 
 
+@pytest.mark.parametrize("factory", [smoke_cvrp, smoke_vrptw])
+def test_timefold_score_matches_validator(factory):
+    """The Java model's cost level must equal the validator's distance (+fixed):
+    guards against the two implementations drifting apart."""
+    import re
+
+    p = factory()
+    s = get_adapter("timefold").solve(p, time_limit_s=1)
+    rep = validate(p, s)
+    assert rep.feasible, rep.violations
+    vec = objective_vector(p, rep)
+    hard, *soft = map(int, re.findall(r"-?\d+", re.search(r"score=(\S+)", s.notes).group(1)))
+    assert hard == 0 and soft[:4] == [0, 0, 0, 0]
+    assert -soft[4] == vec["distance"] + vec["fixed_cost"]
+
+
 def test_vroom_serves_every_servable_job():
     """VROOM maximises assigned jobs before cost: even a far LOW job is served."""
     p = _far_optional_problem(PriorityClass.LOW)
@@ -120,9 +136,10 @@ def test_skills(adapter):
 
 @pytest.mark.parametrize("required", [True, False])
 def test_skill_nobody_has(adapter, required):
-    """No vehicle has skill 9. Optional -> dropped. Required -> OR-Tools returns
-    no solution, VROOM leaves it unassigned (validator: UNSERVED_REQUIRED).
-    Guards against OR-Tools treating an empty allowed-set as 'all vehicles'."""
+    """No vehicle has skill 9. Optional -> dropped. Required -> infeasible either
+    way: OR-Tools returns no solution, VROOM leaves it unassigned, Timefold
+    takes a skill mismatch. Guards against OR-Tools treating an empty
+    allowed-set as 'all vehicles'."""
     if "skills" in adapter.UNSUPPORTED:
         pytest.skip(f"{adapter.NAME}: no skills")
     jobs = [Job(id="c1", location=1, demand=1, skills=[9], required=required),
@@ -135,7 +152,10 @@ def test_skill_nobody_has(adapter, required):
     elif adapter.NAME == "ortools":
         assert s.status == "NO_SOLUTION"
     else:
-        assert [v.kind for v in rep.violations] == ["UNSERVED_REQUIRED"]
+        # Every option breaks a hard rule: VROOM leaves it unassigned, Timefold
+        # takes the cheaper hard violation (skill mismatch). Never "feasible".
+        kinds = {v.kind for v in rep.violations}
+        assert not rep.feasible and kinds <= {"UNSERVED_REQUIRED", "SKILL"}
 
 
 def test_warm_start_from_feasible_routes(adapter):

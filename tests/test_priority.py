@@ -66,7 +66,11 @@ def test_vroom_native_priority_is_a_weighted_sum():
         assert (got == expected) is strict, (problem.name, got)
 
 
-@pytest.mark.parametrize("solver", PENALTY_ADAPTERS)
+# Timefold is excluded: its weighted objective also prefers dropping the HIGH
+# job, but its construction heuristic inserts the bulky HIGH job first and
+# local search does not find the "remove 1, insert 20" move, so it ends at the
+# strict answer by accident. The priority experiment reports that behaviour.
+@pytest.mark.parametrize("solver", ["ortools", "pyvrp"])
 def test_weighted_10x_fails_high_vs_many_normal(solver):
     """Documents the counterexample: 10x spacing gives up the HIGH job."""
     problem, expected = case_p1()

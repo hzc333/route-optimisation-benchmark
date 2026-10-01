@@ -1,6 +1,12 @@
 # 60 s budget on two instances per Solomon class (01 = base, 05 = mid tightness).
 name: solomon_60s
-solvers: [ortools, pyvrp, vroom]
+solvers:
+  - ortools
+  - pyvrp
+  - vroom
+  - label: timefold              # Timefold 2.7.0 CE, defaults, JIT-warm (5 s warm-up solve)
+    adapter: timefold
+    options: {warmup_s: 5}
 instances: [solomon/C101, solomon/C105, solomon/C201, solomon/C205,
             solomon/R101, solomon/R105, solomon/R201, solomon/R205,
             solomon/RC101, solomon/RC105, solomon/RC201, solomon/RC205]

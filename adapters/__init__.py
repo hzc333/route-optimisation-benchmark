@@ -9,6 +9,7 @@ _MODULES = {
     "ortools": "adapters.ortools_adapter",
     "pyvrp": "adapters.pyvrp_adapter",
     "vroom": "adapters.vroom_adapter",
+    "timefold": "adapters.timefold_adapter",
 }
 
 ADAPTERS = tuple(_MODULES)

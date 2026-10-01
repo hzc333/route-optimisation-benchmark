@@ -8,8 +8,9 @@ PY=./.venv/Scripts/python
 [ -x "$PY" ] || PY=./.venv/bin/python
 
 $PY environments/record_env.py > /dev/null
-$PY -W ignore -m experiments.run_priority_tests
-for c in smoke solomon solomon_60s x hg1000 hg1000_fleet; do
+# Timefold: 2 s JIT warm-up per JVM in the (2 s) priority runs.
+ROB_TIMEFOLD_WARMUP_S=2 $PY -W ignore -m experiments.run_priority_tests
+for c in smoke solomon solomon_tf_cold solomon_60s x hg1000 hg1000_fleet; do
   $PY -W ignore -m experiments.run_benchmark "experiments/configs/$c.yaml"
 done
 $PY -m experiments.report
