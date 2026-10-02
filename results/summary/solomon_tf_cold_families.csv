@@ -1,0 +1,2 @@
+solver,family,time_limit_s,n_instances,runs,feasible,gap_mean,gap_median,gap_best_mean,gap_std_mean,wall_mean,ttb_mean,rss_max
+timefold_cold,solomon,1.0000,56,560,98,65.5155,61.3191,65.5155,0.0000,2.8303,1.0174,32.3281
