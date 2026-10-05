@@ -20,6 +20,7 @@ import random
 from time import perf_counter
 
 import ortools
+from google.protobuf import json_format
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
 
 from schema.models import PriorityClass, Problem, Solution
@@ -45,8 +46,12 @@ def solve(
     first_solution: str = "PARALLEL_CHEAPEST_INSERTION",
     metaheuristic: str = "GUIDED_LOCAL_SEARCH",
     initial_routes: list[tuple[str, list[str]]] | None = None,
+    search_params: dict | None = None,
 ) -> Solution:
-    """``initial_routes`` = [(vehicle_id, job_ids)] warm start; must be feasible."""
+    """``initial_routes`` = [(vehicle_id, job_ids)] warm start; must be feasible.
+    ``search_params`` is merged into RoutingSearchParameters (protobuf JSON
+    names, e.g. {"use_iterated_local_search": true}) for tuning experiments;
+    first_solution / metaheuristic / time limit are applied after it."""
     t_wall = perf_counter()
     penalties = penalties or default_penalties(problem)
 
@@ -99,6 +104,8 @@ def solve(
             routing.AddDisjunction([index], penalties[job.priority_class] * job.value)
 
     params = pywrapcp.DefaultRoutingSearchParameters()
+    if search_params:
+        json_format.ParseDict(search_params, params)
     params.first_solution_strategy = getattr(
         routing_enums_pb2.FirstSolutionStrategy, first_solution)
     params.local_search_metaheuristic = getattr(

@@ -21,6 +21,8 @@ from time import perf_counter
 
 import numpy as np
 import pyvrp
+from pyvrp.IteratedLocalSearch import IteratedLocalSearchParams
+from pyvrp.search import NeighbourhoodParams, PerturbationParams
 from pyvrp.stop import MaxRuntime
 
 from schema.models import PriorityClass, Problem, Solution
@@ -48,6 +50,27 @@ def _time_to_best(stats: pyvrp.Statistics) -> float | None:
     return None
 
 
+_GROUPS = {
+    "neighbourhood": ("num_neighbours", "weight_wait_time", "symmetric_proximity"),
+    "ils": ("history_length", "num_iters_no_improvement", "exhaustive_on_best"),
+    "perturbation": ("min_perturbations", "max_perturbations"),
+    "penalty": ("target_feasible", "penalty_increase", "penalty_decrease"),
+}
+
+
+def _solve_params(overrides: dict, max_penalty: float) -> pyvrp.SolveParams:
+    unknown = set(overrides) - {k for keys in _GROUPS.values() for k in keys}
+    if unknown:
+        raise ValueError(f"unknown PyVRP solve_params: {sorted(unknown)}")
+    pick = {g: {k: overrides[k] for k in keys if k in overrides} for g, keys in _GROUPS.items()}
+    return pyvrp.SolveParams(
+        ils=IteratedLocalSearchParams(**pick["ils"]),
+        penalty=pyvrp.PenaltyParams(max_penalty=max_penalty, **pick["penalty"]),
+        neighbourhood=NeighbourhoodParams(**pick["neighbourhood"]),
+        perturbation=PerturbationParams(**pick["perturbation"]),
+    )
+
+
 def solve(
     problem: Problem,
     *,
@@ -56,8 +79,14 @@ def solve(
     threads: int = 1,
     penalties: dict[PriorityClass, int] | None = None,
     initial_routes: list[tuple[str, list[str]]] | None = None,
+    solve_params: dict | None = None,
 ) -> Solution:
-    """``initial_routes`` = [(vehicle_id, job_ids)] warm start."""
+    """``initial_routes`` = [(vehicle_id, job_ids)] warm start.
+    ``solve_params`` overrides PyVRP search parameters for tuning experiments:
+    num_neighbours, weight_wait_time, symmetric_proximity (neighbourhood);
+    history_length, num_iters_no_improvement, exhaustive_on_best (ILS);
+    min_perturbations, max_perturbations; target_feasible, penalty_increase,
+    penalty_decrease (penalty manager)."""
     t_wall = perf_counter()
     if any(j.skills for j in problem.jobs):
         raise UnsupportedFeature("skills (no native vehicle-client compatibility)")
@@ -101,8 +130,7 @@ def solve(
                  *(v.fixed_cost for v in problem.vehicles),
                  *(c.prize for c in clients)])
     default = pyvrp.PenaltyParams()
-    params = pyvrp.SolveParams(penalty=pyvrp.PenaltyParams(
-        max_penalty=max(default.max_penalty, 10.0 * scale)))
+    params = _solve_params(solve_params or {}, max(default.max_penalty, 10.0 * scale))
 
     initial = None
     if initial_routes is not None:
