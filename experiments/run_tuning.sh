@@ -27,3 +27,8 @@ $PY -m experiments.tuning select
 run_guarded tune_test_solomon tune_test_x tune_test_hg
 $PY -m experiments.tuning compare
 echo TUNING_DONE
+# One-change-at-a-time follow-up from each default (4 variants per solver).
+$PY -m experiments.tuning ofat
+run_guarded tune_ofat
+$PY -m experiments.tuning ofat-report
+echo OFAT_DONE

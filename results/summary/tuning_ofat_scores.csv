@@ -1,0 +1,11 @@
+solver,score,adapter
+ortools_ofat_ils_close_routes,4.0949,ortools
+ortools_c00,4.3317,ortools
+ortools_ofat_ils_sisr,4.3319,ortools
+ortools_ofat_lns_bundle,6.2840,ortools
+ortools_ofat_simulated_annealing,7.8433,ortools
+pyvrp_ofat_num_neighbours_20,0.1030,pyvrp
+pyvrp_ofat_target_feasible_0.8,0.1151,pyvrp
+pyvrp_c00,0.1204,pyvrp
+pyvrp_ofat_exhaustive_off,0.1928,pyvrp
+pyvrp_ofat_history_length_600,0.2095,pyvrp

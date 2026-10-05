@@ -96,6 +96,27 @@ def expand(cfg: dict) -> list[Case]:
     return cases
 
 
+_ac_lock = threading.Lock()
+
+
+def wait_for_ac(poll_s: float = 15.0) -> None:
+    """Block while on battery (plan §3); one message per outage."""
+    import psutil
+
+    def plugged() -> bool:
+        battery = psutil.sensors_battery()
+        return battery is None or battery.power_plugged
+
+    if plugged():
+        return
+    with _ac_lock:  # first waiter reports, the others queue behind it
+        if not plugged():
+            print("on battery: pausing runs until AC power is back", flush=True)
+            while not plugged():
+                time.sleep(poll_s)
+            print("AC power back: resuming", flush=True)
+
+
 def is_done(path: Path) -> bool:
     """A result exists and is not a runner-written crash/timeout record
     (solver_version "?"): those are retried on resume, e.g. after the runner
@@ -165,6 +186,7 @@ def main() -> None:
     lock, done, t_start = threading.Lock(), [0], time.time()
 
     def worker(case: Case) -> None:
+        wait_for_ac()  # a run on battery would be discarded by standby_check anyway
         cpu = cpus.get()
         try:
             status = run_case(case, cpu, out_dir)

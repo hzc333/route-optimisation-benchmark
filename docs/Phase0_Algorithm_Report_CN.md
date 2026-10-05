@@ -8,7 +8,7 @@
 
 | 问题 | 结论 | 主要证据 |
 |---|---|---|
-| **Q1 核心求解器** | **PyVRP 作为主求解器**。VROOM 是很好的"快速 API baseline"，但长路线实例质量差、时间上限不可靠。OR-Tools 仅作为 PyVRP 不支持的约束（软时间窗、breaks）的后备，且需控制规模。**Timefold 社区版质量不足以做核心**（缺少企业版的 nearby selection），但其建模灵活性在 traffic/复杂规则上值得保留观察 | 73 个实例 × 各时间档，PyVRP 只在 3 个 Solomon 实例（10 s）上输给 VROOM，从未输给 OR-Tools 和 Timefold；1000 点：PyVRP 1.3%，VROOM 21%，OR-Tools 33%，Timefold 133% |
+| **Q1 核心求解器** | **PyVRP 作为主求解器**。VROOM 是很好的"快速 API baseline"，但长路线实例质量差、时间上限不可靠。OR-Tools 仅作为 PyVRP 不支持的约束（软时间窗、breaks）的后备，且需控制规模。**Timefold 社区版质量不足以做核心**（缺少企业版的 nearby selection），但其建模灵活性在 traffic/复杂规则上值得保留观察 | 73 个实例 × 各时间档，PyVRP 只在 3 个 Solomon 实例（10 s）上输给 VROOM，从未输给 OR-Tools 和 Timefold；1000 点：PyVRP 1.3%，VROOM 21%，OR-Tools 33%，Timefold 133%；同等预算调参后 OR-Tools 最佳配置仍是默认配置，差距不变（§3.1） |
 | **Q2 严格 Priority** | 原方案的 **10× 权重不能保证严格优先级**；VROOM 原生 priority 是加权和；**Timefold 原生分层 BendableScore 目标正确，但搜索达不到最高层的最优**；即使精确的"堆叠权重"单次求解也不行。**采用外部 sequential lexicographic controller（带 warm start）**——它在 PyVRP 和 Timefold 上都做到 0% HIGH 层落后 | 10 s 对抗族：sequential（PyVRP、Timefold）0% 在 HIGH 层落后；Timefold native 53%，VROOM native 39% |
 | **Q3 Traffic 进入搜索** | 本轮未测（按方案作为第二轮独立实验）。OR-Tools/PyVRP/VROOM 都只接受静态矩阵；Timefold 可以在影子变量里写出发时刻相关的行驶时间，是四者中唯一能原生把 traffic 放进搜索的，但社区版搜索质量是瓶颈。PoC 建议走 T1/T2（分时段矩阵 + 迭代重评估） | 见 §7 |
 | **Q4 learned/hybrid** | 不进入 Phase 1 主线。PyVRP 在 100 点实例 10 s 内中位 gap 已为 0.00%，learned 方法的提升空间主要在规模与动态场景，不在静态质量 | §3 |
@@ -62,6 +62,26 @@
 - **时间上限可靠性**：PyVRP 超时 ≤ 0.43 s，Timefold 求解超时 ≤ 2.6 s（另有 JVM 启动/预热开销，见 §5.4）。OR-Tools 在 HG1000 平均超 4.9 s、最坏 74 s；VROOM 在 X 60 s 档有 4 次跑了约 130 s。对有实时要求的调度 API，后两者需要外部看门狗。
 - **车队规模敏感性**：HG 文件给出 250 辆车而 BKS 仅用 32–100 条路线。把车队限制为 1.2×BKS 路线数后，OR-Tools 33.1% → 18.5%，VROOM 21.4% → 19.7%，PyVRP 不受影响（1.32% → 1.28%）；Timefold 132.8% → 81.9%，但 18 次中 8 次违反时间窗（C1/C2 全部不可行）——紧车队下社区版连可行解都难以找到。
 - **资源**：Python 进程峰值内存 < 280 MB；Timefold JVM 峰值堆 ≤ 424 MB（1000 点）。
+
+### 3.1 调参实验：OR-Tools 的差距能否靠调参弥补？
+
+协议（`experiments/tuning.py`，`run_tuning.sh`）：OR-Tools 与 PyVRP **同等调参预算**——各 24 组随机配置（第 1 组为主 benchmark 的默认配置），在 9 个**训练实例**（6 个 Solomon + 3 个不在测试集中的 X）× 2 seeds × 10 s 上评分（不可行记 100%）；最佳配置再在**留出的测试集**（其余 50 个 Solomon、11 个 X、6 个 HG1000，seeds 0–4）上与**同一天重跑的默认配置**对比。随机抽样没有覆盖"默认只改一处"的点，因此补充了每个求解器 4 个单项改动（OFAT）。
+
+OR-Tools 搜索空间：初始解 {并行插入, 局部插入, Savings} × 元启发式 {GLS, 模拟退火, 两种禁忌搜索} × 9.15 新的迭代局部搜索（破坏重建：SISR / random walk / 邻近路线）× 邻域比例 × GLS λ × 一组默认关闭的 LNS 算子。PyVRP：邻居数、等待时间权重、历史长度、重启条件、扰动强度、exhaustive_on_best、可行目标比例。
+
+| 测试集 | 求解器 | 默认（同一天） | 调参后（同一天） |
+|---|---|---|---|
+| Solomon 10 s | OR-Tools | 3.85% | 3.85%（最佳配置 = 默认） |
+| | PyVRP | 0.25% | 0.24% |
+| X 10 s / 60 s | OR-Tools | 7.72% / 6.48% | 同默认 |
+| | PyVRP | 1.75% / 0.72% | 1.66% / 0.67% |
+| HG1000 60 s | OR-Tools | 38.9% | 同默认 |
+| | PyVRP | 1.61% | **3.42%** |
+
+- **OR-Tools 的默认配置（并行插入 + GLS）在 24 组中排第 1**。最好的单项改动（默认 + 邻近路线破坏重建）在训练集上只从 4.33% 改善到 4.09%；SISR 无变化；LNS 算子组 6.28%、模拟退火 7.84% 更差；缩小邻域（0.1 / 0.3）明显变差。
+- **差距不是参数造成的**：同一天 OR-Tools 与 PyVRP 的差距仍为 15×（Solomon）、4–10×（X）、24×（HG）；调参能带来的改善（≈0.2 个百分点）比差距（≈4 个百分点）小一个数量级。根本原因是搜索框架：OR-Tools 是通用约束编程 + 局部搜索，PyVRP 是专门为 VRP 设计的迭代局部搜索。
+- **PyVRP 调参后的配置过拟合**：在 100–300 点训练集上选出的"邻居数 20"在 X 上略好，但在 1000 点上明显更差（3.42% vs 1.61%）。**保留 PyVRP 默认配置。**
+- **日间波动**：同一配置、同一 seed，今天的结果普遍比 9 月 29 日稍差（OR-Tools Solomon 3.25% → 3.85%、HG 33.6% → 38.9%；PyVRP X 10 s 1.33% → 1.75%），说明机器状态不同。用满时间预算、仍在改进的求解器（OR-Tools）受影响最大。**跨日期的小差异不可直接比较，对比必须在同一时段内完成**（本节的对比均为同日）。
 
 ## 4. Strict Priority 实验
 
@@ -195,7 +215,8 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 
 ## 8. 局限性
 
-- 单台笔记本；每个求解器单一配置（OR-Tools 未做 metaheuristic 调参，PyVRP 默认，VROOM exploration 5，Timefold 社区版默认阶段）。
+- 单台笔记本；VROOM（exploration 5）与 Timefold（社区版默认阶段）未调参；OR-Tools 与 PyVRP 做了同等预算的随机搜索 + 单项改动（§3.1），覆盖有限但结论（默认配置已接近最佳）在两种方法下一致。
+- 同一配置的结果存在日间波动（§3.1：Solomon 约 0.1–0.6 个百分点，HG1000 最多约 5 个百分点）。主 benchmark 中 OR-Tools / PyVRP / VROOM 在 9 月 29 日运行，Timefold 在 10 月 1–2 日运行；求解器之间的差距（多为数倍到数十倍）远大于这一波动，结论不受影响，但不同日期的小差异不应解读为改进或退化。
 - HG 仅 1000 点、每类 1 个实例；200–800 点因可得 BKS 的目标约定不一致而未用。
 - 车队敏感性只有 3 个 seed；priority 实验为合成实例，时限 2 s / 10 s。
 - VROOM 通过 pyvroom 进程内调用；Timefold 每次新 JVM + 预热，均非生产服务形态。
@@ -209,5 +230,5 @@ py -3.13 -m venv .venv && .venv/Scripts/python -m pip install -r environments/re
 source environments/java_env.sh && (cd adapters/timefold_java && mvn -q package)   # Timefold jar
 .venv/Scripts/python -m data.download        # 实例 + BKS
 bash experiments/run_all.sh                  # priority + 全部 benchmark + 图表（首次全量约 12 h，需接电源）
-.venv/Scripts/python -m pytest               # 332 个测试（3 个按能力跳过）
+.venv/Scripts/python -m pytest               # 334 个测试（3 个按能力跳过）
 ```

@@ -173,6 +173,26 @@ def test_warm_start_from_feasible_routes(adapter):
     assert "warm=rejected" not in s.notes
 
 
+def test_ortools_search_params_hook():
+    """Tuning hook: ILS with a SISR ruin strategy must be valid (an empty ruin
+    list makes OR-Tools reject the parameters as ROUTING_INVALID)."""
+    from experiments.tuning import _ruin
+
+    p = square_problem()
+    s = get_adapter("ortools").solve(p, time_limit_s=0.5, search_params=_ruin("sisr"))
+    assert "ROUTING_INVALID" not in s.notes
+    assert validate(p, s).feasible
+
+
+def test_pyvrp_solve_params_hook():
+    p = square_problem()
+    pyvrp = get_adapter("pyvrp")
+    s = pyvrp.solve(p, time_limit_s=0.5, solve_params={"num_neighbours": 3, "history_length": 50})
+    assert objective_vector(p, validate(p, s))["distance"] == 80
+    with pytest.raises(ValueError, match="unknown PyVRP solve_params"):
+        pyvrp.solve(p, time_limit_s=0.5, solve_params={"bogus": 1})
+
+
 def test_huge_fixed_cost_stays_feasible(adapter):
     """Required load needs 2 vehicles with fixed cost 1e6 each. PyVRP's default
     penalty cap (1e5/unit) would make an overloaded single route 'cheaper'."""
