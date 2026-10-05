@@ -62,10 +62,11 @@ public class Visit {
             return null;
         }
         if (previousVisit == null) {
-            return vehicle.getShiftStart() + data.dur[data.depot][location];
+            return vehicle.getShiftStart() + data.legTime(data.depot, location, vehicle.getShiftStart());
         }
         Long prevDeparture = previousVisit.getDepartureTime();
-        return prevDeparture == null ? null : prevDeparture + data.dur[previousVisit.location][location];
+        return prevDeparture == null ? null
+                : prevDeparture + data.legTime(previousVisit.location, location, prevDeparture);
     }
 
     public Long getStartServiceTime() {
@@ -82,9 +83,15 @@ public class Visit {
         return start == null ? 0 : Math.max(0, start - twEnd);
     }
 
+    /** Leg cost into this visit: distance, or travel time when time-dependent. */
     public long getDistanceFromPrevious() {
+        if (data.td == null) {
+            int from = previousVisit == null ? data.depot : previousVisit.location;
+            return data.dist[from][location];
+        }
+        Long departure = previousVisit == null ? (Long) vehicle.getShiftStart() : previousVisit.getDepartureTime();
         int from = previousVisit == null ? data.depot : previousVisit.location;
-        return data.dist[from][location];
+        return departure == null ? 0 : data.legCost(from, location, departure);
     }
 
     public boolean isSkillMismatch() {

@@ -74,6 +74,7 @@ def solve(
     mode: str = "weighted",
     warmup_s: float | None = None,
     construction: str = "first_fit_decreasing",
+    td: dict | None = None,
     heap: str = "2g",
 ) -> Solution:
     t_wall = perf_counter()
@@ -86,6 +87,9 @@ def solve(
     options = {
         "time_limit_s": time_limit_s, "seed": seed, "mode": mode, "warmup_s": warmup_s,
         "construction": construction,
+        # Time-dependent travel (traffic/model.py TDModel.to_json()): arrival
+        # times and leg costs use it inside the search instead of the matrices.
+        "td": td,
         "penalties": {c.value: int(p) for c, p in penalties.items()},
         "initial_routes": [[v, list(js)] for v, js in initial_routes] if initial_routes else None,
     }

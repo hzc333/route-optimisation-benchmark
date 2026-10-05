@@ -52,7 +52,7 @@ public class Vehicle {
         }
         Visit last = visits.get(visits.size() - 1);
         Long dep = last.getDepartureTime();
-        return dep == null ? shiftStart : dep + data.dur[last.getLocation()][data.depot];
+        return dep == null ? shiftStart : dep + data.legTime(last.getLocation(), data.depot, dep);
     }
 
     public long getOvertime() {
@@ -64,7 +64,9 @@ public class Vehicle {
         if (visits.isEmpty()) {
             return 0;
         }
-        return data.dist[visits.get(visits.size() - 1).getLocation()][data.depot] + fixedCost;
+        Visit last = visits.get(visits.size() - 1);
+        Long dep = last.getDepartureTime();
+        return (dep == null ? 0 : data.legCost(last.getLocation(), data.depot, dep)) + fixedCost;
     }
 
     public String getId() { return id; }

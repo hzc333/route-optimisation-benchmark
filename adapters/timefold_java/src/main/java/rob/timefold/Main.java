@@ -147,9 +147,36 @@ public final class Main {
         return out;
     }
 
+    private static double[][] doubles(JsonNode m) {
+        int n = m.size();
+        double[][] out = new double[n][];
+        for (int i = 0; i < n; i++) {
+            JsonNode row = m.get(i);
+            out[i] = new double[row.size()];
+            for (int j = 0; j < row.size(); j++) {
+                out[i][j] = row.get(j).asDouble();
+            }
+        }
+        return out;
+    }
+
+    /** options.td = traffic/model.py TDModel.to_json(), or absent for static travel. */
+    private static TravelTime travelTime(JsonNode td) {
+        if (td == null || td.isNull()) {
+            return null;
+        }
+        double[] profile = new double[td.get("profile").size()];
+        for (int k = 0; k < profile.length; k++) {
+            profile[k] = td.get("profile").get(k).asDouble();
+        }
+        return new TravelTime(doubles(td.get("length_m")), doubles(td.get("congestion")), profile,
+                td.get("v_free").asDouble(), td.get("a").asDouble(), td.get("b").asDouble(),
+                td.get("bucket_s").asInt());
+    }
+
     static RoutePlan build(JsonNode p, JsonNode opt) {
         Data data = new Data(p.get("depot").asInt(), matrix(p.get("distance_matrix")),
-                matrix(p.get("duration_matrix")));
+                matrix(p.get("duration_matrix")), travelTime(opt.get("td")));
         boolean lexicographic = "lexicographic".equals(opt.path("mode").asText("weighted"));
         JsonNode penalties = opt.path("penalties");
 

@@ -1,0 +1,127 @@
+"""Traffic experiment (Q3): does traffic belong inside the search?
+
+    python -m traffic.run_experiment [--time-limit 30] [--seeds 0 1 2]
+
+Every (solver, strategy) plans each instance with the same total budget;
+traffic.evaluate.simulate scores the plan under time-dependent traffic.
+Runs are pinned to P-cores, pause while on battery, and any run that
+overlaps a Windows standby is redone (experiments.standby_check).
+Outputs results/summary/traffic_runs.csv and traffic_summary.csv.
+"""
+
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import itertools
+import time
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
+
+import pandas as pd
+import psutil
+
+ROOT = Path(__file__).resolve().parents[1]
+SUMMARY = ROOT / "results" / "summary"
+CPUS = [0, 2, 4, 6]
+INSTANCES = [f"{lv}{k:02d}" for lv in ("T", "H") for k in range(10)]
+COMBOS = [("pyvrp", "static_free"), ("pyvrp", "static_mean"), ("pyvrp", "static_peak"),
+          ("pyvrp", "iterative"), ("ortools", "static_mean"), ("ortools", "iterative"),
+          ("timefold", "static_mean"), ("timefold", "iterative"), ("timefold", "td_search")]
+# Timefold's priority-aware sorted construction is for priority instances;
+# here every job is required and NORMAL (see adapters/timefold_adapter.py).
+SOLVER_OPTIONS = {"timefold": {"construction": "default"}}
+
+
+def run_one(args) -> dict:
+    instance, solver, strategy, seed, time_limit, cpu = args
+    psutil.Process().cpu_affinity([cpu])
+    from adapters import get_adapter
+    from experiments.run_benchmark import wait_for_ac
+
+    from .evaluate import simulate
+    from .instances import load
+    from .strategies import STRATEGIES
+
+    wait_for_ac()
+    problem, td = load(instance)
+    row = {"instance": instance, "level": instance[0], "solver": solver, "strategy": strategy,
+           "seed": seed, "time_limit_s": time_limit, "t_start": time.time()}
+    t0 = time.perf_counter()
+    try:
+        sol, matrix = STRATEGIES[strategy](get_adapter(solver), problem, td, time_limit_s=time_limit,
+                                           seed=seed, **SOLVER_OPTIONS.get(solver, {}))
+        row |= simulate(problem, td, sol, matrix)
+        row["status"] = sol.status.value
+    except Exception as exc:  # recorded, never dropped
+        row |= {"status": "ERROR", "valid": False, "notes": f"{type(exc).__name__}: {exc}"[:300]}
+    battery = psutil.sensors_battery()
+    row |= {"wall_s": time.perf_counter() - t0, "t_end": time.time(),
+            "on_ac": battery is None or battery.power_plugged}
+    return row
+
+
+def run_all(jobs: list[tuple]) -> pd.DataFrame:
+    tagged = [j + (CPUS[i % len(CPUS)],) for i, j in enumerate(jobs)]
+    with ProcessPoolExecutor(len(CPUS)) as pool:
+        return pd.DataFrame(pool.map(run_one, tagged, chunksize=1))
+
+
+def contaminated(df: pd.DataFrame, since: dt.datetime) -> pd.Series:
+    from experiments.standby_check import standby_intervals
+
+    intervals = standby_intervals(since)
+    hit = df.apply(lambda r: any(a <= r.t_end and r.t_start - 5 <= b for a, b in intervals), axis=1)
+    return hit | ~df.on_ac.astype(bool)
+
+
+def summarise(df: pd.DataFrame) -> pd.DataFrame:
+    ok = df[df.valid.astype(bool)].copy()
+    # Paired with PyVRP + day-average matrix on the same instance and seed.
+    ref = ok[(ok.solver == "pyvrp") & (ok.strategy == "static_mean")].set_index(
+        ["instance", "seed"]).travel_time_s
+    ok["travel_vs_ref_pct"] = [(t / ref[(i, s)] - 1) * 100 if (i, s) in ref.index else float("nan")
+                               for i, s, t in zip(ok.instance, ok.seed, ok.travel_time_s)]
+    ok["planning_error_pct"] = [(p / t - 1) * 100 if p else float("nan")
+                                for p, t in zip(ok.planned_travel_s, ok.travel_time_s)]
+    g = ok.groupby(["level", "solver", "strategy"])
+    out = g.agg(runs=("seed", "size"), on_time=("on_time", "mean"),
+                late_jobs=("late_jobs", "mean"), lateness_min=("lateness_s", lambda s: s.mean() / 60),
+                overtime_min=("overtime_s", lambda s: s.mean() / 60),
+                travel_h=("travel_time_s", lambda s: s.mean() / 3600),
+                travel_vs_ref_pct=("travel_vs_ref_pct", "mean"),
+                planning_error_pct=("planning_error_pct", "mean"),
+                vehicles=("vehicles_used", "mean")).reset_index()
+    invalid = df[~df.valid.astype(bool)].groupby(["level", "solver", "strategy"]).size()
+    out["invalid_runs"] = [int(invalid.get((lv, so, st), 0))
+                           for lv, so, st in zip(out.level, out.solver, out.strategy)]
+    return out
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--time-limit", type=float, default=30.0)
+    ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
+    args = ap.parse_args()
+    SUMMARY.mkdir(parents=True, exist_ok=True)
+    since = dt.datetime.now().astimezone()
+    jobs = [(inst, so, st, seed, args.time_limit)
+            for inst, (so, st), seed in itertools.product(INSTANCES, COMBOS, args.seeds)]
+    df = run_all(jobs)
+    for attempt in range(2):  # redo runs hit by standby or battery
+        bad = contaminated(df, since)
+        print(f"pass {attempt + 1}: {int(bad.sum())} runs hit standby/battery", flush=True)
+        if not bad.any():
+            break
+        redo = df[bad][["instance", "solver", "strategy", "seed", "time_limit_s"]]
+        df = pd.concat([df[~bad], run_all([tuple(r) for r in redo.itertuples(index=False)])])
+    df.to_csv(SUMMARY / "traffic_runs.csv", index=False, lineterminator="\n")
+    summary = summarise(df)
+    summary.to_csv(SUMMARY / "traffic_summary.csv", index=False, lineterminator="\n",
+                   float_format="%.4f")
+    with pd.option_context("display.width", 250, "display.max_columns", 30):
+        print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"), flush=True)
+
+
+if __name__ == "__main__":
+    main()
