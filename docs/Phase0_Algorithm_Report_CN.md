@@ -10,7 +10,7 @@
 |---|---|---|
 | **Q1 核心求解器** | **PyVRP 作为主求解器**。VROOM 是很好的"快速 API baseline"，但长路线实例质量差、时间上限不可靠。OR-Tools 仅作为 PyVRP 不支持的约束（软时间窗、breaks）的后备，且需控制规模。**Timefold 社区版质量不足以做核心**（缺少企业版的 nearby selection），但其建模灵活性在 traffic/复杂规则上值得保留观察 | 73 个实例 × 各时间档，PyVRP 只在 3 个 Solomon 实例（10 s）上输给 VROOM，从未输给 OR-Tools 和 Timefold；1000 点：PyVRP 1.3%，VROOM 21%，OR-Tools 33%，Timefold 133%；同等预算调参后 OR-Tools 最佳配置仍是默认配置，差距不变（§3.1） |
 | **Q2 严格 Priority** | 原方案的 **10× 权重不能保证严格优先级**；VROOM 原生 priority 是加权和；**Timefold 原生分层 BendableScore 目标正确，但搜索达不到最高层的最优**；即使精确的"堆叠权重"单次求解也不行。**采用外部 sequential lexicographic controller（带 warm start）**——它在 PyVRP 和 Timefold 上都做到 0% HIGH 层落后 | 10 s 对抗族：sequential（PyVRP、Timefold）0% 在 HIGH 层落后；Timefold native 53%，VROOM native 39% |
-| **Q3 Traffic 进入搜索** | 本轮未测（按方案作为第二轮独立实验）。OR-Tools/PyVRP/VROOM 都只接受静态矩阵；Timefold 可以在影子变量里写出发时刻相关的行驶时间，是四者中唯一能原生把 traffic 放进搜索的，但社区版搜索质量是瓶颈。PoC 建议走 T1/T2（分时段矩阵 + 迭代重评估） | 见 §7 |
+| **Q3 Traffic 进入搜索** | **要考虑交通，但不一定要放进搜索。** 忽略交通（自由流矩阵）时 50–70% 的计划至少有一个客户迟到；交通进入搜索（T3）在两档拥堵下都 100% 准时。PyVRP 不能做 T3，但用"高峰矩阵"做保守规划同样 100% 准时，只多 1–4% 行驶时间；迭代重估（T2）介于两者之间。PoC 建议：PyVRP + 高峰/分时段矩阵，T2 作为优化；严重拥堵 + 紧时间窗再考虑支持 T3 的求解器 | 合成交通实验（§5），540 次运行 |
 | **Q4 learned/hybrid** | 不进入 Phase 1 主线。PyVRP 在 100 点实例 10 s 内中位 gap 已为 0.00%，learned 方法的提升空间主要在规模与动态场景，不在静态质量 | §3 |
 
 ## 2. 实验设置与公平性
@@ -22,9 +22,9 @@
 - **数据与 BKS**：Solomon 56、CVRPLIB X 11（100→1000 点）、Gehring & Homberger 1000 点 6 个（每类一个），来自 PyVRP/Instances（CVRPLIB 镜像）。VRPTW 用 DIMACS 约定（距离截断到 1 位小数），X 用四舍五入。**216 个官方 BKS 解在我们的转换 + validator 下全部可行且成本逐位一致**，证明取整约定与模型对齐。
 - **求解器配置**：
   - PyVRP 全默认。
-  - OR-Tools = `PARALLEL_CHEAPEST_INSERTION` + `GUIDED_LOCAL_SEARCH`（依据见 §5.1）；文档默认 `PATH_CHEAPEST_ARC` 作为对照变体 `ortools_pca`。
+  - OR-Tools = `PARALLEL_CHEAPEST_INSERTION` + `GUIDED_LOCAL_SEARCH`（依据见 §6.1）；文档默认 `PATH_CHEAPEST_ARC` 作为对照变体 `ortools_pca`。
   - VROOM = exploration level 5（CLI 默认）、单线程、`timeout` = 时间档；进程内调用 pyvroom，不含 HTTP/Docker 延迟。
-  - Timefold = 社区版默认阶段（construction + late acceptance local search），list-variable 模型（与官方 quickstart 同构），`NO_ASSERT`，每次求解一个新 JVM，**计时前在同一 JVM 内先做 5 s 预热求解**（JIT warm-up，不计入预算；冷启动单独测，见 §5.4）。Java 端分数与 Python validator 逐位核对一致。
+  - Timefold = 社区版默认阶段（construction + late acceptance local search），list-variable 模型（与官方 quickstart 同构），`NO_ASSERT`，每次求解一个新 JVM，**计时前在同一 JVM 内先做 5 s 预热求解**（JIT warm-up，不计入预算；冷启动单独测，见 §6.4）。Java 端分数与 Python validator 逐位核对一致。
   - 四者目标均为总距离（+ 固定车辆成本）。
 - **运行总数**：9 000 次，除 `ortools_pca` 的 130 次 `NO_SOLUTION` 外全部返回解；无崩溃、无被 runner 杀掉的超时。
 
@@ -59,7 +59,7 @@
 - **VROOM 的质量取决于路线长度**：短路线类（C1/C2）10 s 内 0.00–0.02%，并在 3 个 Solomon 实例（10 s：R108、RC102、RC108）上优于 PyVRP；长路线/宽时间窗类（R2、RC2）1 s 时 30–38%、10 s 时仍 ~6%。100 点实例约 7 s 自行结束。
 - **OR-Tools 的 gap 随时间几乎不收敛**（X：10 s → 60 s 只从 7.4% 到 6.1%），1000 点规模基本失效（HG1000 全部 `LOCAL_OPTIMUM_NOT_REACHED`）。
 - **Timefold 社区版收敛慢、规模扩展差**：100 点给足 60 s 能到 2.6%（并在 3 个实例上优于 VROOM），但 10 s 时 28%，500 点以上 40–150%。每秒约 4–11 万次移动评估，模型本身不是瓶颈；差距来自搜索——**限制候选移动到邻近客户的 nearby selection 是企业版功能**，社区版只能在所有位置中随机选，规模越大越低效（项目原文"Key scaling features are Enterprise only"在此得到量化）。
-- **时间上限可靠性**：PyVRP 超时 ≤ 0.43 s，Timefold 求解超时 ≤ 2.6 s（另有 JVM 启动/预热开销，见 §5.4）。OR-Tools 在 HG1000 平均超 4.9 s、最坏 74 s；VROOM 在 X 60 s 档有 4 次跑了约 130 s。对有实时要求的调度 API，后两者需要外部看门狗。
+- **时间上限可靠性**：PyVRP 超时 ≤ 0.43 s，Timefold 求解超时 ≤ 2.6 s（另有 JVM 启动/预热开销，见 §6.4）。OR-Tools 在 HG1000 平均超 4.9 s、最坏 74 s；VROOM 在 X 60 s 档有 4 次跑了约 130 s。对有实时要求的调度 API，后两者需要外部看门狗。
 - **车队规模敏感性**：HG 文件给出 250 辆车而 BKS 仅用 32–100 条路线。把车队限制为 1.2×BKS 路线数后，OR-Tools 33.1% → 18.5%，VROOM 21.4% → 19.7%，PyVRP 不受影响（1.32% → 1.28%）；Timefold 132.8% → 81.9%，但 18 次中 8 次违反时间窗（C1/C2 全部不可行）——紧车队下社区版连可行解都难以找到。
 - **资源**：Python 进程峰值内存 < 280 MB；Timefold JVM 峰值堆 ≤ 424 MB（1000 点）。
 
@@ -149,27 +149,55 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 5. warm start 是必需的：不做 warm start 时，OR-Tools 的 sequential 在均匀族上约 21% 的运行在后续阶段重新装箱失败。
 6. 以上数字在完整重跑间波动几个百分点（短时限下的正常噪声），结论不变。
 
-## 5. 工程发现（选型时同样重要）
+## 5. Traffic 实验（Q3）：交通要不要进入搜索？
 
-### 5.1 OR-Tools
+**设计**（`traffic/`）：合成城市 20 × 20 km、车场在西侧、每题 100 个客户（60% 有 1 小时时间窗），班次 07:00–16:00（路线必然经过早高峰）。行驶时间按 Ichoua 模型：每 15 分钟一档车速，越靠近市中心越堵，逐档积分（保证 FIFO）。两档拥堵：**中度 T**（市中心高峰约慢 2.5×，全天平均 1.11×）和**重度 H**（约慢 4.7×，平均 1.16×），各 10 题 × 3 seeds，每次 30 s，同一总预算。所有计划都放到"真实"的时变交通里重新核算（`traffic/evaluate.py`）。Timefold 的 Java 时变行驶时间与 Python 模型逐秒一致（有测试）。
+
+| 求解器 | 做法 | 准时计划比例 T / H | 每个计划平均迟到客户 T / H | 行驶时间 vs PyVRP+平均矩阵 T / H | 计划对行驶时间的估计误差 T / H |
+|---|---|---|---|---|---|
+| PyVRP | T0 自由流矩阵 | 50% / 30% | 0.83 / 1.30 | −0.3% / −0.4% | **低估 8.0% / 10.6%** |
+| PyVRP | T0 全天平均矩阵 | 50% / 40% | 0.87 / 0.90 | 参照 | −1.1% / −0.8% |
+| PyVRP | **T0 高峰矩阵（保守）** | **100% / 100%** | 0 / 0 | +1.1% / +3.5% | 高估 44% / 66% |
+| PyVRP | **T2 迭代重估** | 97% / 70% | 0.03 / 0.30 | +1.0% / +1.6% | −0.9% / −1.9% |
+| OR-Tools | T0 全天平均 | 53% / 50% | 0.63 / 0.73 | +4.5% / +4.2% | −1.3% / −1.2% |
+| OR-Tools | T2 迭代重估 | 93% / 63% | 0.07 / 0.37 | +6.4% / +8.6% | −1.4% / −2.6% |
+| Timefold | T0 全天平均 | 53% / 37% | 0.50 / 0.97 | +17.3% / +14.8% | −1.4% / −1.3% |
+| Timefold | T2 迭代重估 | 93% / 87% | 0.07 / 0.13 | +23.9% / +30.3% | −0.5% / −1.7% |
+| Timefold | **T3 交通进入搜索** | **100% / 100%** | 0 / 0 | +18.4% / +13.5% | 精确 |
+
+"准时计划" = 一个计划里没有任何客户迟到、没有车辆超班。所有 540 次运行都有效（全部客户服务、容量满足），无待机/电池污染。
+
+结论：
+
+1. **忽略交通会出问题**：自由流规划低估行驶时间 8–11%，一半以上的计划至少有一个客户迟到；拥堵越重越明显。
+2. **同一个求解器内，交通进入搜索（T3）效果最干净**：Timefold 从 53% / 37% 准时提升到 100% / 100%，行驶时间与它自己的静态计划基本持平（+1% / −1%）。它整体行驶时间偏高是社区版求解质量问题（§3），不是 T3 的代价。
+3. **但用 PyVRP 也能做到 100% 准时**：按高峰矩阵保守规划，只多 1–4% 行驶时间（重度拥堵下平均多用约 0.4 辆车）。代价是计划严重高估时间（44–66%），ETA 不可直接给客户。
+4. **迭代重估（T2）兼顾准确与成本**：PyVRP 估计误差 ≈1–2%、行驶时间 +1–2%，中度拥堵 97% 准时；重度拥堵下仍有 30% 的计划出现迟到，因为每轮重排都会改变出发时刻。
+5. **能力**：只有 Timefold 能在 Python 栈里做 T3；OR-Tools 的 C++ 支持随时间变化的转移（cumul-dependent transit），但 9.15 的 Python 绑定未开放所需的 `FloatSlopePiecewiseLinearFunction`；PyVRP / VROOM 只有静态矩阵。
+
+**建议**：PoC 阶段用 PyVRP + 保守（高峰或分时段上分位）矩阵保证准时，再用 T2 迭代给出准确 ETA 和较短路线；当 Voi 的真实数据显示"重度拥堵 + 紧时间窗"很常见时，再评估支持 T3 的求解器（Timefold 企业版，或经 C++ 使用 OR-Tools）。以上基于合成交通，需要用斯德哥尔摩真实速度数据复核。
+
+## 6. 工程发现（选型时同样重要）
+
+### 6.1 OR-Tools
 
 - **文档默认 `PATH_CHEAPEST_ARC` 在紧时间窗上找不到可行初始解**：8 个 Solomon 实例（R101/102/103/105/106、RC101/102/105）在所有 seed、1 s 与 10 s 下均 `NO_SOLUTION`（R1 类 36%、RC1 类 27.5% 的运行）。`PARALLEL_CHEAPEST_INSERTION` 是唯一在 Solomon/X/HG 上都可行且接近最好的策略（基于 4 个实例的 6 策略对比，属于轻度调参，已披露）。
 - **`SetAllowedVehiclesForIndex` 的 Python 绑定在 9.15 不可用**（拒绝所有序列类型），且传空列表语义为"允许所有车辆"。改用 `VehicleVar(index).SetValues(...)`。
 - 大规模下 time limit 不可靠，车队规模强烈影响质量（§3）。
 
-### 5.2 PyVRP
+### 6.2 PyVRP
 
 - **0.14 API 与旧文档/执行方案示例不同**：depot/client 挂在 `Location` 上，路线迭代得到 `ScheduledActivity`。
 - **大数值尺度会返回不可行解**：罚分上限 `max_penalty = 1e5`/单位；固定成本或 prize 超过该量级时超载解反而"更便宜"。adapter 已将上限设为 `max(1e5, 10 × 最大成本系数)`。**任何 big-M 建模都必须检查这一点。**
 - 不支持：skills（可用多 profile 矩阵变通，未测）、软时间窗、breaks、真正 time-dependent travel。
 
-### 5.3 VROOM（pyvroom）
+### 6.3 VROOM（pyvroom）
 
 - **pyvroom 1.15.2 在 Windows + numpy 2 上无法设置矩阵**（`uint32` 缓冲区格式 `L` vs 绑定只接受 `I`）；adapter 用 `np.uintc` 自建 `_vroom.Matrix` 绕过（依赖私有模块，升级时需复查）。
 - **没有 drop penalty、没有"必须服务"标记**：总是先最大化分配数量；这与"optional + penalty"的业务语义不同。
 - **timeout 不严格**，小实例提前结束；原生支持 skills、breaks、shipments、多维容量。
 
-### 5.4 Timefold（社区版 2.7.0）
+### 6.4 Timefold（社区版 2.7.0）
 
 - **必须作为常驻服务运行**：冷 JVM 在 Solomon 1 s 下只有 **98/560 次**给出可行解（JIT 前约 5 600 次移动评估/秒 vs 预热后约 4.3 万），1 s 内连构造都完成不了。每次请求启动新 JVM 不可行；生产中需常驻 JVM（如 SolverManager / Timefold 服务形态）。
 - **构造顺序是业务语义的一部分**：优先级场景必须按难度排序构造（见 §4）；但在全部 required、同一优先级的标准实例上，排序退化为"大 demand 优先"，忽略地理与时间窗，Solomon 1 s / 10 s gap 从 55.9% / 28.1% 恶化到 100.3% / 44.7%（保留为对照变体 `timefold_ffd`）。因此标准 benchmark 用默认构造，priority 实验用排序构造。
@@ -177,7 +205,7 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 - **建模体验**：约 480 行 Java（list variable + 声明式影子变量 + constraint streams），任意规则可直接写成约束，原生分层分数；这是四者中表达力最强的，但与 Python 主栈分离、需要 JVM 运维。
 - 求解时间上限可靠（超时 ≤ 2.6 s）。
 
-### 5.5 约束能力矩阵（本轮实测 / 文档）
+### 6.5 约束能力矩阵（本轮实测 / 文档）
 
 | 约束 | OR-Tools | PyVRP | VROOM | Timefold |
 |---|---|---|---|---|
@@ -191,36 +219,37 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 | Pickup & delivery | 文档支持，未测 | 文档支持（0.14），未测 | 文档支持，未测 | 需自写约束，未测 |
 | 软时间窗 | 文档支持，未测 | ❌ | ❌ | 可写成 soft 约束，未测 |
 | Breaks | 文档支持，未测 | ❌ | 文档支持，未测 | 需自写，未测 |
-| Time-dependent travel | ❌（仅静态矩阵） | ❌ | ❌ | 可在影子变量中实现，未测 |
+| Time-dependent travel（交通进入搜索） | ⚠️ C++ 支持，Python 绑定不可用 | ❌（仅静态矩阵；T2 迭代 ✅ 实测） | ❌ | ✅ 实测（§5） |
 | 可靠的时间上限 | ⚠️ 大规模超时 | ✅ | ❌ 最多超 77 s | ✅（但需常驻 JVM） |
 
-## 6. 建议的技术路线
+## 7. 建议的技术路线
 
 1. **Core = PyVRP + 外部 sequential lexicographic controller**（`priority/lexicographic.py` 已可用，含 warm start 和溢出检查）。
 2. **VROOM 定位为快速 baseline / 对照**：适合短路线、"尽量多服务"类场景的快速估算；不做核心。
 3. **OR-Tools 保留为 rich-constraint fallback**，仅在出现 PyVRP 无法表达的约束（软时间窗等）时使用，且限制规模、严格控制车队数、使用插入类初始解策略。
-4. **Timefold 不进入 Phase 1 主线**：社区版在标准 VRP 上质量差距过大。它的价值在于"任意约束 + 可在搜索中做 time-dependent travel"；如果 Q3 证明 traffic 必须进入搜索，或业务规则超出 PyVRP 能力，再评估企业版（需许可，且需重测）。
-5. **Voi 场景的约束需尽早验证 PyVRP 覆盖度**：换电车辆的电池容量（多维容量，PyVRP 支持）、车辆类型差异（profile）、软时间窗（不支持 → 需评估是否可用硬窗 + 优先级替代）。
-6. 不采纳原方案中"约 10× penalty 即代表 priority"的写法；对外 API 以 priority class 表达，内部由控制器保证字典序。
+4. **Timefold 不进入 Phase 1 主线**：社区版在标准 VRP 上质量差距过大。它的价值在于"任意约束 + 可在搜索中做 time-dependent travel"（§5 中唯一做到 T3 且 100% 准时）；如果真实数据显示重度拥堵 + 紧时间窗常见，或业务规则超出 PyVRP 能力，再评估企业版（需许可，且需重测）。
+5. **交通（§5）**：PoC 用 PyVRP + 保守（高峰或分时段上分位）矩阵保证准时，再用 T2 迭代重估给出准确 ETA；从第一天起记录真实行驶时间，用于标定交通模型。
+6. **Voi 场景的约束需尽早验证 PyVRP 覆盖度**：换电车辆的电池容量（多维容量，PyVRP 支持）、车辆类型差异（profile）、软时间窗（不支持 → 需评估是否可用硬窗 + 优先级替代）。
+7. 不采纳原方案中"约 10× penalty 即代表 priority"的写法；对外 API 以 priority class 表达，内部由控制器保证字典序。
 
-## 7. 下一步
+## 8. 下一步
 
 | 优先级 | 事项 |
 |---|---|
 | 高 | 构造 Voi 风格 rich 实例（斯德哥尔摩坐标、换电 + 调度、priority class、车型差异），跑 PyVRP + sequential 与其他求解器 |
-| 高 | Traffic T1：早高峰/平峰/晚高峰三套静态矩阵分别求解，评估计划差异；T2：迭代按出发时刻换 bucket |
+| 高 | Traffic 复核：用斯德哥尔摩真实速度数据（Data 方向）替换合成交通模型，重跑 §5；测分时段上分位矩阵（介于平均与高峰之间）的准时率与成本 |
 | 中 | Li & Lim pickup-delivery；PyVRP skills 的 profile 变通；VROOM warm start（steps） |
 | 中 | sequential 改进：只锁数量、按层分配时间 |
 | 低 | Timefold 企业版（nearby selection）重测；Timefold 常驻服务形态下的 time-dependent 原型；jsprit |
 
-## 8. 局限性
+## 9. 局限性
 
 - 单台笔记本；VROOM（exploration 5）与 Timefold（社区版默认阶段）未调参；OR-Tools 与 PyVRP 做了同等预算的随机搜索 + 单项改动（§3.1），覆盖有限但结论（默认配置已接近最佳）在两种方法下一致。
 - 同一配置的结果存在日间波动（§3.1：Solomon 约 0.1–0.6 个百分点，HG1000 最多约 5 个百分点）。主 benchmark 中 OR-Tools / PyVRP / VROOM 在 9 月 29 日运行，Timefold 在 10 月 1–2 日运行；求解器之间的差距（多为数倍到数十倍）远大于这一波动，结论不受影响，但不同日期的小差异不应解读为改进或退化。
 - HG 仅 1000 点、每类 1 个实例；200–800 点因可得 BKS 的目标约定不一致而未用。
 - 车队敏感性只有 3 个 seed；priority 实验为合成实例，时限 2 s / 10 s。
 - VROOM 通过 pyvroom 进程内调用；Timefold 每次新 JVM + 预热，均非生产服务形态。
-- 所有结果为静态矩阵、无 traffic；不代表实时重规划性能。
+- §3–§4 的结果为静态矩阵；§5 的交通为合成模型（Ichoua 型速度曲线、以市中心为拥堵核心），真实路网与速度分布可能改变各做法的差距；实时重规划性能未测。
 
 ## 复现
 
@@ -230,5 +259,6 @@ py -3.13 -m venv .venv && .venv/Scripts/python -m pip install -r environments/re
 source environments/java_env.sh && (cd adapters/timefold_java && mvn -q package)   # Timefold jar
 .venv/Scripts/python -m data.download        # 实例 + BKS
 bash experiments/run_all.sh                  # priority + 全部 benchmark + 图表（首次全量约 12 h，需接电源）
-.venv/Scripts/python -m pytest               # 334 个测试（3 个按能力跳过）
+.venv/Scripts/python -m traffic.instances && .venv/Scripts/python -m traffic.run_experiment   # 交通实验（约 80 min）
+.venv/Scripts/python -m pytest               # 340 个测试（3 个按能力跳过）
 ```
