@@ -14,7 +14,9 @@ from .model import TDModel
 
 
 def simulate(problem: Problem, td: TDModel, solution: Solution,
-             planning_matrix=None) -> dict:
+             planning_matrix=None, min_start: dict[str, int] | None = None) -> dict:
+    """``min_start``: job id -> earliest service start the plan scheduled
+    (time-slot plans from traffic.bucketed); the driver waits until then."""
     jobs = problem.job_by_id()
     vehicles = problem.vehicle_by_id()
     out = {"travel_time_s": 0, "lateness_s": 0, "late_jobs": 0, "overtime_s": 0,
@@ -33,6 +35,8 @@ def simulate(problem: Problem, td: TDModel, solution: Solution,
             if planning_matrix is not None:
                 out["planned_travel_s"] += int(planning_matrix[prev][job.location])
             t += leg
+            if min_start and jid in min_start:
+                t = max(t, min_start[jid])
             if job.time_window:
                 t = max(t, job.time_window[0])
                 if t > job.time_window[1]:

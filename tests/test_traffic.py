@@ -61,6 +61,34 @@ def test_timefold_td_search_matches_python_model(instance):
     assert soft_cost == simulate(problem, td, sol)["travel_time_s"]
 
 
+def test_bucket_expansion_is_conservative(instance):
+    from traffic.bucketed import expand
+
+    problem, td = instance
+    exp = expand(problem, td, 5400)
+    s0, s1 = problem.vehicles[0].shift
+    assert all(len(g) >= 1 for g in exp.groups)
+    rng = np.random.default_rng(0)
+    for c in rng.integers(0, len(exp.copies), size=40):
+        cp = exp.copies[c]
+        job = problem.jobs[cp.job_index]
+        a, b = job.time_window or (s0, s1)
+        assert a <= cp.lo <= cp.hi <= b
+        # Leg cost covers every departure the copy allows (random check).
+        for t in rng.integers(cp.lo + job.service, cp.hi + job.service + 1, size=5):
+            for d in rng.integers(0, len(exp.copies), size=5):
+                dest = problem.jobs[exp.copies[d].job_index].location
+                assert td.travel_time(job.location, dest, int(t)) <= exp.matrix[c + 1, d + 1]
+
+
+@pytest.mark.parametrize("solver", ["pyvrp", "ortools"])
+def test_bucketed_plan_on_time_under_td(instance, solver):
+    problem, td = instance
+    sol, extra = STRATEGIES["bucketed_90"](get_adapter(solver), problem, td, time_limit_s=3, seed=0)
+    r = simulate(problem, td, sol, min_start=extra["min_start"])
+    assert r["valid"] and r["on_time"], r
+
+
 def test_td_search_rejects_static_solvers(instance):
     problem, td = instance
     with pytest.raises(ValueError, match="TD search needs Timefold"):

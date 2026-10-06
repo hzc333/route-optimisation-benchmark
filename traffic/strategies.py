@@ -78,10 +78,20 @@ def solve_td_search(adapter, problem, td, *, time_limit_s, seed, **opts) -> tupl
     return adapter.solve(problem, time_limit_s=time_limit_s, seed=seed, td=td.to_json(), **opts), None
 
 
+def solve_bucketed(adapter, problem, td, *, width_s, time_limit_s, seed, **opts):
+    """Time-bucket node duplication (traffic.bucketed): TD inside PyVRP /
+    OR-Tools search. Returns (solution, {"min_start", "planned_travel_s"})."""
+    from .bucketed import solve
+
+    return solve(adapter, problem, td, width_s=width_s, time_limit_s=time_limit_s, seed=seed, **opts)
+
+
 STRATEGIES = {
     "static_free": lambda a, p, td, **kw: solve_static(a, p, td, kind="free", **kw),
     "static_mean": lambda a, p, td, **kw: solve_static(a, p, td, kind="mean", **kw),
     "static_peak": lambda a, p, td, **kw: solve_static(a, p, td, kind="peak", **kw),
     "iterative": solve_iterative,
     "td_search": solve_td_search,
+    "bucketed_90": lambda a, p, td, **kw: solve_bucketed(a, p, td, width_s=5400, **kw),
+    "bucketed_60": lambda a, p, td, **kw: solve_bucketed(a, p, td, width_s=3600, **kw),
 }

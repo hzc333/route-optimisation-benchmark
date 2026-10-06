@@ -49,9 +49,13 @@ def run_one(args) -> dict:
            "seed": seed, "time_limit_s": time_limit, "t_start": time.time()}
     t0 = time.perf_counter()
     try:
-        sol, matrix = STRATEGIES[strategy](get_adapter(solver), problem, td, time_limit_s=time_limit,
-                                           seed=seed, **SOLVER_OPTIONS.get(solver, {}))
-        row |= simulate(problem, td, sol, matrix)
+        sol, extra = STRATEGIES[strategy](get_adapter(solver), problem, td, time_limit_s=time_limit,
+                                          seed=seed, **SOLVER_OPTIONS.get(solver, {}))
+        if isinstance(extra, dict):  # time-slot plan (traffic.bucketed)
+            row |= simulate(problem, td, sol, min_start=extra["min_start"])
+            row["planned_travel_s"] = extra["planned_travel_s"]
+        else:
+            row |= simulate(problem, td, sol, extra)
         row["status"] = sol.status.value
     except Exception as exc:  # recorded, never dropped
         row |= {"status": "ERROR", "valid": False, "notes": f"{type(exc).__name__}: {exc}"[:300]}
@@ -102,11 +106,14 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--time-limit", type=float, default=30.0)
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
+    ap.add_argument("--combos", help="comma list of solver:strategy (default: the T0/T2/T3 set)")
+    ap.add_argument("--tag", default="", help="suffix for output files, e.g. _buckets")
     args = ap.parse_args()
+    combos = [tuple(c.split(":")) for c in args.combos.split(",")] if args.combos else COMBOS
     SUMMARY.mkdir(parents=True, exist_ok=True)
     since = dt.datetime.now().astimezone()
     jobs = [(inst, so, st, seed, args.time_limit)
-            for inst, (so, st), seed in itertools.product(INSTANCES, COMBOS, args.seeds)]
+            for inst, (so, st), seed in itertools.product(INSTANCES, combos, args.seeds)]
     df = run_all(jobs)
     for attempt in range(2):  # redo runs hit by standby or battery
         bad = contaminated(df, since)
@@ -115,9 +122,9 @@ def main() -> None:
             break
         redo = df[bad][["instance", "solver", "strategy", "seed", "time_limit_s"]]
         df = pd.concat([df[~bad], run_all([tuple(r) for r in redo.itertuples(index=False)])])
-    df.to_csv(SUMMARY / "traffic_runs.csv", index=False, lineterminator="\n")
+    df.to_csv(SUMMARY / f"traffic_runs{args.tag}.csv", index=False, lineterminator="\n")
     summary = summarise(df)
-    summary.to_csv(SUMMARY / "traffic_summary.csv", index=False, lineterminator="\n",
+    summary.to_csv(SUMMARY / f"traffic_summary{args.tag}.csv", index=False, lineterminator="\n",
                    float_format="%.4f")
     with pd.option_context("display.width", 250, "display.max_columns", 30):
         print(summary.to_string(index=False, float_format=lambda x: f"{x:.3f}"), flush=True)

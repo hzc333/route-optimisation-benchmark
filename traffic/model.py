@@ -70,6 +70,29 @@ class TDModel:
             d -= v * (end - t)
             t, k = end, k + 1
 
+    def travel_time_vec(self, i: np.ndarray, j: np.ndarray, t: np.ndarray) -> np.ndarray:
+        """Vectorised travel_time: same arithmetic and rounding, many legs at once."""
+        i, j = np.asarray(i), np.asarray(j)
+        t0 = np.asarray(t, dtype=float)
+        d = self.length_m[i, j].astype(float)
+        exposure = self.congestion[i, j]
+        profile = np.asarray(self.profile)
+        out = np.zeros(d.shape)
+        t_cur = t0.copy()
+        k = np.floor(t_cur / self.bucket_s).astype(int)
+        active = d > 0
+        while active.any():
+            v = self.v_free * (1.0 - (self.a + self.b * exposure) * profile[k % len(profile)])
+            end = (k + 1) * float(self.bucket_s)
+            done = active & (d <= v * (end - t_cur))
+            out[done] = np.floor(t_cur[done] + d[done] / v[done] - t0[done] + 0.5)
+            go = active & ~done
+            d[go] -= v[go] * (end[go] - t_cur[go])
+            t_cur[go] = end[go]
+            k[go] += 1
+            active = go
+        return out.astype(int)
+
     def matrix_at(self, t: float) -> np.ndarray:
         """Travel times for departures at time t, all arcs (int seconds)."""
         n = self.length_m.shape[0]
