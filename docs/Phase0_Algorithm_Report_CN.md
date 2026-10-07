@@ -10,7 +10,7 @@
 |---|---|---|
 | **Q1 核心求解器** | **PyVRP 作为主求解器**。VROOM 是很好的"快速 API baseline"，但长路线实例质量差、时间上限不可靠。OR-Tools 仅作为 PyVRP 不支持的约束（软时间窗、breaks）的后备，且需控制规模。**Timefold 社区版质量不足以做核心**（缺少企业版的 nearby selection），但其建模灵活性在 traffic/复杂规则上值得保留观察 | 73 个实例 × 各时间档，PyVRP 只在 3 个 Solomon 实例（10 s）上输给 VROOM，从未输给 OR-Tools 和 Timefold；1000 点：PyVRP 1.3%，VROOM 21%，OR-Tools 33%，Timefold 133%；同等预算调参后 OR-Tools 最佳配置仍是默认配置，差距不变（§3.1） |
 | **Q2 严格 Priority** | 原方案的 **10× 权重不能保证严格优先级**；VROOM 原生 priority 是加权和；**Timefold 原生分层 BendableScore 目标正确，但搜索达不到最高层的最优**；即使精确的"堆叠权重"单次求解也不行。**采用外部 sequential lexicographic controller（带 warm start）**——它在 PyVRP 和 Timefold 上都做到 0% HIGH 层落后 | 10 s 对抗族：sequential（PyVRP、Timefold）0% 在 HIGH 层落后；Timefold native 53%，VROOM native 39% |
-| **Q3 Traffic 进入搜索** | **要考虑交通，但不一定要放进搜索。** 忽略交通（自由流矩阵）时 50–70% 的计划至少有一个客户迟到；交通进入搜索（T3）在两档拥堵下都 100% 准时。PyVRP 不能做 T3，但用"高峰矩阵"做保守规划同样 100% 准时，只多 1–4% 行驶时间；迭代重估（T2）介于两者之间。PoC 建议：PyVRP + 高峰/分时段矩阵，T2 作为优化；严重拥堵 + 紧时间窗再考虑支持 T3 的求解器 | 合成交通实验（§5），540 次运行 |
+| **Q3 Traffic 进入搜索** | **能，而且值得：用"按时段复制客户"把交通放进 PyVRP 的搜索。** 忽略交通时 50–70% 的计划至少有一个客户迟到；PyVRP + 时段复制在两档拥堵下都 100% 准时，行驶时间与"只用平均矩阵"持平（−0.4% 到 +0.3%），比"高峰矩阵"保守规划省 1–4%。PoC 建议直接采用（90 分钟时段） | 合成交通实验（§5），1 020 次运行 |
 | **Q4 learned/hybrid** | 不进入 Phase 1 主线。PyVRP 在 100 点实例 10 s 内中位 gap 已为 0.00%，learned 方法的提升空间主要在规模与动态场景，不在静态质量 | §3 |
 
 ## 2. 实验设置与公平性
@@ -175,7 +175,30 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 4. **迭代重估（T2）兼顾准确与成本**：PyVRP 估计误差 ≈1–2%、行驶时间 +1–2%，中度拥堵 97% 准时；重度拥堵下仍有 30% 的计划出现迟到，因为每轮重排都会改变出发时刻。
 5. **能力**：只有 Timefold 能在 Python 栈里做 T3；OR-Tools 的 C++ 支持随时间变化的转移（cumul-dependent transit），但 9.15 的 Python 绑定未开放所需的 `FloatSlopePiecewiseLinearFunction`；PyVRP / VROOM 只有静态矩阵。
 
-**建议**：PoC 阶段用 PyVRP + 保守（高峰或分时段上分位）矩阵保证准时，再用 T2 迭代给出准确 ETA 和较短路线；当 Voi 的真实数据显示"重度拥堵 + 紧时间窗"很常见时，再评估支持 T3 的求解器（Timefold 企业版，或经 C++ 使用 OR-Tools）。以上基于合成交通，需要用斯德哥尔摩真实速度数据复核。
+### 5.1 按时段复制客户：把交通放进 PyVRP / OR-Tools 的搜索
+
+两者的 Python 接口都只接受静态矩阵，于是把"时间"搬进图里（`traffic/bucketed.py`）：班次切成宽 W 的时段，每个客户在其时间窗覆盖的每个时段各复制一份（副本时间窗限制在该时段内），**每个客户必须且只能选一份**（PyVRP：必选的互斥 `ClientGroup`；OR-Tools：无罚分 disjunction）。从一个副本出发的行驶时间取该副本所有可能出发时刻中的**最大值**（每 30 s 采样），车场出发用班次开始时刻。选哪份副本就等于选什么时候服务，所以交通在搜索中被考虑；由 FIFO 可证：只要司机不早于计划时段开始服务，真实到达时间不晚于计划，计划在时变交通下准时。100 个客户扩展为 364（W = 90 分钟）或 522（W = 60 分钟）个节点，构造约 0.7 s。
+
+同日对照（480 次运行，同一批 20 个实例 × 3 seeds × 30 s，全部有效，无待机/电池污染）：
+
+| 求解器 | 做法 | 准时计划比例 T / H | 行驶时间 vs PyVRP+平均矩阵 T / H | 计划估计误差 T / H | 平均用车 T / H |
+|---|---|---|---|---|---|
+| PyVRP | T0 全天平均矩阵 | 57% / 47% | 参照 | −0.8% / −0.7% | 6.30 / 6.30 |
+| PyVRP | T0 高峰矩阵 | 100% / 100% | +1.4% / +3.7% | 高估 44% / 66% | 6.30 / 6.77 |
+| PyVRP | T2 迭代重估 | 97% / 67% | +1.4% / +1.9% | −1.0% / −1.8% | 6.43 / 6.53 |
+| **PyVRP** | **时段复制 90 分钟** | **100% / 100%** | **+0.3% / −0.4%** | 高估 2.2% / 2.8% | 6.67 / 6.70 |
+| PyVRP | 时段复制 60 分钟 | 100% / 100% | +0.3% / −0.0% | 高估 1.3% / 1.9% | 6.80 / 6.77 |
+| OR-Tools | 时段复制 90 / 60 分钟 | 100% / 100% | +17% / +15%（90）；+21% / +19%（60） | 高估 1.4–2.7% | 6.8–7.2 |
+| Timefold | T3 交通进入搜索 | 100% / 100% | +14.3% / +13.7% | 精确 | 6.93 / 6.77 |
+
+结论：
+
+1. **PyVRP + 时段复制同时做到"100% 准时"和"不多跑路"**：行驶时间与只用平均矩阵（43–53% 的计划会迟到）持平，比高峰矩阵保守规划少 1.1–4.1%，ETA 误差只有 1–3%（略偏保守，可直接给客户）。代价是平均多用约 0.4 辆车（与高峰矩阵在重度拥堵下相同），以及计划里每个客户带一个"不早于"的服务时段。
+2. **时段宽度 90 分钟与 60 分钟效果几乎相同**；90 分钟节点更少、用车略少，作为默认。
+3. **OR-Tools 用同样方法也能 100% 准时**，但节点数增加后其搜索质量下降明显（行驶时间多 15–21%），与 §3 的规模结论一致。
+4. 这是"把交通放进搜索"在 PyVRP 上的可行实现，不需要改 C++ 内核；Timefold 的原生 T3 在这里没有优势。
+
+**建议**：PoC 采用 **PyVRP + 时段复制（90 分钟）** 处理交通；以高峰矩阵作为最简单的保底方案；T2 迭代可用于优化 ETA。以上基于合成交通，需要用斯德哥尔摩真实速度数据复核。
 
 ## 6. 工程发现（选型时同样重要）
 
@@ -219,7 +242,7 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 | Pickup & delivery | 文档支持，未测 | 文档支持（0.14），未测 | 文档支持，未测 | 需自写约束，未测 |
 | 软时间窗 | 文档支持，未测 | ❌ | ❌ | 可写成 soft 约束，未测 |
 | Breaks | 文档支持，未测 | ❌ | 文档支持，未测 | 需自写，未测 |
-| Time-dependent travel（交通进入搜索） | ⚠️ C++ 支持，Python 绑定不可用 | ❌（仅静态矩阵；T2 迭代 ✅ 实测） | ❌ | ✅ 实测（§5） |
+| Time-dependent travel（交通进入搜索） | ⚠️ C++ 原生支持但 Python 不可用；时段复制 ✅ 实测 | 原生 ❌；**时段复制 ✅ 实测（§5.1）** | ❌ | ✅ 实测（§5） |
 | 可靠的时间上限 | ⚠️ 大规模超时 | ✅ | ❌ 最多超 77 s | ✅（但需常驻 JVM） |
 
 ## 7. 建议的技术路线
@@ -228,7 +251,7 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 2. **VROOM 定位为快速 baseline / 对照**：适合短路线、"尽量多服务"类场景的快速估算；不做核心。
 3. **OR-Tools 保留为 rich-constraint fallback**，仅在出现 PyVRP 无法表达的约束（软时间窗等）时使用，且限制规模、严格控制车队数、使用插入类初始解策略。
 4. **Timefold 不进入 Phase 1 主线**：社区版在标准 VRP 上质量差距过大。它的价值在于"任意约束 + 可在搜索中做 time-dependent travel"（§5 中唯一做到 T3 且 100% 准时）；如果真实数据显示重度拥堵 + 紧时间窗常见，或业务规则超出 PyVRP 能力，再评估企业版（需许可，且需重测）。
-5. **交通（§5）**：PoC 用 PyVRP + 保守（高峰或分时段上分位）矩阵保证准时，再用 T2 迭代重估给出准确 ETA；从第一天起记录真实行驶时间，用于标定交通模型。
+5. **交通（§5）**：PoC 用 **PyVRP + 时段复制（90 分钟）** 把交通放进搜索（100% 准时、不多跑路）；高峰矩阵作为保底；从第一天起记录真实行驶时间，用于标定交通模型。
 6. **Voi 场景的约束需尽早验证 PyVRP 覆盖度**：换电车辆的电池容量（多维容量，PyVRP 支持）、车辆类型差异（profile）、软时间窗（不支持 → 需评估是否可用硬窗 + 优先级替代）。
 7. 不采纳原方案中"约 10× penalty 即代表 priority"的写法；对外 API 以 priority class 表达，内部由控制器保证字典序。
 
@@ -237,7 +260,7 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 | 优先级 | 事项 |
 |---|---|
 | 高 | 构造 Voi 风格 rich 实例（斯德哥尔摩坐标、换电 + 调度、priority class、车型差异），跑 PyVRP + sequential 与其他求解器 |
-| 高 | Traffic 复核：用斯德哥尔摩真实速度数据（Data 方向）替换合成交通模型，重跑 §5；测分时段上分位矩阵（介于平均与高峰之间）的准时率与成本 |
+| 高 | Traffic 复核：用斯德哥尔摩真实速度数据（Data 方向）替换合成交通模型，重跑 §5（含时段复制）；测更大规模（200–500 客户）下时段复制的节点膨胀与求解质量 |
 | 中 | Li & Lim pickup-delivery；PyVRP skills 的 profile 变通；VROOM warm start（steps） |
 | 中 | sequential 改进：只锁数量、按层分配时间 |
 | 低 | Timefold 企业版（nearby selection）重测；Timefold 常驻服务形态下的 time-dependent 原型；jsprit |
@@ -260,5 +283,6 @@ source environments/java_env.sh && (cd adapters/timefold_java && mvn -q package)
 .venv/Scripts/python -m data.download        # 实例 + BKS
 bash experiments/run_all.sh                  # priority + 全部 benchmark + 图表（首次全量约 12 h，需接电源）
 .venv/Scripts/python -m traffic.instances && .venv/Scripts/python -m traffic.run_experiment   # 交通实验（约 80 min）
-.venv/Scripts/python -m pytest               # 340 个测试（3 个按能力跳过）
+.venv/Scripts/python -m traffic.run_experiment --tag _buckets --combos pyvrp:bucketed_90,pyvrp:bucketed_60,ortools:bucketed_90,ortools:bucketed_60,pyvrp:static_mean,pyvrp:static_peak,pyvrp:iterative,timefold:td_search
+.venv/Scripts/python -m pytest               # 346 个测试（3 个按能力跳过）
 ```
