@@ -5,7 +5,9 @@
 Every (solver, strategy) plans each instance with the same total budget;
 traffic.evaluate.simulate scores the plan under time-dependent traffic.
 Runs are pinned to P-cores, pause while on battery, and any run that
-overlaps a Windows standby is redone (experiments.standby_check).
+overlaps a Windows standby is redone (experiments.standby_check). Every
+finished run is appended to results/raw/traffic<tag>.jsonl, so a restart
+resumes instead of starting over.
 Outputs results/summary/traffic_runs.csv and traffic_summary.csv.
 """
 
@@ -14,8 +16,9 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import itertools
+import json
 import time
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import pandas as pd
@@ -23,6 +26,7 @@ import psutil
 
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "results" / "summary"
+RAW = ROOT / "results" / "raw"
 CPUS = [0, 2, 4, 6]
 INSTANCES = [f"{lv}{k:02d}" for lv in ("T", "H") for k in range(10)]
 COMBOS = [("pyvrp", "static_free"), ("pyvrp", "static_mean"), ("pyvrp", "static_peak"),
@@ -65,10 +69,27 @@ def run_one(args) -> dict:
     return row
 
 
-def run_all(jobs: list[tuple]) -> pd.DataFrame:
+KEY = ["instance", "solver", "strategy", "seed", "time_limit_s"]
+
+
+def run_all(jobs: list[tuple], journal: Path) -> None:
+    """Run jobs, appending each finished row to the JSONL journal at once, so
+    an interrupted experiment loses at most the runs in flight."""
     tagged = [j + (CPUS[i % len(CPUS)],) for i, j in enumerate(jobs)]
-    with ProcessPoolExecutor(len(CPUS)) as pool:
-        return pd.DataFrame(pool.map(run_one, tagged, chunksize=1))
+    with ProcessPoolExecutor(len(CPUS)) as pool, open(journal, "a", encoding="utf-8") as fh:
+        futures = [pool.submit(run_one, t) for t in tagged]
+        for n, fut in enumerate(as_completed(futures), start=1):
+            fh.write(json.dumps(fut.result(), default=str) + "\n")
+            fh.flush()
+            if n % 20 == 0 or n == len(futures):
+                print(f"{n}/{len(futures)} runs", flush=True)
+
+
+def load_journal(journal: Path) -> pd.DataFrame:
+    if not journal.exists():
+        return pd.DataFrame(columns=KEY)
+    rows = [json.loads(line) for line in journal.read_text(encoding="utf-8").splitlines() if line]
+    return pd.DataFrame(rows).drop_duplicates(KEY, keep="last").reset_index(drop=True)
 
 
 def contaminated(df: pd.DataFrame, since: dt.datetime) -> pd.Series:
@@ -111,17 +132,26 @@ def main() -> None:
     args = ap.parse_args()
     combos = [tuple(c.split(":")) for c in args.combos.split(",")] if args.combos else COMBOS
     SUMMARY.mkdir(parents=True, exist_ok=True)
-    since = dt.datetime.now().astimezone()
-    jobs = [(inst, so, st, seed, args.time_limit)
+    RAW.mkdir(parents=True, exist_ok=True)
+    journal = RAW / f"traffic{args.tag}.jsonl"
+    jobs = [(inst, so, st, seed, float(args.time_limit))
             for inst, (so, st), seed in itertools.product(INSTANCES, combos, args.seeds)]
-    df = run_all(jobs)
-    for attempt in range(2):  # redo runs hit by standby or battery
-        bad = contaminated(df, since)
-        print(f"pass {attempt + 1}: {int(bad.sum())} runs hit standby/battery", flush=True)
-        if not bad.any():
+    for attempt in range(4):  # resume, then redo runs hit by standby or battery
+        df = load_journal(journal)
+        good = set()
+        if len(df):
+            since = dt.datetime.fromtimestamp(df.t_start.min() - 60).astimezone()
+            bad = contaminated(df, since)
+            good = {tuple(r) for r in df[~bad][KEY].itertuples(index=False)}
+            print(f"pass {attempt + 1}: {len(df)} recorded, {int(bad.sum())} hit standby/battery",
+                  flush=True)
+        todo = [j for j in jobs if j not in good]
+        if not todo:
             break
-        redo = df[bad][["instance", "solver", "strategy", "seed", "time_limit_s"]]
-        df = pd.concat([df[~bad], run_all([tuple(r) for r in redo.itertuples(index=False)])])
+        print(f"pass {attempt + 1}: running {len(todo)} of {len(jobs)}", flush=True)
+        run_all(todo, journal)
+    df = load_journal(journal)
+    df = df[[tuple(r) in set(jobs) for r in df[KEY].itertuples(index=False)]]
     df.to_csv(SUMMARY / f"traffic_runs{args.tag}.csv", index=False, lineterminator="\n")
     summary = summarise(df)
     summary.to_csv(SUMMARY / f"traffic_summary{args.tag}.csv", index=False, lineterminator="\n",

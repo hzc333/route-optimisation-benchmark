@@ -43,12 +43,16 @@ def standby_intervals(since: dt.datetime) -> list[tuple[float, float]]:
                          capture_output=True, text=True, timeout=60).stdout
     intervals, entered = [], None
     events = [tuple(map(int, ln.split())) for ln in out.strip().splitlines() if ln.strip()]
-    for event_id, ms in events:
+    for k, (event_id, ms) in enumerate(events):
         t = ms / 1000.0
         if event_id == 506:
             entered = t
-        elif event_id == 507 and entered is not None:
-            intervals.append((entered, t))
+        elif event_id == 507:
+            # An exit with no entry in the window: standby began before
+            # `since`, so the interval covers the window's start.
+            start = entered if entered is not None else (since.timestamp() if k == 0 else None)
+            if start is not None:
+                intervals.append((start, t))
             entered = None
     if entered is not None:  # still in standby (cannot happen while we run)
         intervals.append((entered, float("inf")))
