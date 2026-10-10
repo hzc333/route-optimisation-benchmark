@@ -45,6 +45,8 @@ FORBIDDEN_S = 10**6
 WORKAROUNDS = ("skills->profile", "k_of_n->sectors", "break->post_insert", "soft_due->copies")
 LATE_STEPS_S = (0, 900, 1800, 3600)   # copy windows end at soft_due + step; one more is open
 OPEN_COPY_LATE_S = 7200               # lateness charged to the open copy
+# Priority stages before the last ignore soft deadlines (rich.priority).
+EARLY_STAGE_OPTIONS = {"soft_due": "ignore"}
 
 
 def _profiles(problem: RichProblem):
@@ -78,16 +80,17 @@ def build(problem: RichProblem, prizes: dict[PriorityClass, int], soft_due: str 
         rest = v.rest.duration if v.rest else 0
         key = (profile_of[v.id], tuple(v.capacity), v.start_hub, v.end_hub,
                tuple(v.reload_hubs), v.max_reloads, v.shift[0], v.shift[1] - rest,
-               v.fixed_cost, v.distance_cost, v.duration_cost)
+               v.fixed_cost, v.distance_cost, v.duration_cost, tuple(v.initial_load))
         groups_spec[key].append(v.id)
     vehicle_types, type_ids = [], []
-    for (prof, cap, start, end, reload, max_reloads, early, late, fixed, dc, tc), ids \
+    for (prof, cap, start, end, reload, max_reloads, early, late, fixed, dc, tc, init), ids \
             in groups_spec.items():
         vehicle_types.append(pyvrp.VehicleType(
             num_available=len(ids), capacity=list(cap), start_depot=hub_index[start],
             end_depot=hub_index[end], fixed_cost=fixed, tw_early=early, tw_late=late,
             unit_distance_cost=dc, unit_duration_cost=tc, profile=prof,
-            reload_depots=[hub_index[h] for h in reload], max_reloads=max_reloads))
+            reload_depots=[hub_index[h] for h in reload], max_reloads=max_reloads,
+            initial_load=pad(list(init), dims)))
         type_ids.append(ids)
 
     # Groups: required (locked) members count towards k; the optional rest is

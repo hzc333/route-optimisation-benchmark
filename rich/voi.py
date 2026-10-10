@@ -85,6 +85,8 @@ SIZES = {  # swaps, (groups, n, k), violations, rebalancing, fleet
               fleet={"evan": 1, "dvan": 1, "bike": 1}),
     "M": dict(swaps=380, groups=(3, 8, 3), violations=10, rebalance=14,
               fleet={"evan": 2, "dvan": 1, "bike": 2}),
+    "L": dict(swaps=780, groups=(5, 8, 3), violations=20, rebalance=30,
+              fleet={"evan": 4, "dvan": 2, "bike": 4}),
 }
 
 
@@ -109,6 +111,10 @@ def _scattered(rng, size):
 def in_zone(latlon) -> bool:
     lat, lon = latlon
     return ZONE[0] <= lat <= ZONE[1] and ZONE[2] <= lon <= ZONE[3]
+
+
+def zone_skill_of(latlon) -> list[str]:
+    return [ZERO_EMISSION] if in_zone(latlon) else []
 
 
 def hotspot_demand(latlon) -> float:
@@ -158,7 +164,7 @@ def _classify(rng, demand: float) -> tuple[PriorityClass, int]:
 
 def build(size: str = "S", seed: int = 0) -> RichProblem:
     spec = SIZES[size]
-    rng = np.random.default_rng(50_000 + 97 * seed + (0 if size == "S" else 7))
+    rng = np.random.default_rng(50_000 + 97 * seed + {"S": 0, "M": 7, "L": 13}[size])
     pts: list[tuple[float, float]] = [HUBS["HUB_S"], HUBS["HUB_N"]]
     names = ["HUB_S", "HUB_N"]
 

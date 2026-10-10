@@ -13,6 +13,12 @@
                prize exceeds the soft-cost bound plus all lower prizes, so the
                stage still maximises the active class first. No separate soft
                stage: the LOW stage already minimises soft cost.
+
+Both sequential variants pass ``module.EARLY_STAGE_OPTIONS`` to every stage
+but the last: soft cost ranks last in the strict objective, so modelling it
+early only hinders the search (PyVRP's soft-deadline copies made it miss a
+CRITICAL job). A stage result with hard violations is replaced by the
+previous stage's plan, which is always valid for the next stage.
 """
 
 from __future__ import annotations
@@ -23,6 +29,7 @@ from schema.models import PRIORITY_ORDER, PriorityClass
 
 from .common import WEIGHTED_PRIZE, cost_upper_bound
 from .model import RichProblem, RichSolution
+from .validate import validate
 
 INT_LIMIT = 2**62
 
@@ -55,15 +62,23 @@ def solve_weighted(module, problem: RichProblem, *, time_limit_s: float, seed: i
 
 
 def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed: int = 0,
-                     keep_lower: bool = False, **kw) -> RichSolution:
+                     keep_lower: bool = False, early_stage_options: dict | None = None,
+                     fallback: bool = True, initial: RichSolution | None = None,
+                     **kw) -> RichSolution:
+    """``early_stage_options={}, fallback=False`` reproduces the first version
+    (soft deadlines modelled in every stage, no fallback)."""
     t0 = perf_counter()
     levels = [c for c in PRIORITY_ORDER if optional_value(problem, c)]
     stages = levels if keep_lower and levels else [*levels, None]
     budget = time_limit_s / len(stages)
     locked: set[str] = set()
-    start: RichSolution | None = None
+    start: RichSolution | None = initial   # e.g. the plan being re-optimised
     notes = []
-    for active in stages:
+    early = (getattr(module, "EARLY_STAGE_OPTIONS", {}) if early_stage_options is None
+             else early_stage_options)
+    fallbacks = 0
+    for n_stage, active in enumerate(stages):
+        last = n_stage == len(stages) - 1
         sub = stage_problem(problem, locked, active, keep_lower)
         lower = [c for c in PRIORITY_ORDER if c is not active]
         lower_prizes = sum(WEIGHTED_PRIZE[c] * optional_value(sub, c) for c in lower)
@@ -72,7 +87,10 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
             raise OverflowError("sequential stage prize overflow")
         prizes = {c: m if c is active else WEIGHTED_PRIZE[c] for c in PRIORITY_ORDER}
         sol = module.solve(sub, time_limit_s=budget, seed=seed, prizes=prizes,
-                           initial=start, **kw)
+                           initial=start, **(kw if last else {**kw, **early}))
+        if (fallback and sol.status == "SOLVED" and start is not None and start.routes and not validate(sub, sol).feasible
+                and validate(sub, start).feasible):
+            sol, fallbacks = start, fallbacks + 1
         if sol.status != "SOLVED":
             return sol.model_copy(update={
                 "solver": f"{module.NAME}+seq", "wall_runtime_s": perf_counter() - t0,
@@ -87,7 +105,8 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
     return start.model_copy(update={
         "solver": f"{module.NAME}+seq", "seed": seed, "time_limit_s": time_limit_s,
         "wall_runtime_s": perf_counter() - t0,
-        "notes": "locked per stage " + ",".join(notes) + f"; last stage {start.notes}"})
+        "notes": "locked per stage " + ",".join(notes) + f"; fallbacks={fallbacks}"
+                 f"; last stage {start.notes}"})
 
 
 def solve_sequential_full(module, problem: RichProblem, **kw) -> RichSolution:

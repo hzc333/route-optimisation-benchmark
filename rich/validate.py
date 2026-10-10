@@ -85,7 +85,7 @@ def simulate_route(problem: RichProblem, route: RichRoute) -> RouteResult:
 
     on_board_ships: dict[str, list[int]] = {}
     trip_no = 0
-    load = list(trip_delivery[0])
+    load = _add(list(trip_delivery[0]), veh.initial_load)
     if any(x > c for x, c in zip(load, cap)):
         bad["capacity"] += 1
     seen_ships: dict[str, str] = {}

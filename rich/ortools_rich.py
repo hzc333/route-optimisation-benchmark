@@ -76,6 +76,8 @@ def _solve(problem: RichProblem, *, time_limit_s: float, seed: int = 0,
            first_solution: str = "PARALLEL_CHEAPEST_INSERTION",
            metaheuristic: str = "GUIDED_LOCAL_SEARCH") -> RichSolution:
     t0 = perf_counter()
+    if any(any(v.initial_load) for v in problem.vehicles):
+        raise NotImplementedError("initial load (mid-shift re-planning) not modelled for OR-Tools")
     dims = len(problem.dims)
     modes = _dim_modes(problem)
 

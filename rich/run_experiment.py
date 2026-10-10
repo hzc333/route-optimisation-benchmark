@@ -26,13 +26,21 @@ ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "results" / "summary"
 RAW = ROOT / "results" / "raw"
 CPUS = [0, 2, 4, 6]
-TIME_LIMIT = {"S": 30.0, "M": 120.0}
+TIME_LIMIT = {"S": 30.0, "M": 120.0, "L": 240.0}
 # arm: (module, options, strategy, seeds)
 ARMS = {
     "pyvrp:weighted": ("pyvrp", {}, "weighted", (0, 1, 2)),
     "pyvrp:sequential": ("pyvrp", {}, "sequential", (0, 1, 2)),
     "pyvrp:sequential_full": ("pyvrp", {}, "sequential_full", (0, 1, 2)),
     "pyvrp_nosoft:sequential_full": ("pyvrp", {"soft_due": "ignore"}, "sequential_full", (0, 1, 2)),
+    "pyvrp_nosoft:weighted": ("pyvrp", {"soft_due": "ignore"}, "weighted", (0, 1, 2)),
+    # First version: soft-deadline copies in every stage, no fallback.
+    "pyvrp:sequential_v1": ("pyvrp", {"early_stage_options": {}, "fallback": False},
+                            "sequential", (0, 1, 2)),
+    "pyvrp:sequential_full_v1": ("pyvrp", {"early_stage_options": {}, "fallback": False},
+                                 "sequential_full", (0, 1, 2)),
+    "pyvrp_nosoft:sequential_full_v1": ("pyvrp", {"soft_due": "ignore", "early_stage_options": {},
+                                                  "fallback": False}, "sequential_full", (0, 1, 2)),
     "ortools:weighted": ("ortools", {}, "weighted", (0,)),
     "ortools:sequential": ("ortools", {}, "sequential", (0,)),
     "ortools:sequential_full": ("ortools", {}, "sequential_full", (0,)),
@@ -104,11 +112,13 @@ def summarise(df: pd.DataFrame) -> pd.DataFrame:
     prio = ["hard_violations", *[f"unserved_{c}" for c in CLASSES]]
     # Lexicographic standing per instance: does the run reach the best
     # (hard, CRITICAL, HIGH, NORMAL, LOW) vector seen on that instance by any arm?
-    best = ok.groupby("instance")[prio].apply(lambda g: min(map(tuple, g.values)))
-    ok["prio_best"] = [tuple(r) == best[i] for i, r in zip(ok.instance, ok[prio].values)]
-    ref = ok[ok.arm == "pyvrp:sequential_full"].groupby("instance").soft_cost.mean()
-    ok["soft_vs_ref_pct"] = (ok.soft_cost / ok.instance.map(ref) - 1) * 100
-    g = ok.groupby(["size", "arm"])
+    best = ok.groupby(["instance", "time_limit_s"])[prio].apply(lambda g: min(map(tuple, g.values)))
+    ok["prio_best"] = [tuple(r) == best[(i, t)] for i, t, r in
+                       zip(ok.instance, ok.time_limit_s, ok[prio].values)]
+    ref = ok[ok.arm == "pyvrp:sequential_full"].groupby(["instance", "time_limit_s"]).soft_cost.mean()
+    ok["soft_vs_ref_pct"] = [(c / ref[(i, t)] - 1) * 100 if (i, t) in ref.index else float("nan")
+                             for i, t, c in zip(ok.instance, ok.time_limit_s, ok.soft_cost)]
+    g = ok.groupby(["size", "time_limit_s", "arm"])
     out = g.agg(runs=("seed", "size"), feasible=("feasible", "mean"), prio_best=("prio_best", "mean"),
                 **{f"unserved_{c}": (f"unserved_{c}", "mean") for c in CLASSES},
                 served_jobs=("served_jobs", "mean"), served_shipments=("served_shipments", "mean"),
@@ -118,8 +128,9 @@ def summarise(df: pd.DataFrame) -> pd.DataFrame:
                 distance_km=("distance_m", lambda s: s.mean() / 1000),
                 vehicles=("vehicles_used", "mean"), reloads=("reloads", "mean"),
                 wall_s=("wall_s", "mean")).reset_index()
-    failed = df[df.status != "SOLVED"].groupby(["size", "arm"]).size()
-    out["failed_runs"] = [int(failed.get((s, a), 0)) for s, a in zip(out["size"], out.arm)]
+    failed = df[df.status != "SOLVED"].groupby(["size", "time_limit_s", "arm"]).size()
+    out["failed_runs"] = [int(failed.get(k, 0)) for k in
+                          zip(out["size"], out.time_limit_s, out.arm)]
     return out
 
 
@@ -128,15 +139,19 @@ def main() -> None:
     ap.add_argument("--sizes", nargs="+", default=["S", "M"])
     ap.add_argument("--instances", type=int, default=5)
     ap.add_argument("--arms", help="comma list (default: all)")
+    ap.add_argument("--budgets", type=float, nargs="+",
+                    help="time limits in s for every size (default: TIME_LIMIT per size)")
+    ap.add_argument("--seeds", type=int, help="use only the first N seeds of each arm")
     ap.add_argument("--tag", default="")
     args = ap.parse_args()
     arms = args.arms.split(",") if args.arms else list(ARMS)
     SUMMARY.mkdir(parents=True, exist_ok=True)
     RAW.mkdir(parents=True, exist_ok=True)
     journal = RAW / f"voi{args.tag}.jsonl"
-    jobs = [(f"{size}{k:02d}", arm, seed, TIME_LIMIT[size])
+    jobs = [(f"{size}{k:02d}", arm, seed, budget)
             for size in args.sizes for k in range(args.instances)
-            for arm in arms for seed in ARMS[arm][3]]
+            for budget in (args.budgets or [TIME_LIMIT[size]])
+            for arm in arms for seed in ARMS[arm][3][:args.seeds]]
     for attempt in range(4):  # resume, then redo runs hit by standby or battery
         df = load_journal(journal)
         good = set()

@@ -66,6 +66,9 @@ class Vehicle(_Strict):
     duration_cost: NonNegativeInt = 0      # per second from route start to end
     skills: list[str] = Field(default_factory=list)
     rest: Break | None = None
+    # Load on board at the start that occupies room until the first hub
+    # visit (PyVRP semantics); used when re-planning mid-shift.
+    initial_load: list[NonNegativeInt] = Field(default_factory=list)
 
 
 class Job(_Strict):
@@ -134,8 +137,8 @@ class RichProblem(_Strict):
         for v in self.vehicles:
             if v.profile not in self.profiles:
                 raise ValueError(f"vehicle {v.id}: unknown profile {v.profile}")
-            if len(v.capacity) != d:
-                raise ValueError(f"vehicle {v.id}: capacity needs {d} dims")
+            if len(v.capacity) != d or (v.initial_load and len(v.initial_load) != d):
+                raise ValueError(f"vehicle {v.id}: capacity / initial load need {d} dims")
             if {v.start_hub, v.end_hub, *v.reload_hubs} - hubs:
                 raise ValueError(f"vehicle {v.id}: unknown hub")
         groups = {g.id: [] for g in self.groups}
