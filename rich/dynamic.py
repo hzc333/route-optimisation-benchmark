@@ -55,13 +55,10 @@ def _route_state(problem: RichProblem, route: RichRoute, cut: int):
     jobs = {j.id: j for j in problem.jobs}
     ships = {s.id: s for s in problem.shipments}
     veh = next(v for v in problem.vehicles if v.id == route.vehicle_id)
-    starts = []
-    for k, v in enumerate(route.visits):
-        if v.kind == "reload":
-            starts.append(r.ready[k + 1] - hubs[v.id].service)
-        else:
-            starts.append(r.service_starts[f"{v.kind}:{v.id}"])
-    done = sum(1 for s in starts if s < cut)
+    # A vehicle that has left for its next stop is committed to it (it cannot
+    # be re-routed mid-leg): visit k counts as done once the vehicle could
+    # leave for it before the cut (ready[k] includes any break before it).
+    done = sum(1 for k in range(len(route.visits)) if r.ready[k] < cut)
     if done == len(route.visits):
         avail, loc = max(cut, r.end), hubs[veh.end_hub].location
     else:
@@ -76,7 +73,7 @@ def _route_state(problem: RichProblem, route: RichRoute, cut: int):
         else:
             s = ships[last.id]
             loc = (s.pickup if last.kind == "pickup" else s.delivery).location
-    taken = route.rest is not None and route.rest.start < cut
+    taken = route.rest is not None and (route.rest.position < done or route.rest.start < cut)
     if taken and route.rest.position == done:
         avail = max(avail, route.rest.start + veh.rest.duration)
     # Current trip: visits after the last reload that has started.

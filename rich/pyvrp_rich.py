@@ -184,16 +184,37 @@ def solve(problem: RichProblem, *, time_limit_s: float, seed: int = 0,
     ship_index = {s.id: k for k, s in enumerate(problem.shipments)}
     type_of = {vid: t for t, ids in enumerate(type_ids) for vid in ids}
 
-    init = None
+    # Without a warm plan start from an empty solution. PyVRP's default random
+    # start puts every client on some route; with hundreds of optional stops
+    # and big prizes that start is so overloaded that the search often ends
+    # infeasible (L instances: 0/6 feasible at 15 s, empty start feasible).
+    init = pyvrp.Solution(data, [])
     if initial is not None:
         kinds = {"job": ActivityType.CLIENT, "pickup": ActivityType.PICKUP,
                  "delivery": ActivityType.DELIVERY, "reload": ActivityType.DEPOT}
         index = {"job": client_index, "pickup": ship_index, "delivery": ship_index,
                  "reload": hub_index}
-        init = pyvrp.Solution(data, [
-            pyvrp.Route(data, [Activity(kinds[v.kind], index[v.kind][v.id]) for v in r.visits],
-                        type_of[r.vehicle_id])
-            for r in initial.routes if r.visits])
+        # A warm plan may not fit this model's groups (e.g. re-planning
+        # re-draws the k-of-n sectors): keep the first visit per group and
+        # skip jobs the model left out; the search re-inserts the rest.
+        used_groups: set[int] = set()
+        client_group = [c.group for c in data.clients()]
+
+        def acts(r):
+            for v in r.visits:
+                k = index[v.kind].get(v.id)
+                if k is None:
+                    continue
+                if v.kind == "job":
+                    g = client_group[k]
+                    if g is not None:
+                        if g in used_groups:
+                            continue
+                        used_groups.add(g)
+                yield Activity(kinds[v.kind], k)
+
+        init = pyvrp.Solution(data, [pyvrp.Route(data, list(acts(r)), type_of[r.vehicle_id])
+                                     for r in initial.routes if r.visits])
 
     params = pyvrp.SolveParams(penalty=pyvrp.PenaltyParams(
         max_penalty=max(pyvrp.PenaltyParams().max_penalty, 10.0 * scale)))
