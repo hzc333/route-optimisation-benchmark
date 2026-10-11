@@ -1,0 +1,6 @@
+arm,buffer,runs,feasible,served_jobs,soft_cost_k,unserved_CRITICAL,unserved_HIGH,unserved_NORMAL,unserved_LOW,moderate_on_time_prob,moderate_late_hard_mean,moderate_overtime_min_mean,moderate_overtime_min_p95,moderate_break_late_prob,high_on_time_prob,high_late_hard_mean,high_overtime_min_mean,high_overtime_min_p95,high_break_late_prob
+ortools:sequential_full,0.0000,5,1.0000,280.2000,14580.4126,0.0000,0.0000,95.4000,88.8000,0.0553,1.4347,39.8810,102.5400,0.3687,0.0467,1.9767,68.4140,173.3646,0.4607
+ortools:sequential_full,0.1000,5,1.0000,254.4000,13192.6288,0.0000,0.0000,160.4000,94.8000,0.6833,0.2020,3.8464,25.0894,0.0673,0.3873,0.6680,16.8770,75.0094,0.1913
+pyvrp:sequential_full,0.0000,10,1.0000,344.8000,14222.7250,0.0000,0.0000,3.2000,72.4000,0.0470,1.8753,38.9534,92.2517,0.0003,0.0333,2.5377,65.1976,153.6808,0.0057
+pyvrp:sequential_full,0.1000,10,1.0000,331.3000,13462.9185,0.0000,0.3000,19.8000,83.9000,0.7383,0.1503,2.4845,16.3051,0.0000,0.3963,0.5347,13.7876,58.4791,0.0000
+pyvrp:sequential_full,0.2000,10,1.0000,307.8000,13138.1801,0.0000,1.5000,56.5000,88.9000,0.9890,0.0057,0.0441,0.0000,0.0000,0.8180,0.1160,1.6245,11.6700,0.0000
