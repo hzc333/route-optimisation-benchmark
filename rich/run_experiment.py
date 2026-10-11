@@ -34,6 +34,10 @@ ARMS = {
     "pyvrp:sequential_full": ("pyvrp", {}, "sequential_full", (0, 1, 2)),
     "pyvrp_nosoft:sequential_full": ("pyvrp", {"soft_due": "ignore"}, "sequential_full", (0, 1, 2)),
     "pyvrp_nosoft:weighted": ("pyvrp", {"soft_due": "ignore"}, "weighted", (0, 1, 2)),
+    # v2: soft deadlines only in the last stage.
+    "pyvrp:sequential_v2": ("pyvrp", {"soft_from_own_class": False}, "sequential", (0, 1, 2)),
+    "pyvrp:sequential_full_v2": ("pyvrp", {"soft_from_own_class": False}, "sequential_full",
+                                 (0, 1, 2)),
     # First version: soft-deadline copies in every stage, no fallback.
     "pyvrp:sequential_v1": ("pyvrp", {"early_stage_options": {}, "fallback": False},
                             "sequential", (0, 1, 2)),

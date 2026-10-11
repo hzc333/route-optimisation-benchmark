@@ -81,7 +81,9 @@ def _route_state(problem: RichProblem, route: RichRoute, cut: int):
         avail = max(avail, route.rest.start + veh.rest.duration)
     # Current trip: visits after the last reload that has started.
     last_reload = max([k for k in range(done) if route.visits[k].kind == "reload"], default=-1)
-    trip = route.visits[last_reload + 1:]
+    next_reload = min([k for k in range(done, len(route.visits))
+                       if route.visits[k].kind == "reload"], default=len(route.visits))
+    trip = route.visits[last_reload + 1:next_reload]
     trip_done = route.visits[last_reload + 1:done]
     zeros = problem.zeros()
     charged = list(zeros)

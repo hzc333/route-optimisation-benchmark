@@ -14,11 +14,14 @@
                stage still maximises the active class first. No separate soft
                stage: the LOW stage already minimises soft cost.
 
-Both sequential variants pass ``module.EARLY_STAGE_OPTIONS`` to every stage
-but the last: soft cost ranks last in the strict objective, so modelling it
-early only hinders the search (PyVRP's soft-deadline copies made it miss a
-CRITICAL job). A stage result with hard violations is replaced by the
-previous stage's plan, which is always valid for the next stage.
+Both sequential variants pass ``module.EARLY_STAGE_OPTIONS`` (PyVRP: ignore
+soft deadlines) to every stage whose class ranks above all classes that have
+soft deadlines: soft cost ranks last, and modelling those deadlines while a
+more important class is being packed made PyVRP miss a CRITICAL job (its
+soft-deadline copies crowd the early morning). From the deadlines' own class
+on they are modelled; ignoring them until the very last stage left 7x more
+lateness. A stage result with hard violations is replaced by the previous
+stage's plan, which is always valid for the next stage.
 """
 
 from __future__ import annotations
@@ -64,9 +67,10 @@ def solve_weighted(module, problem: RichProblem, *, time_limit_s: float, seed: i
 def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed: int = 0,
                      keep_lower: bool = False, early_stage_options: dict | None = None,
                      fallback: bool = True, initial: RichSolution | None = None,
-                     **kw) -> RichSolution:
-    """``early_stage_options={}, fallback=False`` reproduces the first version
-    (soft deadlines modelled in every stage, no fallback)."""
+                     soft_from_own_class: bool = True, **kw) -> RichSolution:
+    """Earlier versions: ``early_stage_options={}, fallback=False`` (v1: soft
+    deadlines in every stage, no fallback); ``soft_from_own_class=False`` (v2:
+    soft deadlines only in the last stage)."""
     t0 = perf_counter()
     levels = [c for c in PRIORITY_ORDER if optional_value(problem, c)]
     stages = levels if keep_lower and levels else [*levels, None]
@@ -77,8 +81,15 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
     early = (getattr(module, "EARLY_STAGE_OPTIONS", {}) if early_stage_options is None
              else early_stage_options)
     fallbacks = 0
+    soft_ranks = [PRIORITY_ORDER.index(j.priority_class) for j in problem.jobs
+                  if j.soft_due is not None]
+    first_soft = min(soft_ranks, default=len(PRIORITY_ORDER))
     for n_stage, active in enumerate(stages):
-        last = n_stage == len(stages) - 1
+        # Model everything (soft deadlines too) in the last stage, and from
+        # the first class that has soft deadlines on.
+        model_soft = n_stage == len(stages) - 1 or (
+            soft_from_own_class and active is not None
+            and PRIORITY_ORDER.index(active) >= first_soft)
         sub = stage_problem(problem, locked, active, keep_lower)
         lower = [c for c in PRIORITY_ORDER if c is not active]
         lower_prizes = sum(WEIGHTED_PRIZE[c] * optional_value(sub, c) for c in lower)
@@ -87,7 +98,7 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
             raise OverflowError("sequential stage prize overflow")
         prizes = {c: m if c is active else WEIGHTED_PRIZE[c] for c in PRIORITY_ORDER}
         sol = module.solve(sub, time_limit_s=budget, seed=seed, prizes=prizes,
-                           initial=start, **(kw if last else {**kw, **early}))
+                           initial=start, **(kw if model_soft else {**kw, **early}))
         if (fallback and sol.status == "SOLVED" and start is not None and start.routes and not validate(sub, sol).feasible
                 and validate(sub, start).feasible):
             sol, fallbacks = start, fallbacks + 1
