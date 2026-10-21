@@ -1,5 +1,9 @@
-"""Inline docs/viz/viz_data.json into the explainer page -> docs/viz/index.html
-(one self-contained file: opens offline and publishes as a single artifact).
+"""Inline docs/viz/viz_data.json into the explainer pages, one self-contained
+file per language (opens offline and publishes as a single artifact):
+
+    docs/viz/explainer.html    -> docs/viz/index.html      (Chinese)
+    docs/viz/explainer_en.html -> docs/viz/index_en.html   (English, made by
+                                  experiments.translate_viz)
 
     python -m experiments.build_viz
 """
@@ -7,17 +11,21 @@
 from pathlib import Path
 
 VIZ = Path(__file__).resolve().parents[1] / "docs" / "viz"
+PAGES = {"explainer.html": "index.html", "explainer_en.html": "index_en.html"}
+MARKER = '<script type="application/json" id="viz-data"></script>'
 
 
 def main() -> None:
-    page = (VIZ / "explainer.html").read_text(encoding="utf-8")
     data = (VIZ / "viz_data.json").read_text(encoding="utf-8").replace("</", r"<\/")
-    marker = '<script type="application/json" id="viz-data"></script>'
-    assert marker in page
-    out = VIZ / "index.html"
-    out.write_text(page.replace(marker, marker.replace("></script>", f">{data}</script>")),
-                   encoding="utf-8")
-    print(f"wrote {out} ({out.stat().st_size / 1e6:.2f} MB)")
+    for src, dst in PAGES.items():
+        if not (VIZ / src).exists():
+            continue
+        page = (VIZ / src).read_text(encoding="utf-8")
+        assert MARKER in page, src
+        out = VIZ / dst
+        out.write_text(page.replace(MARKER, MARKER.replace("></script>", f">{data}</script>")),
+                       encoding="utf-8")
+        print(f"wrote {out} ({out.stat().st_size / 1e6:.2f} MB)")
 
 
 if __name__ == "__main__":

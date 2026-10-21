@@ -1,0 +1,303 @@
+<title>Route Optimisation Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a field notebook - numbered computation steps, prose left, the live figure right; one sticky chapter bar. */
+:root {
+  --bg: #f3f5f2; --surface: #fcfcfb; --ink: #17201d; --ink-2: #4b5551; --ink-3: #848c88;
+  --rule: #dce1db; --rule-2: #c7cec7; --accent: #0e6a73; --accent-soft: #d6eaeb;
+  --crit: #e34948; --high: #eda100; --norm: #2a78d6; --low: #8f8e88;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --late: #c23b2e; --ok: #2c7a3a;
+  --font-display: "Familjen Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.65 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; }
+header.top { padding-block: 40px 20px; }
+.eyebrow { font: 500 12px/1 var(--font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 4.4vw, 50px)/1.12 var(--font-display); margin: 10px 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 68ch; color: var(--ink-2); font-size: 16px; margin: 0; }
+.meta { margin-top: 14px; font: 12px/1.6 var(--font-data); color: var(--ink-3); overflow-wrap: anywhere; }
+nav.chapters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+nav.chapters .wrap { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding-block: 8px; scrollbar-width: thin; }
+nav.chapters a { font: 500 13px/1 var(--font-body); color: var(--ink-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; white-space: nowrap; }
+nav.chapters a.ch { color: var(--ink); font-weight: 600; }
+nav.chapters a:hover, nav.chapters a:focus-visible { background: var(--accent-soft); color: var(--ink); outline: none; }
+.chapter-head { padding-block: 48px 8px; border-top: 2px solid var(--ink); margin-top: 40px; }
+.chapter-head h2 { font: 700 30px/1.2 var(--font-display); margin: 6px 0 8px; }
+.chapter-head p { max-width: 70ch; color: var(--ink-2); margin: 0; }
+section.step { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 32px; padding-block: 36px; border-bottom: 1px solid var(--rule); }
+@media (max-width: 900px) { section.step { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+.prose { min-width: 0; }
+.prose .num { font: 500 13px/1 var(--font-data); color: var(--accent); }
+.prose h3 { font: 700 21px/1.3 var(--font-display); margin: 8px 0 10px; text-wrap: balance; }
+.prose p { margin: 0 0 12px; max-width: 62ch; }
+.prose .q { color: var(--ink-2); font-size: 14px; border-left: 2px solid var(--rule-2); padding-left: 12px; }
+.formula { font: 13px/1.7 var(--font-data); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.fig { min-width: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 14px 10px; }
+.fig-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.fig-title { font: 500 13px/1.4 var(--font-body); color: var(--ink-2); }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; }
+.controls button { font: 500 12.5px/1 var(--font-body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-2); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.svgbox { width: 100%; overflow-x: auto; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--font-data); fill: var(--ink-3); font-size: 11px; }
+svg .lbl { fill: var(--ink-2); }
+svg .lbl-strong { fill: var(--ink); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 12px/1.4 var(--font-body); color: var(--ink-2); margin-top: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.legend i.sq { border-radius: 2px; }
+.legend i.ring { background: transparent !important; border: 2px solid currentColor; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+.stat { border-top: 1px solid var(--rule); padding-top: 8px; }
+.stat b { display: block; font: 700 22px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--ink-3); }
+.stat b.bad { color: var(--late); } .stat b.good { color: var(--ok); }
+details.table { margin-top: 10px; font-size: 13px; }
+details.table summary { cursor: pointer; color: var(--accent); font-size: 12.5px; }
+.tbl { overflow-x: auto; margin-top: 8px; }
+table { border-collapse: collapse; font: 12px/1.5 var(--font-data); font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink-3); font-weight: 500; }
+.tip { position: fixed; pointer-events: none; z-index: 20; background: var(--ink); color: var(--surface); font: 12px/1.5 var(--font-data); padding: 7px 9px; border-radius: 6px; max-width: 300px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.loading { color: var(--ink-3); font: 13px var(--font-data); padding: 30px 0; }
+footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top wrap">
+  <div class="eyebrow">Algorithm Track · Phase 0</div>
+  <h1>Route Optimisation Walkthrough</h1>
+  <p class="lede">This page follows two experiments in the order the computer works through them. The first shows how time-varying traffic is put inside PyVRP's search. The second shows, on a Voi battery-swap morning in Stockholm, what the solver computes at each step. Every figure is recomputed with the repository's own code; summary numbers come from the report's main experiments.</p>
+  <p class="meta" id="meta">Data: traffic instance H00 (heavy congestion, 100 customers) · Voi instance M00 (about 430 stops, 5 vehicles) · report docs/Phase0_Algorithm_Report_CN.md §5, §6</p>
+</header>
+
+<nav class="chapters" aria-label="Chapters">
+  <div class="wrap">
+    <a class="ch" href="#traffic">Traffic in the search</a>
+    <a href="#t1">Traffic model</a><a href="#t2">Plan vs reality</a><a href="#t3">Time-slot copies</a><a href="#t4">Results</a>
+    <a class="ch" href="#voi">Voi swap day</a>
+    <a href="#v1">Instance</a><a href="#v2">Priority stages</a><a href="#v3">Fleet day</a><a href="#v4">Re-planning</a><a href="#v5">Uncertainty</a><a href="#v6">Time and scale</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div id="loading" class="loading">Loading the computed data…</div>
+
+  <div class="chapter-head" id="traffic">
+    <div class="eyebrow">Part 1 · report §5</div>
+    <h2>Traffic in the search</h2>
+    <p>The question: the same street can take twice as long at 8:00 as at noon, but PyVRP only accepts one fixed travel-time table. How can it know, while it builds routes, how long a leg takes at the time the vehicle actually leaves?</p>
+  </div>
+
+  <section class="step" id="t1">
+    <div class="prose">
+      <div class="num">Step 1 / Traffic model</div>
+      <h3>Define "real" traffic: one speed per 15-minute slot</h3>
+      <p>The day has 96 slots of 15 minutes. Each slot has a congestion level p(t): highest in the 8:00 morning peak, a bit lower in the 17:00 evening peak, zero at night. Each street also has an exposure to congestion that approaches 1 near the city centre.</p>
+      <div class="formula">slowdown = (A + B × exposure) × p(t)
+speed    = 50 km/h × (1 − slowdown)
+heavy congestion: A = 0.30, B = 0.60</div>
+      <p>Travel time is accumulated slot by slot from the departure time: if the vehicle crosses into the next slot halfway, the rest of the leg uses the new speed. This guarantees that leaving earlier never means arriving later (FIFO). The on-time guarantee in step 3 relies on this property.</p>
+      <p class="q">Lower half of the figure: two streets of about 3 km. Leaving at 8:00, the central one takes more than twice as long; the outer one is barely affected.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">Congestion level p(t) and travel time of two legs by departure time</div></div>
+      <div class="svgbox" id="t1-fig"></div>
+      <div class="legend" id="t1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t2">
+    <div class="prose">
+      <div class="num">Step 2 / Plan vs reality</div>
+      <h3>A plan made with average speeds arrives late in real traffic</h3>
+      <p>The simplest approach builds one fixed table from the all-day average speed and lets PyVRP plan on it. PyVRP believes every stop is on time. The morning peak is slower than average, so when the plan is replayed in real traffic some customers are reached after their window has closed.</p>
+      <p>Each row in the figure is a vehicle; the horizontal axis is time. A customer with a time window is drawn as a horizontal bar (the window) and a dot (when service actually starts). <b>Red means late</b>, and the red segment shows by how much. Stops without a window get a small tick.</p>
+      <p class="q">Switch to "Time-slot copies": the same day and the same customers, with no late stop. Step 3 explains how.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">Instance H00 · PyVRP 10 s · each plan replayed stop by stop in real traffic</div>
+        <div class="controls" id="t2-ctl"></div>
+      </div>
+      <div class="svgbox" id="t2-fig"></div>
+      <div class="stats" id="t2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t3">
+    <div class="prose">
+      <div class="num">Step 3 / Time-slot copies</div>
+      <h3>Move time into the graph: one copy per slot</h3>
+      <p>The 07:00–16:00 shift is cut into six 90-minute slots. Each customer is copied once for every slot its time window overlaps, and each copy may only be served inside its slot. The solver must visit <b>exactly one copy</b> per customer, so choosing a copy means choosing when to serve.</p>
+      <p>Every leg leaving a copy uses the <b>slowest</b> travel time over all departure times that copy allows (sampled every 30 s). Because of FIFO, as long as the driver never starts a stop before its planned slot, the real arrival is never later than planned, so the plan is on time in real traffic.</p>
+      <p class="q">Figure: the six copies of a central customer and the leg to another customer. The curve is the true travel time, which changes with departure time; the steps are the conservative values handed to PyVRP, always on or above the curve.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title" id="t3-title">Slot copies and their conservative travel time</div></div>
+      <div class="svgbox" id="t3-fig"></div>
+      <div class="legend" id="t3-legend"></div>
+      <div class="stats" id="t3-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t4">
+    <div class="prose">
+      <div class="num">Step 4 / Results</div>
+      <h3>On time, without driving more</h3>
+      <p>Every approach ran on the same day on the same 20 instances × 3 seeds, and every plan was scored in real traffic. The vertical axis is the share of plans in which no customer is late and no vehicle works overtime; the horizontal axis is extra driving time compared with PyVRP on the all-day average.</p>
+      <p>The target is the top left: always on time, no extra driving. Planning on peak speeds is also always on time but drives 1–4 % more; OR-Tools and Timefold are on time but drive 14–21 % more. PyVRP with time-slot copies is the only approach that achieves both.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">Share of on-time plans vs extra driving time (480 runs)</div>
+        <div class="controls" id="t4-ctl"></div>
+      </div>
+      <div class="svgbox" id="t4-fig"></div>
+      <div class="legend" id="t4-legend"></div>
+      <details class="table"><summary>Show data table</summary><div class="tbl" id="t4-table"></div></details>
+    </div>
+  </section>
+
+  <div class="chapter-head" id="voi">
+    <div class="eyebrow">Part 2 · report §6</div>
+    <h2>Voi swap day</h2>
+    <p>The question: on a morning shift close to Voi's real operation, can PyVRP express all our constraints? With strict priorities, what does it compute at each step? And does the plan survive real-world variability?</p>
+  </div>
+
+  <section class="step" id="v1">
+    <div class="prose">
+      <div class="num">Step 1 / Instance</div>
+      <h3>06:00–14:00, 5 vehicles, about 430 stops</h3>
+      <p>Coordinates are real latitude/longitude in central Stockholm. Stops cluster around metro stations and squares. Each dot is a scooter that needs a battery swap, coloured by priority: the lower the battery and the busier the spot, the higher the priority.</p>
+      <p>There are three more kinds of work: parking violations (mandatory: pick the scooter up before a deadline and park it legally), rebalancing (move a scooter from an oversupplied area to a hotspot), and zone groups ("swap any 3 of these 8"). The dashed box is an approximation of the class-3 environmental zone; only electric vehicles may serve stops inside it.</p>
+      <p class="q">Fleet: 2 electric vans, 1 diesel van, 2 electric cargo bikes. Vehicles can restock batteries at either hub (squares) during the shift; every driver takes a 30-minute break starting between 10:00 and 12:00.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · click a legend entry to hide that class</div>
+        <div class="controls" id="v1-ctl"></div>
+      </div>
+      <div class="svgbox" id="v1-fig"></div>
+      <div class="legend" id="v1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v2">
+    <div class="prose">
+      <div class="num">Step 2 / Priority stages</div>
+      <h3>Secure CRITICAL first, then go down one class at a time</h3>
+      <p>Strict priority means: if one more CRITICAL job can be served, it is worth any cost and any number of lower-priority jobs. The original design ("each class penalised about 10× the next") cannot guarantee that, so we solve in stages:</p>
+      <div class="formula">Stage 1  CRITICAL prize = M (above every possible cost + all lower prizes)
+         other classes keep their small prizes and stay in the search
+         → every CRITICAL job served is locked as mandatory
+Stage 2  HIGH prize = M, continue from stage 1's plan → lock
+Stage 3  NORMAL … Stage 4  LOW (and minimise cost)</div>
+      <p>Every stage searches the whole problem and hands a complete plan to the next one. That is what makes it much better than the first version, which kept only the active class in each stage and lost up to 129 NORMAL value on the M size.</p>
+      <p class="q">Step through the stages: filled dots are served in that stage's plan, hollow rings are not. The bars show the share of value served per class. The last two buttons compare two other approaches on the same instance.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title" id="v2-title">PyVRP priority stages (15 s per stage)</div>
+        <div class="controls" id="v2-ctl"></div>
+      </div>
+      <div class="svgbox" id="v2-fig"></div>
+      <div class="legend" id="v2-legend"></div>
+      <div class="stats" id="v2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v3">
+    <div class="prose">
+      <div class="num">Step 3 / Fleet day</div>
+      <h3>How two constraints PyVRP lacks are filled in</h3>
+      <p><b>Driver breaks.</b> PyVRP has no notion of a break. The shift is ended 30 minutes early, and after routing the break is inserted between 10:00 and 12:00: every position is tried, and the one that breaks no time window and finishes earliest is kept. The dark blocks in the figure are those inserted breaks.</p>
+      <p><b>"Ideally before 9:00".</b> PyVRP has no soft deadlines either. The trick mirrors the traffic slot copies: the customer is copied five times (on time, 15, 30 or 60 minutes late, or open), exactly one copy can be served, and later copies carry a smaller prize. The prize lost is the lateness cost (20 points per second).</p>
+      <p class="q">The figure shows a full day of the final plan for all five vehicles. The cargo bikes (10 batteries) return to a hub often; the vans mostly alternate between driving and serving.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">Final plan · each vehicle's timeline (06:00–14:00)</div></div>
+      <div class="svgbox" id="v3-fig"></div>
+      <div class="legend" id="v3-legend"></div>
+      <div class="fig-head" style="margin-top:16px"><div class="fig-title">Five copies of one HIGH hotspot job: the later, the smaller the prize</div></div>
+      <div class="svgbox" id="v3-soft"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v4">
+    <div class="prose">
+      <div class="num">Step 4 / Re-planning</div>
+      <h3>10:00: 4 new parking violations and 8 new urgent swaps</h3>
+      <p>When the day plan has run until 10:00, each vehicle's situation is captured first:</p>
+      <p>Where it is (a vehicle already driving to its next stop is committed to it and cannot turn around); how many charged batteries it still carries and can hand out without a hub visit; how much room the depleted ones take; how many hub visits it has left; whether the break is taken. A scooter on board becomes a mandatory drop-off that only this vehicle can do.</p>
+      <p>The rest of the day is then re-solved with the priority stages, warm-started from the old plan. In the experiment 5 seconds were enough to fit every new mandatory job; without re-planning none of them is served.</p>
+      <p class="q">The cost: after re-planning only 30–40 % of the old plan's remaining jobs stay on the same vehicle, so drivers get many reassignments. Production needs a cost on reassignment.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · the situation at 10:00 and the new plan (warm start, 5 s)</div>
+        <div class="controls" id="v4-ctl"></div>
+      </div>
+      <div class="svgbox" id="v4-fig"></div>
+      <div class="legend" id="v4-legend"></div>
+      <details class="table"><summary>Show the summary of 100 re-planning runs</summary><div class="tbl" id="v4-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v5">
+    <div class="prose">
+      <div class="num">Step 5 / Uncertainty</div>
+      <h3>A plan that fills the day with estimates fails almost every day</h3>
+      <p>The plan is executed 300 times, each time with random travel and service times: one day-level factor per route (σ = 0.10), one per leg (σ = 0.20) and one per service (σ = 0.30), all lognormal with mean 1.</p>
+      <p>The optimiser uses all available time, so a plan without slack is on time all day in only about 5 % of days under this variability, and drivers often work overtime. Inflating travel and service times by 20 % while planning gives 99 % of days on time, at the price of about 11 % fewer swaps.</p>
+      <p class="q">Horizontal axis: total fleet overtime that day in minutes; vertical axis: share of days with more overtime than that. The closer the curve hugs the bottom, the more robust the plan. The buffer size has to be calibrated on real data.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">How often and how long drivers work overtime · 300 simulated days per plan</div></div>
+      <div class="svgbox" id="v5-fig"></div>
+      <div class="stats" id="v5-stats"></div>
+      <details class="table"><summary>Show the summary of 40 runs</summary><div class="tbl" id="v5-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v6">
+    <div class="prose">
+      <div class="num">Step 6 / Time and scale</div>
+      <h3>Give solving time by size</h3>
+      <p>S (about 160 stops) needs 15 s; M (about 430 stops, 5 vehicles) loses no HIGH job at 15 s already; L (about 850 stops, 10 vehicles, a city-wide morning shift) needs 240 s to lose no HIGH job at all.</p>
+      <p>The larger the problem, the clearer the advantage of the priority stages: on L at 15 s the 10× weights even lose CRITICAL jobs. OR-Tools does not catch up with more time: on M it loses 97 NORMAL value from 15 s to 240 s alike.</p>
+      <p class="q">The three panels use different vertical scales (different sizes). A red ring means that run also lost HIGH or CRITICAL value.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">NORMAL value lost vs solving time (135 runs)</div></div>
+      <div class="svgbox" id="v6-fig"></div>
+      <div class="legend" id="v6-legend"></div>
+      <details class="table"><summary>Show data table</summary><div class="tbl" id="v6-table"></div></details>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Reproduce: run <code>python -m experiments.export_viz</code> in the repository to recompute this page's data (about 5 minutes); the reproduction section at the end of the report (in Chinese) lists the commands for the main experiments. The geography is synthetic: real coordinates, but distances are straight lines times a detour factor, ignoring water and the real street network; the traffic model is synthetic too.
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script type="application/json" id="viz-data"></script>

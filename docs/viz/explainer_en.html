@@ -1,0 +1,790 @@
+<title>Route Optimisation Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a field notebook - numbered computation steps, prose left, the live figure right; one sticky chapter bar. */
+:root {
+  --bg: #f3f5f2; --surface: #fcfcfb; --ink: #17201d; --ink-2: #4b5551; --ink-3: #848c88;
+  --rule: #dce1db; --rule-2: #c7cec7; --accent: #0e6a73; --accent-soft: #d6eaeb;
+  --crit: #e34948; --high: #eda100; --norm: #2a78d6; --low: #8f8e88;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --late: #c23b2e; --ok: #2c7a3a;
+  --font-display: "Familjen Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.65 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; }
+header.top { padding-block: 40px 20px; }
+.eyebrow { font: 500 12px/1 var(--font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 4.4vw, 50px)/1.12 var(--font-display); margin: 10px 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 68ch; color: var(--ink-2); font-size: 16px; margin: 0; }
+.meta { margin-top: 14px; font: 12px/1.6 var(--font-data); color: var(--ink-3); overflow-wrap: anywhere; }
+nav.chapters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+nav.chapters .wrap { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding-block: 8px; scrollbar-width: thin; }
+nav.chapters a { font: 500 13px/1 var(--font-body); color: var(--ink-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; white-space: nowrap; }
+nav.chapters a.ch { color: var(--ink); font-weight: 600; }
+nav.chapters a:hover, nav.chapters a:focus-visible { background: var(--accent-soft); color: var(--ink); outline: none; }
+.chapter-head { padding-block: 48px 8px; border-top: 2px solid var(--ink); margin-top: 40px; }
+.chapter-head h2 { font: 700 30px/1.2 var(--font-display); margin: 6px 0 8px; }
+.chapter-head p { max-width: 70ch; color: var(--ink-2); margin: 0; }
+section.step { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 32px; padding-block: 36px; border-bottom: 1px solid var(--rule); }
+@media (max-width: 900px) { section.step { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+.prose { min-width: 0; }
+.prose .num { font: 500 13px/1 var(--font-data); color: var(--accent); }
+.prose h3 { font: 700 21px/1.3 var(--font-display); margin: 8px 0 10px; text-wrap: balance; }
+.prose p { margin: 0 0 12px; max-width: 62ch; }
+.prose .q { color: var(--ink-2); font-size: 14px; border-left: 2px solid var(--rule-2); padding-left: 12px; }
+.formula { font: 13px/1.7 var(--font-data); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.fig { min-width: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 14px 10px; }
+.fig-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.fig-title { font: 500 13px/1.4 var(--font-body); color: var(--ink-2); }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; }
+.controls button { font: 500 12.5px/1 var(--font-body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-2); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.svgbox { width: 100%; overflow-x: auto; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--font-data); fill: var(--ink-3); font-size: 11px; }
+svg .lbl { fill: var(--ink-2); }
+svg .lbl-strong { fill: var(--ink); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 12px/1.4 var(--font-body); color: var(--ink-2); margin-top: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.legend i.sq { border-radius: 2px; }
+.legend i.ring { background: transparent !important; border: 2px solid currentColor; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+.stat { border-top: 1px solid var(--rule); padding-top: 8px; }
+.stat b { display: block; font: 700 22px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--ink-3); }
+.stat b.bad { color: var(--late); } .stat b.good { color: var(--ok); }
+details.table { margin-top: 10px; font-size: 13px; }
+details.table summary { cursor: pointer; color: var(--accent); font-size: 12.5px; }
+.tbl { overflow-x: auto; margin-top: 8px; }
+table { border-collapse: collapse; font: 12px/1.5 var(--font-data); font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink-3); font-weight: 500; }
+.tip { position: fixed; pointer-events: none; z-index: 20; background: var(--ink); color: var(--surface); font: 12px/1.5 var(--font-data); padding: 7px 9px; border-radius: 6px; max-width: 300px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.loading { color: var(--ink-3); font: 13px var(--font-data); padding: 30px 0; }
+footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top wrap">
+  <div class="eyebrow">Algorithm Track · Phase 0</div>
+  <h1>Route Optimisation Walkthrough</h1>
+  <p class="lede">This page follows two experiments in the order the computer works through them. The first shows how time-varying traffic is put inside PyVRP's search. The second shows, on a Voi battery-swap morning in Stockholm, what the solver computes at each step. Every figure is recomputed with the repository's own code; summary numbers come from the report's main experiments.</p>
+  <p class="meta" id="meta">Data: traffic instance H00 (heavy congestion, 100 customers) · Voi instance M00 (about 430 stops, 5 vehicles) · report docs/Phase0_Algorithm_Report_CN.md §5, §6</p>
+</header>
+
+<nav class="chapters" aria-label="Chapters">
+  <div class="wrap">
+    <a class="ch" href="#traffic">Traffic in the search</a>
+    <a href="#t1">Traffic model</a><a href="#t2">Plan vs reality</a><a href="#t3">Time-slot copies</a><a href="#t4">Results</a>
+    <a class="ch" href="#voi">Voi swap day</a>
+    <a href="#v1">Instance</a><a href="#v2">Priority stages</a><a href="#v3">Fleet day</a><a href="#v4">Re-planning</a><a href="#v5">Uncertainty</a><a href="#v6">Time and scale</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div id="loading" class="loading">Loading the computed data…</div>
+
+  <div class="chapter-head" id="traffic">
+    <div class="eyebrow">Part 1 · report §5</div>
+    <h2>Traffic in the search</h2>
+    <p>The question: the same street can take twice as long at 8:00 as at noon, but PyVRP only accepts one fixed travel-time table. How can it know, while it builds routes, how long a leg takes at the time the vehicle actually leaves?</p>
+  </div>
+
+  <section class="step" id="t1">
+    <div class="prose">
+      <div class="num">Step 1 / Traffic model</div>
+      <h3>Define "real" traffic: one speed per 15-minute slot</h3>
+      <p>The day has 96 slots of 15 minutes. Each slot has a congestion level p(t): highest in the 8:00 morning peak, a bit lower in the 17:00 evening peak, zero at night. Each street also has an exposure to congestion that approaches 1 near the city centre.</p>
+      <div class="formula">slowdown = (A + B × exposure) × p(t)
+speed    = 50 km/h × (1 − slowdown)
+heavy congestion: A = 0.30, B = 0.60</div>
+      <p>Travel time is accumulated slot by slot from the departure time: if the vehicle crosses into the next slot halfway, the rest of the leg uses the new speed. This guarantees that leaving earlier never means arriving later (FIFO). The on-time guarantee in step 3 relies on this property.</p>
+      <p class="q">Lower half of the figure: two streets of about 3 km. Leaving at 8:00, the central one takes more than twice as long; the outer one is barely affected.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">Congestion level p(t) and travel time of two legs by departure time</div></div>
+      <div class="svgbox" id="t1-fig"></div>
+      <div class="legend" id="t1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t2">
+    <div class="prose">
+      <div class="num">Step 2 / Plan vs reality</div>
+      <h3>A plan made with average speeds arrives late in real traffic</h3>
+      <p>The simplest approach builds one fixed table from the all-day average speed and lets PyVRP plan on it. PyVRP believes every stop is on time. The morning peak is slower than average, so when the plan is replayed in real traffic some customers are reached after their window has closed.</p>
+      <p>Each row in the figure is a vehicle; the horizontal axis is time. A customer with a time window is drawn as a horizontal bar (the window) and a dot (when service actually starts). <b>Red means late</b>, and the red segment shows by how much. Stops without a window get a small tick.</p>
+      <p class="q">Switch to "Time-slot copies": the same day and the same customers, with no late stop. Step 3 explains how.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">Instance H00 · PyVRP 10 s · each plan replayed stop by stop in real traffic</div>
+        <div class="controls" id="t2-ctl"></div>
+      </div>
+      <div class="svgbox" id="t2-fig"></div>
+      <div class="stats" id="t2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t3">
+    <div class="prose">
+      <div class="num">Step 3 / Time-slot copies</div>
+      <h3>Move time into the graph: one copy per slot</h3>
+      <p>The 07:00–16:00 shift is cut into six 90-minute slots. Each customer is copied once for every slot its time window overlaps, and each copy may only be served inside its slot. The solver must visit <b>exactly one copy</b> per customer, so choosing a copy means choosing when to serve.</p>
+      <p>Every leg leaving a copy uses the <b>slowest</b> travel time over all departure times that copy allows (sampled every 30 s). Because of FIFO, as long as the driver never starts a stop before its planned slot, the real arrival is never later than planned, so the plan is on time in real traffic.</p>
+      <p class="q">Figure: the six copies of a central customer and the leg to another customer. The curve is the true travel time, which changes with departure time; the steps are the conservative values handed to PyVRP, always on or above the curve.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title" id="t3-title">Slot copies and their conservative travel time</div></div>
+      <div class="svgbox" id="t3-fig"></div>
+      <div class="legend" id="t3-legend"></div>
+      <div class="stats" id="t3-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t4">
+    <div class="prose">
+      <div class="num">Step 4 / Results</div>
+      <h3>On time, without driving more</h3>
+      <p>Every approach ran on the same day on the same 20 instances × 3 seeds, and every plan was scored in real traffic. The vertical axis is the share of plans in which no customer is late and no vehicle works overtime; the horizontal axis is extra driving time compared with PyVRP on the all-day average.</p>
+      <p>The target is the top left: always on time, no extra driving. Planning on peak speeds is also always on time but drives 1–4 % more; OR-Tools and Timefold are on time but drive 14–21 % more. PyVRP with time-slot copies is the only approach that achieves both.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">Share of on-time plans vs extra driving time (480 runs)</div>
+        <div class="controls" id="t4-ctl"></div>
+      </div>
+      <div class="svgbox" id="t4-fig"></div>
+      <div class="legend" id="t4-legend"></div>
+      <details class="table"><summary>Show data table</summary><div class="tbl" id="t4-table"></div></details>
+    </div>
+  </section>
+
+  <div class="chapter-head" id="voi">
+    <div class="eyebrow">Part 2 · report §6</div>
+    <h2>Voi swap day</h2>
+    <p>The question: on a morning shift close to Voi's real operation, can PyVRP express all our constraints? With strict priorities, what does it compute at each step? And does the plan survive real-world variability?</p>
+  </div>
+
+  <section class="step" id="v1">
+    <div class="prose">
+      <div class="num">Step 1 / Instance</div>
+      <h3>06:00–14:00, 5 vehicles, about 430 stops</h3>
+      <p>Coordinates are real latitude/longitude in central Stockholm. Stops cluster around metro stations and squares. Each dot is a scooter that needs a battery swap, coloured by priority: the lower the battery and the busier the spot, the higher the priority.</p>
+      <p>There are three more kinds of work: parking violations (mandatory: pick the scooter up before a deadline and park it legally), rebalancing (move a scooter from an oversupplied area to a hotspot), and zone groups ("swap any 3 of these 8"). The dashed box is an approximation of the class-3 environmental zone; only electric vehicles may serve stops inside it.</p>
+      <p class="q">Fleet: 2 electric vans, 1 diesel van, 2 electric cargo bikes. Vehicles can restock batteries at either hub (squares) during the shift; every driver takes a 30-minute break starting between 10:00 and 12:00.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · click a legend entry to hide that class</div>
+        <div class="controls" id="v1-ctl"></div>
+      </div>
+      <div class="svgbox" id="v1-fig"></div>
+      <div class="legend" id="v1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v2">
+    <div class="prose">
+      <div class="num">Step 2 / Priority stages</div>
+      <h3>Secure CRITICAL first, then go down one class at a time</h3>
+      <p>Strict priority means: if one more CRITICAL job can be served, it is worth any cost and any number of lower-priority jobs. The original design ("each class penalised about 10× the next") cannot guarantee that, so we solve in stages:</p>
+      <div class="formula">Stage 1  CRITICAL prize = M (above every possible cost + all lower prizes)
+         other classes keep their small prizes and stay in the search
+         → every CRITICAL job served is locked as mandatory
+Stage 2  HIGH prize = M, continue from stage 1's plan → lock
+Stage 3  NORMAL … Stage 4  LOW (and minimise cost)</div>
+      <p>Every stage searches the whole problem and hands a complete plan to the next one. That is what makes it much better than the first version, which kept only the active class in each stage and lost up to 129 NORMAL value on the M size.</p>
+      <p class="q">Step through the stages: filled dots are served in that stage's plan, hollow rings are not. The bars show the share of value served per class. The last two buttons compare two other approaches on the same instance.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title" id="v2-title">PyVRP priority stages (15 s per stage)</div>
+        <div class="controls" id="v2-ctl"></div>
+      </div>
+      <div class="svgbox" id="v2-fig"></div>
+      <div class="legend" id="v2-legend"></div>
+      <div class="stats" id="v2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v3">
+    <div class="prose">
+      <div class="num">Step 3 / Fleet day</div>
+      <h3>How two constraints PyVRP lacks are filled in</h3>
+      <p><b>Driver breaks.</b> PyVRP has no notion of a break. The shift is ended 30 minutes early, and after routing the break is inserted between 10:00 and 12:00: every position is tried, and the one that breaks no time window and finishes earliest is kept. The dark blocks in the figure are those inserted breaks.</p>
+      <p><b>"Ideally before 9:00".</b> PyVRP has no soft deadlines either. The trick mirrors the traffic slot copies: the customer is copied five times (on time, 15, 30 or 60 minutes late, or open), exactly one copy can be served, and later copies carry a smaller prize. The prize lost is the lateness cost (20 points per second).</p>
+      <p class="q">The figure shows a full day of the final plan for all five vehicles. The cargo bikes (10 batteries) return to a hub often; the vans mostly alternate between driving and serving.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">Final plan · each vehicle's timeline (06:00–14:00)</div></div>
+      <div class="svgbox" id="v3-fig"></div>
+      <div class="legend" id="v3-legend"></div>
+      <div class="fig-head" style="margin-top:16px"><div class="fig-title">Five copies of one HIGH hotspot job: the later, the smaller the prize</div></div>
+      <div class="svgbox" id="v3-soft"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v4">
+    <div class="prose">
+      <div class="num">Step 4 / Re-planning</div>
+      <h3>10:00: 4 new parking violations and 8 new urgent swaps</h3>
+      <p>When the day plan has run until 10:00, each vehicle's situation is captured first:</p>
+      <p>Where it is (a vehicle already driving to its next stop is committed to it and cannot turn around); how many charged batteries it still carries and can hand out without a hub visit; how much room the depleted ones take; how many hub visits it has left; whether the break is taken. A scooter on board becomes a mandatory drop-off that only this vehicle can do.</p>
+      <p>The rest of the day is then re-solved with the priority stages, warm-started from the old plan. In the experiment 5 seconds were enough to fit every new mandatory job; without re-planning none of them is served.</p>
+      <p class="q">The cost: after re-planning only 30–40 % of the old plan's remaining jobs stay on the same vehicle, so drivers get many reassignments. Production needs a cost on reassignment.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · the situation at 10:00 and the new plan (warm start, 5 s)</div>
+        <div class="controls" id="v4-ctl"></div>
+      </div>
+      <div class="svgbox" id="v4-fig"></div>
+      <div class="legend" id="v4-legend"></div>
+      <details class="table"><summary>Show the summary of 100 re-planning runs</summary><div class="tbl" id="v4-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v5">
+    <div class="prose">
+      <div class="num">Step 5 / Uncertainty</div>
+      <h3>A plan that fills the day with estimates fails almost every day</h3>
+      <p>The plan is executed 300 times, each time with random travel and service times: one day-level factor per route (σ = 0.10), one per leg (σ = 0.20) and one per service (σ = 0.30), all lognormal with mean 1.</p>
+      <p>The optimiser uses all available time, so a plan without slack is on time all day in only about 5 % of days under this variability, and drivers often work overtime. Inflating travel and service times by 20 % while planning gives 99 % of days on time, at the price of about 11 % fewer swaps.</p>
+      <p class="q">Horizontal axis: total fleet overtime that day in minutes; vertical axis: share of days with more overtime than that. The closer the curve hugs the bottom, the more robust the plan. The buffer size has to be calibrated on real data.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">How often and how long drivers work overtime · 300 simulated days per plan</div></div>
+      <div class="svgbox" id="v5-fig"></div>
+      <div class="stats" id="v5-stats"></div>
+      <details class="table"><summary>Show the summary of 40 runs</summary><div class="tbl" id="v5-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v6">
+    <div class="prose">
+      <div class="num">Step 6 / Time and scale</div>
+      <h3>Give solving time by size</h3>
+      <p>S (about 160 stops) needs 15 s; M (about 430 stops, 5 vehicles) loses no HIGH job at 15 s already; L (about 850 stops, 10 vehicles, a city-wide morning shift) needs 240 s to lose no HIGH job at all.</p>
+      <p>The larger the problem, the clearer the advantage of the priority stages: on L at 15 s the 10× weights even lose CRITICAL jobs. OR-Tools does not catch up with more time: on M it loses 97 NORMAL value from 15 s to 240 s alike.</p>
+      <p class="q">The three panels use different vertical scales (different sizes). A red ring means that run also lost HIGH or CRITICAL value.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">NORMAL value lost vs solving time (135 runs)</div></div>
+      <div class="svgbox" id="v6-fig"></div>
+      <div class="legend" id="v6-legend"></div>
+      <details class="table"><summary>Show data table</summary><div class="tbl" id="v6-table"></div></details>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Reproduce: run <code>python -m experiments.export_viz</code> in the repository to recompute this page's data (about 5 minutes); the reproduction section at the end of the report (in Chinese) lists the commands for the main experiments. The geography is synthetic: real coordinates, but distances are straight lines times a detour factor, ignoring water and the real street network; the traffic model is synthetic too.
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script type="application/json" id="viz-data"></script>
+
+<script>
+(() => {
+const NS = "http://www.w3.org/2000/svg";
+const CLASSES = ["CRITICAL", "HIGH", "NORMAL", "LOW"];
+const CLS_VAR = { CRITICAL: "--crit", HIGH: "--high", NORMAL: "--norm", LOW: "--low" };
+const ARC = (n) => ({ "\u5e02\u4e2d\u5fc3\u8def\u6bb5": "City-centre leg", "\u5916\u56f4\u8def\u6bb5": "Outer leg" }[n] || n);
+const PLAN_EN = { static_mean: "Plan on all-day average speed", bucketed_90: "Time-slot copies (90 min)" };
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const hhmm = (s) => { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return `${String(h + Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; };
+const fmt = (x, d = 0) => (x == null || Number.isNaN(x)) ? "–" : Number(x).toLocaleString("en-GB", { maximumFractionDigits: d, minimumFractionDigits: d });
+
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function svg(host, w, h) { host.innerHTML = ""; return el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img" }, host); }
+function text(parent, x, y, s, attrs = {}) { const t = el("text", { x, y, ...attrs }, parent); t.textContent = s; return t; }
+const lin = (d0, d1, r0, r1) => (v) => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+
+const tip = document.getElementById("tip");
+function hover(node, html) {
+  node.addEventListener("pointermove", (e) => { tip.innerHTML = typeof html === "function" ? html() : html; tip.hidden = false; const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+  node.addEventListener("pointerleave", () => { tip.hidden = true; });
+}
+function buttons(host, items, active, onPick) {
+  host.innerHTML = "";
+  for (const [key, label] of items) {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.id = `${host.id}-${key}`;
+    b.setAttribute("aria-pressed", key === active ? "true" : "false");
+    b.addEventListener("click", () => { host.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); onPick(key); });
+    host.appendChild(b);
+  }
+}
+function legend(host, items) {
+  host.innerHTML = items.map(([color, label, shape = ""]) => `<span><i class="${shape}" style="background:${color};color:${color}"></i>${label}</span>`).join("");
+}
+function stats(host, items) {
+  host.innerHTML = items.map(([v, label, cls = ""]) => `<div class="stat"><b class="${cls}">${v}</b><span>${label}</span></div>`).join("");
+}
+function table(host, cols, rows) {
+  host.innerHTML = `<table><thead><tr>${cols.map((c) => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map((c) => `<td>${c[2] ? c[2](r[c[0]], r) : r[c[0]]}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+function axisX(g, x, y0, ticks, label = (t) => t) {
+  for (const t of ticks) { el("line", { x1: x(t), x2: x(t), y1: y0, y2: y0 + 4, stroke: css("--rule-2") }, g); text(g, x(t), y0 + 16, label(t), { "text-anchor": "middle" }); }
+}
+function gridY(g, y, x0, x1, ticks, label = (t) => t) {
+  for (const t of ticks) { el("line", { x1: x0, x2: x1, y1: y(t), y2: y(t), stroke: css("--rule"), "stroke-width": 1 }, g); text(g, x0 - 6, y(t) + 4, label(t), { "text-anchor": "end" }); }
+}
+
+/* ---------------- Traffic ---------------- */
+function t1(T) {
+  const W = 760, H = 400, L = 54, R = 16;
+  const s = svg(document.getElementById("t1-fig"), W, H);
+  const t0 = 6 * 3600, t1 = 17 * 3600;
+  const x = lin(t0, t1, L, W - R);
+  // profile bars
+  const y1 = lin(0, 1, 120, 24);
+  text(s, L, 14, "Congestion level p(t)", { class: "lbl" });
+  gridY(s, y1, L, W - R, [0, 0.5, 1], (v) => v.toFixed(1));
+  el("rect", { x: x(T.shift[0]), y: 20, width: x(T.shift[1]) - x(T.shift[0]), height: 102, fill: css("--accent-soft"), opacity: 0.5 }, s);
+  T.profile.forEach((p, k) => {
+    const a = k * T.bucket_s; if (a < t0 || a >= t1) return;
+    const r = el("rect", { x: x(a) + 1, y: y1(p), width: x(a + T.bucket_s) - x(a) - 2, height: Math.max(0.5, y1(0) - y1(p)), fill: css("--accent"), rx: 1.5 }, s);
+    hover(r, `${hhmm(a)}–${hhmm(a + T.bucket_s)}<br>congestion ${p.toFixed(2)}`);
+  });
+  text(s, x(T.shift[0]) + 4, 34, "shift 07:00–16:00", { class: "lbl" });
+  // travel time lines
+  const top = 160, bot = H - 40;
+  const all = T.arcs.flatMap((a) => a.travel_s);
+  const ymax = Math.ceil(Math.max(...all) / 60 / 2) * 2;
+  const y2 = lin(0, ymax, bot, top);
+  text(s, L, top - 14, "Travel time of a ~3 km leg (minutes)", { class: "lbl" });
+  gridY(s, y2, L, W - R, [0, ymax / 2, ymax], (v) => fmt(v));
+  axisX(s, x, bot, [6, 8, 10, 12, 14, 16].map((h) => h * 3600), hhmm);
+  const colors = [css("--s2"), css("--s1")];
+  T.arcs.forEach((a, i) => {
+    const d = a.times.map((t, k) => `${k ? "L" : "M"}${x(t).toFixed(1)},${y2(a.travel_s[k] / 60).toFixed(1)}`).join("");
+    el("path", { d, fill: "none", stroke: colors[i], "stroke-width": 2, "stroke-linejoin": "round" }, s);
+    const k8 = a.times.indexOf(8 * 3600);
+    text(s, W - R - 2, y2(a.travel_s[a.travel_s.length - 1] / 60) - 6, ARC(a.name), { "text-anchor": "end", class: "lbl" });
+    el("circle", { cx: x(8 * 3600), cy: y2(a.travel_s[k8] / 60), r: 4, fill: colors[i], stroke: css("--surface"), "stroke-width": 2 }, s);
+  });
+  // crosshair
+  const cross = el("line", { y1: top, y2: bot, stroke: css("--ink-3"), "stroke-dasharray": "3 3", visibility: "hidden" }, s);
+  const hit = el("rect", { x: L, y: top, width: W - R - L, height: bot - top, fill: "transparent" }, s);
+  hit.addEventListener("pointermove", (e) => {
+    const p = s.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(s.getScreenCTM().inverse());
+    const t = t0 + (q.x - L) / (W - R - L) * (t1 - t0); const k = Math.max(0, Math.min(T.arcs[0].times.length - 1, Math.round((t - t0) / 300)));
+    cross.setAttribute("x1", x(T.arcs[0].times[k])); cross.setAttribute("x2", x(T.arcs[0].times[k])); cross.setAttribute("visibility", "visible");
+    tip.innerHTML = `Leave ${hhmm(T.arcs[0].times[k])}<br>` + T.arcs.map((a) => `${ARC(a.name)}: ${fmt(a.travel_s[k] / 60, 1)} min`).join("<br>");
+    tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (e.clientY + 14) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); tip.hidden = true; });
+  legend(document.getElementById("t1-legend"), T.arcs.map((a, i) => [colors[i], `${ARC(a.name)} (${fmt(a.length_m / 1000, 1)} km, exposure ${a.exposure})`, "sq"]));
+}
+
+function t2(T) {
+  const keys = Object.keys(T.plans);
+  const draw = (key) => {
+    const P = T.plans[key];
+    const rows = P.routes.length, rowH = 44, L = 46, R = 14, top = 14, W = 760;
+    const H = top + rows * rowH + 30;
+    const s = svg(document.getElementById("t2-fig"), W, H);
+    const x = lin(7 * 3600, 16.5 * 3600, L, W - R);
+    for (let h = 7; h <= 16; h++) el("line", { x1: x(h * 3600), x2: x(h * 3600), y1: top, y2: top + rows * rowH, stroke: css("--rule") }, s);
+    axisX(s, x, top + rows * rowH, [7, 9, 11, 13, 15].map((h) => h * 3600), hhmm);
+    P.routes.forEach((r, i) => {
+      const y0 = top + i * rowH;
+      text(s, L - 8, y0 + rowH / 2 + 4, `Veh ${i + 1}`, { "text-anchor": "end", class: "lbl" });
+      el("line", { x1: x(7 * 3600), x2: x(r.end), y1: y0 + rowH - 6, y2: y0 + rowH - 6, stroke: css("--rule-2"), "stroke-width": 1 }, s);
+      let lane = 0;
+      r.stops.forEach((st) => {
+        if (!st.window) { el("line", { x1: x(st.start), x2: x(st.start), y1: y0 + rowH - 10, y2: y0 + rowH - 2, stroke: css("--ink-3"), "stroke-width": 1.5 }, s); return; }
+        const ly = y0 + 8 + (lane++ % 3) * 9;
+        const g = el("g", {}, s);
+        el("line", { x1: x(st.window[0]), x2: x(st.window[1]), y1: ly, y2: ly, stroke: css("--ink-3"), "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.55 }, g);
+        if (st.late) el("line", { x1: x(st.window[1]), x2: x(st.start), y1: ly, y2: ly, stroke: css("--late"), "stroke-width": 2.5 }, g);
+        el("circle", { cx: x(st.start), cy: ly, r: st.late ? 4.5 : 3.5, fill: st.late ? css("--late") : css("--ink"), stroke: css("--surface"), "stroke-width": 1.5 }, g);
+        el("rect", { x: x(st.window[0]) - 4, y: ly - 6, width: Math.max(10, x(Math.max(st.start, st.window[1])) - x(st.window[0]) + 8), height: 12, fill: "transparent" }, g);
+        hover(g, () => `${st.job}<br>window ${hhmm(st.window[0])}–${hhmm(st.window[1])}<br>${st.planned != null ? `planned ${hhmm(st.planned)} · ` : ""}actual start ${hhmm(st.start)}${st.late ? `<br>late by ${fmt((st.start - st.window[1]) / 60)} min` : ""}`);
+      });
+    });
+    const lateRoutes = P.routes.filter((r) => r.stops.some((s) => s.late)).length;
+    const agg = T.summary.filter((r) => r.level === "H" && r.solver === "pyvrp" && r.strategy === key).pop();
+    stats(document.getElementById("t2-stats"), [
+      [P.late_stops, "late stops (this plan)", P.late_stops ? "bad" : "good"],
+      [`${lateRoutes} / ${P.routes.length}`, "vehicles late at least once", lateRoutes ? "bad" : "good"],
+      ...(agg ? [[`${fmt((1 - agg.on_time) * 100)}%`, `of ${agg.runs} such plans in heavy traffic have a late stop`, agg.on_time < 1 ? "bad" : "good"]] : []),
+    ]);
+  };
+  buttons(document.getElementById("t2-ctl"), keys.map((k) => [k, PLAN_EN[k] || T.plans[k].label]), keys[0], draw);
+  draw(keys[0]);
+}
+
+function t3(T) {
+  const B = T.bucket_example, W = 760, H = 330, L = 54, R = 16;
+  const s = svg(document.getElementById("t3-fig"), W, H);
+  const x = lin(7 * 3600, 16 * 3600, L, W - R);
+  // bucket strip
+  B.copies.forEach((c, i) => {
+    el("rect", { x: x(c.lo), y: 22, width: Math.max(2, x(c.hi) - x(c.lo) - 2), height: 26, rx: 4, fill: i % 2 ? css("--accent-soft") : css("--rule"), stroke: css("--rule-2") }, s);
+    text(s, (x(c.lo) + x(c.hi)) / 2, 39, `copy ${i + 1}`, { "text-anchor": "middle", class: "lbl" });
+  });
+  text(s, L, 14, `Customer ${B.job}: ${B.copies.length} copies, each served only inside its 90-minute slot`, { class: "lbl" });
+  const top = 86, bot = H - 36;
+  const all = B.copies.flatMap((c) => [...c.true_leg_s, c.planned_leg_s]);
+  const ymin = Math.floor(Math.min(...all) / 60 * 0.9), ymax = Math.ceil(Math.max(...all) / 60 * 1.05);
+  const y = lin(ymin, ymax, bot, top);
+  text(s, L, top - 12, `Travel time to ${B.dest} (minutes, about ${fmt(B.length_m / 1000, 1)} km)`, { class: "lbl" });
+  const ticks = [ymin, Math.round((ymin + ymax) / 2), ymax];
+  gridY(s, y, L, W - R, ticks, (v) => fmt(v));
+  axisX(s, x, bot, [7, 9, 11, 13, 15].map((h) => h * 3600), hhmm);
+  B.copies.forEach((c) => {
+    const d = c.deps.map((t, k) => `${k ? "L" : "M"}${x(t).toFixed(1)},${y(c.true_leg_s[k] / 60).toFixed(1)}`).join("");
+    el("path", { d, fill: "none", stroke: css("--s1"), "stroke-width": 2 }, s);
+    const yy = y(c.planned_leg_s / 60);
+    const g = el("g", {}, s);
+    el("line", { x1: x(c.deps[0]), x2: x(c.deps[c.deps.length - 1]), y1: yy, y2: yy, stroke: css("--s2"), "stroke-width": 2.5 }, g);
+    el("rect", { x: x(c.deps[0]), y: yy - 8, width: Math.max(8, x(c.deps[c.deps.length - 1]) - x(c.deps[0])), height: 16, fill: "transparent" }, g);
+    const tmax = Math.max(...c.true_leg_s), tmin = Math.min(...c.true_leg_s);
+    hover(g, `Copy served ${hhmm(c.lo)}–${hhmm(c.hi)}<br>time given to PyVRP ${fmt(c.planned_leg_s / 60, 1)} min<br>true time ${fmt(tmin / 60, 1)}–${fmt(tmax / 60, 1)} min`);
+  });
+  legend(document.getElementById("t3-legend"), [[css("--s1"), "True travel time (depends on departure)", "sq"], [css("--s2"), "Conservative value per copy (slowest in slot)", "sq"]]);
+  stats(document.getElementById("t3-stats"), [[B.n_jobs, "customers"], [B.n_copies, "copy nodes (90-minute slots)"], ["exactly one", "copy per customer is visited"]]);
+}
+
+function t4(T) {
+  const SOLV = { pyvrp: ["--s1", "PyVRP"], ortools: ["--s2", "OR-Tools"], timefold: ["--s3", "Timefold"] };
+  const NAME = { static_mean: "all-day average", static_peak: "peak speeds", iterative: "iterative re-estimate", bucketed_90: "slot copies 90′", bucketed_60: "slot copies 60′", td_search: "traffic in search", static_free: "free-flow speeds" };
+  const rows = T.summary.filter((r) => ["bucketed_90", "bucketed_60", "td_search"].includes(r.strategy) || (r.solver === "pyvrp" && ["static_mean", "static_peak", "iterative"].includes(r.strategy)));
+  const uniq = new Map(); for (const r of rows) uniq.set(`${r.level}|${r.solver}|${r.strategy}`, r);
+  const data = [...uniq.values()];
+  const draw = (level) => {
+    const D = data.filter((r) => r.level === level);
+    const W = 760, H = 420, L = 54, R = 24, top = 92, bot = H - 40;
+    const s = svg(document.getElementById("t4-fig"), W, H);
+    const xmax = Math.ceil(Math.max(...D.map((r) => r.travel_vs_ref_pct)) / 5) * 5 + 2;
+    const x = lin(-3, xmax, L, W - R), y = lin(0.3, 1.0, bot, top);
+    gridY(s, y, L, W - R, [0.4, 0.6, 0.8, 1.0], (v) => `${Math.round(v * 100)}%`);
+    axisX(s, x, bot, [0, 5, 10, 15, 20].filter((v) => v <= xmax), (v) => `+${v}%`);
+    el("line", { x1: x(0), x2: x(0), y1: top, y2: bot, stroke: css("--rule-2"), "stroke-dasharray": "3 3" }, s);
+    text(s, 4, 12, "Vertical: share of on-time plans", { class: "lbl" });
+    text(s, W - R, bot - 8, "extra driving time →", { "text-anchor": "end", class: "lbl" });
+    let row = 0;
+    D.sort((a, b) => a.travel_vs_ref_pct - b.travel_vs_ref_pct).forEach((r, i) => {
+      const g = el("g", {}, s);
+      const cx = x(r.travel_vs_ref_pct), cy = y(r.on_time);
+      const right = cx < W - 200;
+      const label = `${SOLV[r.solver][1]} · ${NAME[r.strategy]}`;
+      if (r.on_time >= 0.99) {
+        // all-on-time points share the 100 % line: stack their labels above it
+        const ly = top - 14 - (row++ % 4) * 16;
+        el("line", { x1: cx, x2: cx, y1: cy - 6, y2: ly + 3, stroke: css("--rule-2") }, g);
+        text(g, cx + (right ? 4 : -4), ly, label, { "text-anchor": right ? "start" : "end", class: "lbl" });
+      } else {
+        text(g, cx + 10, cy + 4, label, { "text-anchor": "start", class: "lbl" });
+      }
+      el("circle", { cx, cy, r: 6, fill: css(SOLV[r.solver][0]), stroke: css("--surface"), "stroke-width": 2 }, g);
+      el("circle", { cx, cy, r: 14, fill: "transparent" }, g);
+      hover(g, `${SOLV[r.solver][1]} · ${NAME[r.strategy]}<br>on time ${fmt(r.on_time * 100)}% (${r.runs} runs)<br>driving time ${r.travel_vs_ref_pct >= 0 ? "+" : ""}${fmt(r.travel_vs_ref_pct, 1)}%<br>vehicles used ${fmt(r.vehicles, 2)}`);
+    });
+    table(document.getElementById("t4-table"), [["solver", "Solver", (v) => SOLV[v][1]], ["strategy", "Approach", (v) => NAME[v]], ["on_time", "On time", (v) => `${fmt(v * 100)}%`], ["travel_vs_ref_pct", "Driving vs reference", (v) => `${fmt(v, 1)}%`], ["planning_error_pct", "Planning error", (v) => `${fmt(v, 1)}%`], ["vehicles", "Vehicles", (v) => fmt(v, 2)], ["runs", "Runs"]], D);
+  };
+  buttons(document.getElementById("t4-ctl"), [["H", "Heavy congestion"], ["T", "Moderate congestion"]], "H", draw);
+  draw("H");
+  legend(document.getElementById("t4-legend"), Object.values(SOLV).map(([v, n]) => [css(v), n]));
+}
+
+/* ---------------- Voi map helpers ---------------- */
+function projector(loc, W, H, pad = 18) {
+  const lat0 = 59.325, k = Math.cos(lat0 * Math.PI / 180);
+  const xs = loc.map((p) => p[1] * k), ys = loc.map((p) => p[0]);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const sc = Math.min((W - 2 * pad) / (x1 - x0), (H - 2 * pad) / (y1 - y0));
+  const ox = (W - (x1 - x0) * sc) / 2, oy = (H - (y1 - y0) * sc) / 2;
+  return (lat, lon) => [ox + (lon * k - x0) * sc, H - oy - (lat - y0) * sc];
+}
+function baseMap(s, V, P, opts = {}) {
+  const [zx0, zy0] = P(V.zone[1], V.zone[2]), [zx1, zy1] = P(V.zone[0], V.zone[3]);
+  el("rect", { x: zx0, y: zy0, width: zx1 - zx0, height: zy1 - zy0, fill: css("--accent-soft"), opacity: 0.6, stroke: css("--accent"), "stroke-dasharray": "4 3" }, s);
+  if (opts.labels !== false) for (const h of V.hotspots) { const [x, y] = P(h.lat, h.lon); text(s, x, y - 7, h.name, { "text-anchor": "middle", "font-size": 10, opacity: 0.85 }); }
+}
+function hubMarks(s, V, P, loc) {
+  for (const h of V.hubs) { const [x, y] = P(...loc[h.loc]); el("rect", { x: x - 6, y: y - 6, width: 12, height: 12, fill: css("--ink"), stroke: css("--surface"), "stroke-width": 2 }, s); text(s, x + 10, y + 4, h.id === "HUB_S" ? "Hub S" : "Hub N", { class: "lbl-strong" }); }
+}
+const R_CLS = { CRITICAL: 4.2, HIGH: 3.6, NORMAL: 3, LOW: 2.6 };
+
+function v1(V) {
+  const W = 760, H = 640;
+  const hidden = new Set();
+  const draw = () => {
+    const s = svg(document.getElementById("v1-fig"), W, H);
+    const P = projector(V.loc, W, H);
+    baseMap(s, V, P);
+    for (const sh of V.ships) {
+      const [x0, y0] = P(...V.loc[sh.from]), [x1, y1] = P(...V.loc[sh.to]);
+      const g = el("g", {}, s);
+      el("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: sh.required ? css("--late") : css("--ink-2"), "stroke-width": 1.5, "stroke-dasharray": sh.required ? "" : "4 3", "marker-end": "url(#arr)" }, g);
+      el("circle", { cx: x0, cy: y0, r: 3, fill: css("--surface"), stroke: sh.required ? css("--late") : css("--ink-2"), "stroke-width": 1.5 }, g);
+      hover(g, `${sh.required ? "Parking violation (mandatory)" : `Rebalancing (${sh.cls}, value ${sh.value})`}<br>${sh.id}`);
+    }
+    const defs = el("defs", {}, s); const m = el("marker", { id: "arr", viewBox: "0 0 8 8", refX: 7, refY: 4, markerWidth: 6, markerHeight: 6, orient: "auto" }, defs); el("path", { d: "M0,0 L8,4 L0,8 z", fill: css("--ink-2") }, m);
+    for (const c of [...CLASSES].reverse()) {
+      if (hidden.has(c)) continue;
+      for (const j of V.jobs.filter((j) => j.cls === c)) {
+        const [x, y] = P(...V.loc[j.loc]);
+        const d = el("circle", { cx: x, cy: y, r: R_CLS[c], fill: css(CLS_VAR[c]), stroke: j.group ? css("--ink") : css("--surface"), "stroke-width": j.group ? 1.5 : 1 }, s);
+        hover(d, () => `${j.id} · ${j.cls} · value ${j.value}${j.tw ? `<br>must be done by ${hhmm(j.tw[1])}` : ""}${j.soft ? `<br>ideally before ${hhmm(j.soft)} (soft deadline)` : ""}${j.zone ? "<br>inside the zone: electric vehicles only" : ""}${j.group ? `<br>zone group ${j.group}: swap any 3 of 8` : ""}`);
+      }
+    }
+    hubMarks(s, V, P, V.loc);
+  };
+  const lg = document.getElementById("v1-legend");
+  const renderLegend = () => {
+    lg.innerHTML = CLASSES.map((c) => `<span role="button" tabindex="0" data-c="${c}" style="cursor:pointer;opacity:${hidden.has(c) ? 0.35 : 1}"><i style="background:${css(CLS_VAR[c])}"></i>${c} (${V.jobs.filter((j) => j.cls === c).length})</span>`).join("")
+      + `<span><i class="ring" style="color:${css("--ink")}"></i>zone group member</span><span><i class="sq" style="background:${css("--late")}"></i>parking violation (mandatory, pick up → drop)</span><span><i class="sq" style="background:${css("--ink-2")}"></i>rebalancing (dashed)</span><span><i class="sq" style="background:${css("--accent-soft")};outline:1px dashed ${css("--accent")}"></i>environmental zone (approx.)</span>`;
+    lg.querySelectorAll("[data-c]").forEach((n) => { const t = () => { const c = n.dataset.c; hidden.has(c) ? hidden.delete(c) : hidden.add(c); renderLegend(); draw(); }; n.addEventListener("click", t); n.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } }); });
+  };
+  renderLegend(); draw();
+  document.getElementById("v1-ctl").innerHTML = "";
+}
+
+function routeMap(host, V, loc, routes, servedIds, opts = {}) {
+  const W = 760, H = 600;
+  const s = svg(host, W, H);
+  const P = projector(V.loc, W, H);
+  baseMap(s, V, P, { labels: false });
+  const lines = el("g", {}, s);
+  routes.forEach((r) => {
+    const d = r.locs.map((l, k) => { const [x, y] = P(...loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+    const p = el("path", { d, fill: "none", stroke: opts.routeColor || css("--ink-2"), "stroke-width": 1.2, opacity: 0.55, "stroke-linejoin": "round" }, lines);
+    p.addEventListener("pointerenter", () => { p.setAttribute("stroke", css("--accent")); p.setAttribute("stroke-width", 2.6); p.setAttribute("opacity", 1); });
+    p.addEventListener("pointerleave", () => { p.setAttribute("stroke", opts.routeColor || css("--ink-2")); p.setAttribute("stroke-width", 1.2); p.setAttribute("opacity", 0.55); tip.hidden = true; });
+    hover(p, `${r.vehicle} · ${r.visits.length} visits<br>${r.visits.filter((v) => v[0] === "reload").length} hub reloads`);
+  });
+  for (const c of [...CLASSES].reverse()) for (const j of V.jobs.filter((j) => j.cls === c)) {
+    const [x, y] = P(...loc[j.loc]); const done = servedIds.has(j.id);
+    el("circle", done ? { cx: x, cy: y, r: R_CLS[c], fill: css(CLS_VAR[c]), stroke: css("--surface"), "stroke-width": 0.8 } : { cx: x, cy: y, r: R_CLS[c] - 0.6, fill: css("--surface"), stroke: css(CLS_VAR[c]), "stroke-width": 1.3 }, s);
+  }
+  hubMarks(s, V, P, loc);
+  return { s, P };
+}
+function servedSet(routes) { return new Set(routes.flatMap((r) => r.visits.filter((v) => v[0] === "job" || v[0] === "delivery").map((v) => v[1]))); }
+function classBars(svgHost, served) {
+  // small bar group drawn in its own svg below the map
+  const W = 760, H = 30 * CLASSES.length + 16, L = 96, R = 120;
+  const s = svg(svgHost, W, H);
+  const x = lin(0, 1, L, W - R);
+  CLASSES.forEach((c, i) => {
+    const [got, tot] = served[c] || [0, 0]; const y = 8 + i * 30;
+    text(s, L - 10, y + 15, c, { "text-anchor": "end", class: "lbl" });
+    el("rect", { x: L, y, width: x(1) - L, height: 18, rx: 4, fill: css("--rule") }, s);
+    el("rect", { x: L, y, width: Math.max(0, x(tot ? got / tot : 0) - L), height: 18, rx: 4, fill: css(CLS_VAR[c]) }, s);
+    text(s, x(1) + 8, y + 14, `${fmt(got)} / ${fmt(tot)} (lost ${fmt(tot - got)})`, { class: "lbl-strong" });
+  });
+}
+
+function v2(V) {
+  const host = document.getElementById("v2-fig");
+  const items = V.stages.map((st, i) => [`s${i}`, `Stage ${i + 1} · ${st.stage}`]).concat([["pyvrp_weighted", "Compare: 10× weights"], ["ortools_seqfull", "Compare: OR-Tools stages"]]);
+  const LABEL = { pyvrp_weighted: "PyVRP + original 10× weights (one 60 s solve)", ortools_seqfull: "OR-Tools + priority stages (60 s)" };
+  const draw = (key) => {
+    host.innerHTML = "";
+    const mapDiv = document.createElement("div"), barDiv = document.createElement("div"); host.append(mapDiv, barDiv);
+    let routes, served, title, extra = [];
+    if (key.startsWith("s")) {
+      const st = V.stages[+key.slice(1)]; routes = st.routes; served = st.served;
+      title = `PyVRP priority stages · stage ${+key.slice(1) + 1}: ${st.stage} prize set to M`;
+      extra = [[st.locked, "jobs locked as mandatory"], [routes.reduce((a, r) => a + r.visits.filter((v) => v[0] === "reload").length, 0), "hub reloads"]];
+    } else {
+      const f = V.final[key]; routes = f.routes; served = f.served; title = LABEL[key];
+      extra = [[fmt(f.report.served_jobs), "swaps served"], [`${fmt(f.report.soft_late_s / 3600, 1)} h`, "total soft-deadline lateness"]];
+    }
+    document.getElementById("v2-title").textContent = title;
+    routeMap(mapDiv, V, V.loc, routes, servedSet(routes));
+    classBars(barDiv, served);
+    const fin = V.final.pyvrp_seqfull;
+    stats(document.getElementById("v2-stats"), [...extra, [fmt(fin.report.served_jobs), "swaps (stages, final)"]]);
+  };
+  buttons(document.getElementById("v2-ctl"), items, "s0", draw);
+  draw("s0");
+  legend(document.getElementById("v2-legend"), [...CLASSES.map((c) => [css(CLS_VAR[c]), c]), [css("--ink-3"), "hollow = not served in this stage", "ring"], [css("--ink-2"), "route (hover to highlight)", "sq"]]);
+}
+
+function v3(V) {
+  const KIND = { drive: ["--rule-2", "driving"], serve: [null, "service (coloured by priority)"], wait: ["--accent-soft", "waiting for a window"], reload: ["--accent", "hub reload"], break: ["--ink", "break (inserted after routing)"], load: ["--accent", "loading at start"] };
+  const TL = V.timelines, W = 760, L = 70, R = 12, rowH = 34, top = 10;
+  const H = top + TL.length * rowH + 28;
+  const s = svg(document.getElementById("v3-fig"), W, H);
+  const x = lin(V.shift[0], V.shift[1], L, W - R);
+  el("rect", { x: x(V.rest.earliest), y: top - 4, width: x(V.rest.latest + V.rest.duration) - x(V.rest.earliest), height: TL.length * rowH + 4, fill: css("--accent-soft"), opacity: 0.45 }, s);
+  text(s, x(V.rest.earliest) + 4, top + TL.length * rowH + 22, "break window", { class: "lbl" });
+  axisX(s, x, top + TL.length * rowH, [6, 8, 10, 12, 14].map((h) => h * 3600), hhmm);
+  const vname = (id) => ({ evan: "e-van", dvan: "diesel van", bike: "cargo bike" }[id.replace(/\d+$/, "")] || id);
+  TL.forEach((tl, i) => {
+    const y = top + i * rowH;
+    text(s, L - 8, y + 18, vname(tl.vehicle), { "text-anchor": "end", class: "lbl" });
+    for (const g of tl.segs) {
+      const fill = g.k === "serve" ? (g.c === "SHIP" ? css("--ink-2") : css(CLS_VAR[g.c])) : css(KIND[g.k][0]);
+      const r = el("rect", { x: x(g.a), y: y + 4, width: Math.max(0.6, x(g.b) - x(g.a)), height: 20, fill }, s);
+      if (g.k === "break" || g.k === "reload") hover(r, `${KIND[g.k][1]}<br>${hhmm(g.a)}–${hhmm(g.b)}`);
+    }
+  });
+  legend(document.getElementById("v3-legend"), [[css("--rule-2"), "driving", "sq"], [css("--norm"), "service (colour = priority)", "sq"], [css("--ink-2"), "scooter pick-up / drop", "sq"], [css("--accent"), "loading / hub reload", "sq"], [css("--ink"), "break", "sq"], [css("--accent-soft"), "waiting", "sq"]]);
+
+  // soft-deadline copies
+  const S = V.soft, value = 3, base = V.weighted_prize.HIGH * value;
+  const copies = [...S.steps_s.map((st) => [st, `by ${hhmm(S.due + st)}`]), [S.open_s, "open (charged as 2 h late)"]];
+  const W2 = 760, H2 = 30 * copies.length + 30, L2 = 160, R2 = 150;
+  const s2 = svg(document.getElementById("v3-soft"), W2, H2);
+  const x2 = lin(0, base, L2, W2 - R2);
+  copies.forEach(([st, label], i) => {
+    const y = 8 + i * 30, prize = Math.max(0, base - S.late_cost * st);
+    text(s2, L2 - 10, y + 14, `copy ${i + 1}: ${label}`, { "text-anchor": "end", class: "lbl" });
+    el("rect", { x: L2, y, width: x2(base) - L2, height: 18, rx: 4, fill: css("--rule") }, s2);
+    el("rect", { x: L2, y, width: x2(prize) - L2, height: 18, rx: 4, fill: css("--high") }, s2);
+    text(s2, x2(base) + 8, y + 14, st ? `prize −${fmt(S.late_cost * st / 1000)} SEK` : `full prize ${fmt(base / 1000)} SEK`, { class: "lbl-strong" });
+  });
+  text(s2, L2, H2 - 6, `A HIGH job of value 3 is worth ${fmt(base / 1000)} SEK under 10× weights; each second late costs ${S.late_cost / 1000} SEK. Only one of the five copies can be served.`, { class: "lbl" });
+}
+
+function v4(V) {
+  const R = V.replan;
+  const draw = (mode) => {
+    const W = 760, H = 600;
+    const s = svg(document.getElementById("v4-fig"), W, H);
+    const P = projector(V.loc, W, H);
+    baseMap(s, V, P, { labels: false });
+    for (const d of R.done) {
+      const path = d.locs.map((l, k) => { const [x, y] = P(...R.loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+      el("path", { d: path, fill: "none", stroke: css("--ink-3"), "stroke-width": 1, opacity: 0.35 }, s);
+    }
+    const routes = mode === "new" ? R.routes : R.old_routes;
+    for (const r of routes) {
+      const path = r.locs.map((l, k) => { const [x, y] = P(...R.loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+      const p = el("path", { d: path, fill: "none", stroke: mode === "new" ? css("--accent") : css("--ink-2"), "stroke-width": 1.8, opacity: 0.85, "stroke-dasharray": mode === "new" ? "" : "5 4", "stroke-linejoin": "round" }, s);
+      hover(p, `${r.vehicle} · ${r.visits.length} visits left`);
+    }
+    for (const it of R.new_items) {
+      const [x, y] = P(...R.loc[it.loc]);
+      const served = mode === "new" && R.routes.some((r) => r.visits.some((v) => v[1] === it.id));
+      const g = el("g", {}, s);
+      el("path", { d: `M${x},${y - 7} L${x + 7},${y} L${x},${y + 7} L${x - 7},${y} z`, fill: served ? css("--crit") : css("--surface"), stroke: css("--crit"), "stroke-width": 2 }, g);
+      hover(g, `${it.id.startsWith("new_viol") ? "New parking violation (mandatory)" : "New urgent swap (CRITICAL, by 12:00)"}<br>${served ? "in the new plan" : "not in the old plan"}`);
+    }
+    for (const p of R.positions) {
+      const [x, y] = P(...R.loc[p.loc]);
+      const g = el("g", {}, s);
+      el("circle", { cx: x, cy: y, r: 7, fill: css("--ink"), stroke: css("--surface"), "stroke-width": 2 }, g);
+      hover(g, `${p.vehicle} · free from ${hhmm(p.avail)}<br>room already taken: ${p.initial_load.join(" / ")} (charged slots / depleted / scooters)`);
+    }
+    hubMarks(s, V, P, R.loc);
+  };
+  buttons(document.getElementById("v4-ctl"), [["new", "After re-planning"], ["old", "Rest of the old plan"]], "new", draw);
+  draw("new");
+  legend(document.getElementById("v4-legend"), [[css("--ink-3"), "driven before 10:00", "sq"], [css("--ink"), "vehicle position at 10:00"], [css("--crit"), "new event (filled = planned)", "sq"], [css("--accent"), "new routes", "sq"], [css("--ink-2"), "rest of old plan (dashed)", "sq"]]);
+  const ARM = { keep: "no re-planning", warm5: "warm start 5 s", warm30: "warm start 30 s", cold30: "from scratch 30 s" };
+  const SC = { events: "new events", breakdown: "new events + bike breakdown" };
+  table(document.getElementById("v4-table"), [["scenario", "Scenario", (v) => SC[v]], ["arm", "Approach", (v) => ARM[v]], ["runs", "Runs"], ["feasible", "Feasible", (v) => `${fmt(v * 100)}%`], ["new_served", "New jobs served", (v) => `${fmt(v * 100)}%`], ["unserved_NORMAL", "NORMAL lost", (v) => fmt(v, 1)], ["kept_same_vehicle", "Same vehicle", (v) => `${fmt(v * 100)}%`], ["old_dropped", "Old jobs dropped", (v) => `${fmt(v * 100)}%`]], V.summary.dynamic);
+}
+
+function v5(V) {
+  const A = V.robust.buffer_0, B = V.robust.buffer_20;
+  const W = 760, H = 330, L = 54, R = 20, top = 24, bot = H - 44;
+  const s = svg(document.getElementById("v5-fig"), W, H);
+  const maxv = Math.max(...A.samples_overtime_min, ...B.samples_overtime_min);
+  const xmax = Math.max(60, Math.ceil(maxv / 30) * 30);
+  const x = lin(0, xmax, L, W - R), y = lin(0, 1, bot, top);
+  gridY(s, y, L, W - R, [0, 0.25, 0.5, 0.75, 1], (v) => `${Math.round(v * 100)}%`);
+  const tk = []; for (let v = 0; v <= xmax; v += xmax > 180 ? 60 : 30) tk.push(v);
+  axisX(s, x, bot, tk, (v) => `${v}′`);
+  text(s, 4, 12, "Vertical: share of days with more than x minutes of overtime", { class: "lbl" });
+  text(s, W - R, bot + 32, "x: total fleet overtime that day (minutes)", { "text-anchor": "end", class: "lbl" });
+  const curve = (arr) => { const n = arr.length; const pts = []; for (let v = 0; v <= xmax; v += xmax / 240) pts.push([v, arr.filter((a) => a > v).length / n]); return pts; };
+  [[A, "--s2", "No buffer"], [B, "--s1", "20 % buffer when planning"]].forEach(([D, cv, name], k) => {
+    const pts = curve(D.samples_overtime_min);
+    el("path", { d: pts.map(([v, p], i) => `${i ? "L" : "M"}${x(v).toFixed(1)},${y(p).toFixed(1)}`).join(""), fill: "none", stroke: css(cv), "stroke-width": 2.2 }, s);
+    el("circle", { cx: x(0), cy: y(pts[0][1]), r: 5, fill: css(cv), stroke: css("--surface"), "stroke-width": 2 }, s);
+    text(s, x(0) + 10, y(pts[0][1]) + (k ? -8 : 16), `${name}: overtime on ${fmt(pts[0][1] * 100)}% of days`, { class: "lbl-strong" });
+  });
+  const cross = el("line", { y1: top, y2: bot, stroke: css("--ink-3"), "stroke-dasharray": "3 3", visibility: "hidden" }, s);
+  const hit = el("rect", { x: L, y: top, width: W - R - L, height: bot - top, fill: "transparent" }, s);
+  hit.addEventListener("pointermove", (e) => {
+    const p = s.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(s.getScreenCTM().inverse());
+    const v = Math.max(0, Math.min(xmax, (q.x - L) / (W - R - L) * xmax));
+    cross.setAttribute("x1", x(v)); cross.setAttribute("x2", x(v)); cross.setAttribute("visibility", "visible");
+    const share = (arr) => arr.filter((a) => a > v).length / arr.length;
+    tip.innerHTML = `Days with over ${fmt(v)} min overtime<br>no buffer: ${fmt(share(A.samples_overtime_min) * 100, 1)}%<br>20 % buffer: ${fmt(share(B.samples_overtime_min) * 100, 1)}%`;
+    tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (e.clientY + 14) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); tip.hidden = true; });
+  stats(document.getElementById("v5-stats"), [
+    [`${fmt(A.on_time_prob * 100, 1)}%`, "days fully on time · no buffer", "bad"], [`${fmt(B.on_time_prob * 100, 1)}%`, "days fully on time · 20 % buffer", "good"],
+    [fmt(A.served_jobs), "swaps · no buffer"], [fmt(B.served_jobs), "swaps · 20 % buffer"]]);
+  table(document.getElementById("v5-table"), [["arm", "Solver", (v) => v.startsWith("pyvrp") ? "PyVRP" : "OR-Tools"], ["buffer", "Buffer", (v) => `${fmt(v * 100)}%`], ["runs", "Runs"], ["served_jobs", "Swaps", (v) => fmt(v, 1)], ["moderate_on_time_prob", "Days on time (moderate)", (v) => `${fmt(v * 100, 1)}%`], ["moderate_overtime_min_mean", "Mean overtime", (v) => `${fmt(v, 1)}′`], ["high_on_time_prob", "Days on time (high)", (v) => `${fmt(v * 100, 1)}%`]], V.summary.robust);
+}
+
+function v6(V) {
+  const ARMS = { "pyvrp:sequential_full": ["--s1", "PyVRP stages"], "ortools:sequential_full": ["--s2", "OR-Tools stages"], "pyvrp:weighted": ["--s3", "PyVRP 10× weights"] };
+  const D = V.summary.scale.filter((r) => ARMS[r.arm]);
+  const sizes = ["S", "M", "L"], SZ = { S: "S · ~160 stops", M: "M · ~430 stops", L: "L · ~850 stops" };
+  const W = 760, H = 290, L = 46, R = 10, gap = 34, pw = (W - L - R - 2 * gap) / 3, top = 30, bot = H - 40;
+  const s = svg(document.getElementById("v6-fig"), W, H);
+  const budgets = [15, 60, 240];
+  sizes.forEach((sz, k) => {
+    const x0 = L + k * (pw + gap), x = (b) => x0 + budgets.indexOf(b) / 2 * (pw - 20) + 10;
+    const rows = D.filter((r) => r.size === sz);
+    const ymax = Math.max(5, ...rows.map((r) => r.unserved_NORMAL)) * 1.1;
+    const y = lin(0, ymax, bot, top);
+    text(s, x0, top - 14, SZ[sz], { class: "lbl-strong" });
+    for (const t of [0, ymax / 2, ymax]) { el("line", { x1: x0, x2: x0 + pw, y1: y(t), y2: y(t), stroke: css("--rule") }, s); text(s, x0 - 5, y(t) + 4, fmt(t), { "text-anchor": "end" }); }
+    axisX(s, x, bot, budgets, (b) => `${b}s`);
+    for (const [arm, [cv]] of Object.entries(ARMS)) {
+      const pts = budgets.map((b) => rows.find((r) => r.arm === arm && r.time_limit_s === b)).filter(Boolean);
+      el("path", { d: pts.map((r, i) => `${i ? "L" : "M"}${x(r.time_limit_s)},${y(r.unserved_NORMAL)}`).join(""), fill: "none", stroke: css(cv), "stroke-width": 2 }, s);
+      for (const r of pts) {
+        const g = el("g", {}, s);
+        if (r.unserved_HIGH > 0 || r.unserved_CRITICAL > 0) el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 8, fill: "none", stroke: css("--late"), "stroke-width": 2 }, g);
+        el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 4.5, fill: css(cv), stroke: css("--surface"), "stroke-width": 1.5 }, g);
+        el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 12, fill: "transparent" }, g);
+        hover(g, `${ARMS[arm][1]} · ${sz} · ${r.time_limit_s} s<br>lost CRITICAL ${fmt(r.unserved_CRITICAL, 1)} / HIGH ${fmt(r.unserved_HIGH, 1)} / NORMAL ${fmt(r.unserved_NORMAL, 1)}<br>swaps served ${fmt(r.served_jobs, 1)}`);
+      }
+    }
+  });
+  legend(document.getElementById("v6-legend"), [...Object.values(ARMS).map(([v, n]) => [css(v), n]), [css("--late"), "also lost HIGH or CRITICAL", "ring"]]);
+  table(document.getElementById("v6-table"), [["size", "Size"], ["time_limit_s", "Time", (v) => `${v}s`], ["arm", "Approach", (v) => ARMS[v][1]], ["unserved_CRITICAL", "CRITICAL lost", (v) => fmt(v, 1)], ["unserved_HIGH", "HIGH lost", (v) => fmt(v, 1)], ["unserved_NORMAL", "NORMAL lost", (v) => fmt(v, 1)], ["served_jobs", "Swaps served", (v) => fmt(v, 1)]], D);
+}
+
+let DATA = null;
+function renderAll() {
+  if (!DATA) return;
+  const T = DATA.traffic, V = DATA.voi;
+  [[t1, T], [t2, T], [t3, T], [t4, T], [v1, V], [v2, V], [v3, V], [v4, V], [v5, V], [v6, V]].forEach(([f, d]) => { try { f(d); } catch (e) { console.error(f.name, e); } });
+}
+const inline = document.getElementById("viz-data").textContent.trim();
+(inline ? Promise.resolve(JSON.parse(inline)) : fetch("viz_data.json").then((r) => r.json())).then((d) => {
+  DATA = d; document.getElementById("loading").hidden = true;
+  document.getElementById("meta").textContent += ` · data generated ${d.generated}`;
+  renderAll();
+}).catch(() => { document.getElementById("loading").textContent = "The computed data did not load: publish viz_data.json together with this page."; });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>
