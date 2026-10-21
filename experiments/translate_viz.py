@@ -1,16 +1,18 @@
-"""Make the English explainer (docs/viz/explainer_en.html) from the Chinese one.
+"""English version of the walkthrough page, used by experiments.build_viz.
 
-The page text above the script is written separately (docs/viz/_en_head.html);
-the shared script is translated string by string below, and the run fails if
-any Chinese character is left. Run after editing explainer.html:
+The English page text and styles live in docs/viz/src/page_en_text.html; the
+chart script is taken from the Chinese page (docs/viz/src/page_zh.html) and
+translated string by string below. ``english_page`` fails if a string is not
+found or any Chinese character is left, so a new Chinese label in the script
+must get a pair here. Check alone with:
 
-    python -m experiments.translate_viz && python -m experiments.build_viz
+    python -m experiments.translate_viz
 """
 
 import re
 from pathlib import Path
 
-VIZ = Path(__file__).resolve().parents[1] / "docs" / "viz"
+SRC = Path(__file__).resolve().parents[1] / "docs" / "viz" / "src"
 
 PAIRS = [
     ('"拥堵强度 p(t)"', '"Congestion level p(t)"'),
@@ -161,20 +163,23 @@ PAIRS = [
 PAIRS.append(("${c}（${V.jobs.filter((j) => j.cls === c).length}）", "${c} (${V.jobs.filter((j) => j.cls === c).length})"))
 
 
-def main() -> None:
-    page = (VIZ / "explainer.html").read_text(encoding="utf-8")
-    script = page[page.index("<script>\n(() => {"):]
+SCRIPT_START = "<script>\n(() => {"
+CJK = re.compile(r"[^\n]*[一-鿿][^\n]*")
+
+
+def english_page() -> str:
+    page = (SRC / "page_zh.html").read_text(encoding="utf-8")
+    script = page[page.index(SCRIPT_START):]
     for old, new in PAIRS:
         if old not in script:
             raise SystemExit(f"not found in script: {old[:70]}")
         script = script.replace(old, new)
-    left = sorted({m for m in re.findall(r"[^\n]*[一-鿿][^\n]*", script)})
+    left = sorted(set(CJK.findall(script)))
     if left:
         raise SystemExit("untranslated:\n" + "\n".join(left))
-    head = (VIZ / "_en_head.html").read_text(encoding="utf-8")
-    (VIZ / "explainer_en.html").write_text(head + "\n" + script, encoding="utf-8")
-    print("wrote", VIZ / "explainer_en.html")
+    return (SRC / "page_en_text.html").read_text(encoding="utf-8") + "\n" + script
 
 
 if __name__ == "__main__":
-    main()
+    english_page()
+    print("translation complete: every Chinese string in the script has an English pair")

@@ -1,7 +1,7 @@
-"""Data for the explainer page (docs/viz/): the computations behind §5 and §6,
+"""Data for the walkthrough pages (docs/viz/): the computations behind §5 and §6,
 step by step, on one traffic instance (H00) and one Voi instance (M00).
 
-    python -m experiments.export_viz        # ~5 min, writes docs/viz/viz_data.json
+    python -m experiments.export_viz        # ~5 min, writes docs/viz/src/viz_data.json
 
 Everything is recomputed from the repo's own code; summary tables are read
 from results/summary/*.csv. Not a timed benchmark (no CPU pinning).
@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "viz" / "viz_data.json"
+OUT = ROOT / "docs" / "viz" / "src" / "viz_data.json"
 SUMMARY = ROOT / "results" / "summary"
 
 
