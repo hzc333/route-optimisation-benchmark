@@ -86,7 +86,7 @@ footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
   <div class="eyebrow">Algorithm Track · Phase 0</div>
   <h1>Route Optimisation Walkthrough</h1>
   <p class="lede">This page follows two experiments in the order the computer works through them. The first shows how time-varying traffic is put inside PyVRP's search. The second shows, on a Voi battery-swap morning in Stockholm, what the solver computes at each step. Every figure is recomputed with the repository's own code; summary numbers come from the report's main experiments.</p>
-  <p class="meta" id="meta">Data: traffic instance H00 (heavy congestion, 100 customers) · Voi instance M00 (about 430 stops, 5 vehicles) · report docs/Phase0_Algorithm_Report_CN.md §5, §6</p>
+  <p class="meta" id="meta">Data: traffic instance H00 (heavy congestion, 100 customers) · Voi instance M00 (about 430 stops, 5 vehicles)</p>
 </header>
 
 <nav class="chapters" aria-label="Chapters">
@@ -102,7 +102,7 @@ footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
   <div id="loading" class="loading">Loading the computed data…</div>
 
   <div class="chapter-head" id="traffic">
-    <div class="eyebrow">Part 1 · report §5</div>
+    <div class="eyebrow">Part 1</div>
     <h2>Traffic in the search</h2>
     <p>The question: the same street can take twice as long at 8:00 as at noon, but PyVRP only accepts one fixed travel-time table. How can it know, while it builds routes, how long a leg takes at the time the vehicle actually leaves?</p>
   </div>
@@ -178,7 +178,7 @@ heavy congestion: A = 0.30, B = 0.60</div>
   </section>
 
   <div class="chapter-head" id="voi">
-    <div class="eyebrow">Part 2 · report §6</div>
+    <div class="eyebrow">Part 2</div>
     <h2>Voi swap day</h2>
     <p>The question: on a morning shift close to Voi's real operation, can PyVRP express all our constraints? With strict priorities, what does it compute at each step? And does the plan survive real-world variability?</p>
   </div>

@@ -86,7 +86,7 @@ footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
   <div class="eyebrow">Algorithm Track · Phase 0</div>
   <h1>路线优化计算图解</h1>
   <p class="lede">这一页按计算顺序展开两组实验：一组是怎样把"会变化的交通"放进 PyVRP 的搜索，另一组是在一个斯德哥尔摩 Voi 换电日上，求解器每一步具体算了什么。图里的数据都是用仓库代码当场重算出来的，汇总数字取自报告的正式实验。</p>
-  <p class="meta" id="meta">数据：交通实例 H00（重度拥堵，100 个客户）· Voi 实例 M00（约 430 个站点，5 辆车）· 报告 docs/Phase0_Algorithm_Report_CN.md §5、§6</p>
+  <p class="meta" id="meta">数据：交通实例 H00（重度拥堵，100 个客户）· Voi 实例 M00（约 430 个站点，5 辆车）</p>
 </header>
 
 <nav class="chapters" aria-label="章节">
@@ -102,7 +102,7 @@ footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
   <div id="loading" class="loading">正在载入计算数据…</div>
 
   <div class="chapter-head" id="traffic">
-    <div class="eyebrow">第一部分 · 对应报告 §5</div>
+    <div class="eyebrow">第一部分</div>
     <h2>交通进入搜索</h2>
     <p>问题：同一段路早上 8 点和中午开，用时可能差一倍。PyVRP 只接受一张固定的行驶时间表。怎样让它在排路线时就知道"几点出发、这段路要多久"？</p>
   </div>
@@ -178,7 +178,7 @@ footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
   </section>
 
   <div class="chapter-head" id="voi">
-    <div class="eyebrow">第二部分 · 对应报告 §6</div>
+    <div class="eyebrow">第二部分</div>
     <h2>Voi 换电日</h2>
     <p>问题：在一个接近 Voi 真实运营的早班里，PyVRP 能不能表达我们所有的约束？在优先级必须严格的前提下，它每一步是怎么算的？计划在现实里扛不扛得住？</p>
   </div>
