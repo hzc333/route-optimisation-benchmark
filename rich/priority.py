@@ -67,8 +67,10 @@ def solve_weighted(module, problem: RichProblem, *, time_limit_s: float, seed: i
 def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed: int = 0,
                      keep_lower: bool = False, early_stage_options: dict | None = None,
                      fallback: bool = True, initial: RichSolution | None = None,
-                     soft_from_own_class: bool = True, **kw) -> RichSolution:
-    """Earlier versions: ``early_stage_options={}, fallback=False`` (v1: soft
+                     soft_from_own_class: bool = True, trace: list | None = None,
+                     **kw) -> RichSolution:
+    """``trace`` (a list) receives one entry per stage - class, plan, locked
+    ids - for the explainer page (experiments/export_viz.py). Earlier versions: ``early_stage_options={}, fallback=False`` (v1: soft
     deadlines in every stage, no fallback); ``soft_from_own_class=False`` (v2:
     soft deadlines only in the last stage)."""
     t0 = perf_counter()
@@ -101,7 +103,9 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
                            initial=start, **(kw if model_soft else {**kw, **early}))
         if (fallback and sol.status == "SOLVED" and start is not None and start.routes and not validate(sub, sol).feasible
                 and validate(sub, start).feasible):
-            sol, fallbacks = start, fallbacks + 1
+            sol, fallbacks, fell_back = start, fallbacks + 1, True
+        else:
+            fell_back = False
         if sol.status != "SOLVED":
             return sol.model_copy(update={
                 "solver": f"{module.NAME}+seq", "wall_runtime_s": perf_counter() - t0,
@@ -113,6 +117,9 @@ def solve_sequential(module, problem: RichProblem, *, time_limit_s: float, seed:
                    if i.priority_class is active and not i.required} & served
             locked |= new
             notes.append(f"{active.value}:{len(new)}")
+        if trace is not None:
+            trace.append({"stage": active.value if active else "SOFT", "solution": sol,
+                          "locked": sorted(locked), "fallback": fell_back})
     return start.model_copy(update={
         "solver": f"{module.NAME}+seq", "seed": seed, "time_limit_s": time_limit_s,
         "wall_runtime_s": perf_counter() - t0,

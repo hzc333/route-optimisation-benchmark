@@ -1,0 +1,788 @@
+<title>路线优化计算图解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: a field notebook - numbered computation steps, prose left, the live figure right; one sticky chapter bar. */
+:root {
+  --bg: #f3f5f2; --surface: #fcfcfb; --ink: #17201d; --ink-2: #4b5551; --ink-3: #848c88;
+  --rule: #dce1db; --rule-2: #c7cec7; --accent: #0e6a73; --accent-soft: #d6eaeb;
+  --crit: #e34948; --high: #eda100; --norm: #2a78d6; --low: #8f8e88;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --late: #c23b2e; --ok: #2c7a3a;
+  --font-display: "Familjen Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111513; --surface: #181d1b; --ink: #edf1ee; --ink-2: #b6bfba; --ink-3: #7c8580;
+  --rule: #29312e; --rule-2: #3a4440; --accent: #4fb2bb; --accent-soft: #173a3d;
+  --crit: #d55181; --high: #c98500; --norm: #3987e5; --low: #8a8983;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --late: #e66767; --ok: #5bb36a; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.7 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; }
+header.top { padding-block: 40px 20px; }
+.eyebrow { font: 500 12px/1 var(--font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 4.4vw, 50px)/1.15 var(--font-display); margin: 10px 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 68ch; color: var(--ink-2); font-size: 16px; margin: 0; }
+.meta { margin-top: 14px; font: 12px/1.6 var(--font-data); color: var(--ink-3); overflow-wrap: anywhere; }
+nav.chapters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+nav.chapters .wrap { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding-block: 8px; scrollbar-width: thin; }
+nav.chapters a { font: 500 13px/1 var(--font-body); color: var(--ink-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; white-space: nowrap; }
+nav.chapters a.ch { color: var(--ink); font-weight: 700; }
+nav.chapters a:hover, nav.chapters a:focus-visible { background: var(--accent-soft); color: var(--ink); outline: none; }
+.chapter-head { padding-block: 48px 8px; border-top: 2px solid var(--ink); margin-top: 40px; }
+.chapter-head h2 { font: 700 30px/1.2 var(--font-display); margin: 6px 0 8px; }
+.chapter-head p { max-width: 70ch; color: var(--ink-2); margin: 0; }
+section.step { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 32px; padding-block: 36px; border-bottom: 1px solid var(--rule); }
+@media (max-width: 900px) { section.step { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+.prose { min-width: 0; }
+.prose .num { font: 500 13px/1 var(--font-data); color: var(--accent); }
+.prose h3 { font: 700 21px/1.35 var(--font-display); margin: 8px 0 10px; text-wrap: balance; }
+.prose p { margin: 0 0 12px; max-width: 62ch; }
+.prose .q { color: var(--ink-2); font-size: 14px; border-left: 2px solid var(--rule-2); padding-left: 12px; }
+.formula { font: 13px/1.7 var(--font-data); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; overflow-x: auto; white-space: pre; }
+.fig { min-width: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 14px 10px; }
+.fig-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.fig-title { font: 500 13px/1.4 var(--font-body); color: var(--ink-2); }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; }
+.controls button { font: 500 12.5px/1 var(--font-body); color: var(--ink-2); background: transparent; border: 1px solid var(--rule-2); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.svgbox { width: 100%; overflow-x: auto; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--font-data); fill: var(--ink-3); font-size: 11px; }
+svg .lbl { fill: var(--ink-2); }
+svg .lbl-strong { fill: var(--ink); font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 12px/1.4 var(--font-body); color: var(--ink-2); margin-top: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.legend i.sq { border-radius: 2px; }
+.legend i.ring { background: transparent !important; border: 2px solid currentColor; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+.stat { border-top: 1px solid var(--rule); padding-top: 8px; }
+.stat b { display: block; font: 700 22px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--ink-3); }
+.stat b.bad { color: var(--late); } .stat b.good { color: var(--ok); }
+details.table { margin-top: 10px; font-size: 13px; }
+details.table summary { cursor: pointer; color: var(--accent); font-size: 12.5px; }
+.tbl { overflow-x: auto; margin-top: 8px; }
+table { border-collapse: collapse; font: 12px/1.5 var(--font-data); font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink-3); font-weight: 500; }
+.tip { position: fixed; pointer-events: none; z-index: 20; background: var(--ink); color: var(--surface); font: 12px/1.5 var(--font-data); padding: 7px 9px; border-radius: 6px; max-width: 280px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.loading { color: var(--ink-3); font: 13px var(--font-data); padding: 30px 0; }
+footer { padding-block: 40px 60px; color: var(--ink-3); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top wrap">
+  <div class="eyebrow">Algorithm Track · Phase 0</div>
+  <h1>路线优化计算图解</h1>
+  <p class="lede">这一页按计算顺序展开两组实验：一组是怎样把"会变化的交通"放进 PyVRP 的搜索，另一组是在一个斯德哥尔摩 Voi 换电日上，求解器每一步具体算了什么。图里的数据都是用仓库代码当场重算出来的，汇总数字取自报告的正式实验。</p>
+  <p class="meta" id="meta">数据：交通实例 H00（重度拥堵，100 个客户）· Voi 实例 M00（约 430 个站点，5 辆车）· 报告 docs/Phase0_Algorithm_Report_CN.md §5、§6</p>
+</header>
+
+<nav class="chapters" aria-label="章节">
+  <div class="wrap">
+    <a class="ch" href="#traffic">交通进入搜索</a>
+    <a href="#t1">路况模型</a><a href="#t2">计划和实际</a><a href="#t3">按时段复制</a><a href="#t4">结果</a>
+    <a class="ch" href="#voi">Voi 换电日</a>
+    <a href="#v1">实例</a><a href="#v2">分阶段求解</a><a href="#v3">一天的车队</a><a href="#v4">中途重规划</a><a href="#v5">执行波动</a><a href="#v6">时间与规模</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div id="loading" class="loading">正在载入计算数据…</div>
+
+  <div class="chapter-head" id="traffic">
+    <div class="eyebrow">第一部分 · 对应报告 §5</div>
+    <h2>交通进入搜索</h2>
+    <p>问题：同一段路早上 8 点和中午开，用时可能差一倍。PyVRP 只接受一张固定的行驶时间表。怎样让它在排路线时就知道"几点出发、这段路要多久"？</p>
+  </div>
+
+  <section class="step" id="t1">
+    <div class="prose">
+      <div class="num">步骤 1 / 路况模型</div>
+      <h3>先定义"真实交通"：每 15 分钟一档车速</h3>
+      <p>一天分成 96 个 15 分钟时段，每个时段有一个拥堵强度 p(t)：早高峰 8 点最强，晚高峰 17 点次之，夜里为 0。每段路还有一个"受拥堵程度"，越靠近市中心越接近 1。</p>
+      <div class="formula">减速比例 = (A + B × 受拥堵程度) × p(t)
+车速     = 50 km/h × (1 − 减速比例)
+重度拥堵：A = 0.30，B = 0.60</div>
+      <p>行驶时间按出发时刻逐档累加：开到一半跨进下一个时段，剩下的路就按新车速算。这样可以保证"早出发的车不会比晚出发的车晚到"（FIFO），后面的准时保证要用到这个性质。</p>
+      <p class="q">右图下半部分：同样约 3 km 的两段路。市中心那段在 8 点出发要多花一倍多的时间，外围那段几乎不受影响。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">拥堵强度 p(t) 与两段路的行驶时间（按出发时刻）</div></div>
+      <div class="svgbox" id="t1-fig"></div>
+      <div class="legend" id="t1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t2">
+    <div class="prose">
+      <div class="num">步骤 2 / 计划和实际</div>
+      <h3>按"平均车速"排的计划，放进真实交通里会迟到</h3>
+      <p>最简单的做法是用全天平均车速做一张固定表，交给 PyVRP 排路线。PyVRP 以为每站都能按时到；但早高峰实际更慢，在真实交通里重跑一遍，就会有客户在时间窗关闭后才到。</p>
+      <p>右图每一行是一辆车，横轴是时间。有时间窗的客户画成一条横线（时间窗），圆点是真实开始服务的时刻；<b>红色是迟到</b>，红线长度就是迟到多久。没有时间窗的站点只画一个小刻度。</p>
+      <p class="q">切到"按时段复制客户"：同一天、同样的客户，不再有迟到的站点。下一步讲它是怎么做到的。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">H00 实例 · PyVRP 10 秒 · 计划放进真实交通里逐站重跑</div>
+        <div class="controls" id="t2-ctl"></div>
+      </div>
+      <div class="svgbox" id="t2-fig"></div>
+      <div class="stats" id="t2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t3">
+    <div class="prose">
+      <div class="num">步骤 3 / 按时段复制客户</div>
+      <h3>把"时间"搬进图里：每个时段一个副本</h3>
+      <p>班次 07:00–16:00 切成 6 个 90 分钟时段。每个客户在它时间窗覆盖的每个时段都复制一份，副本的服务时间限定在该时段内；求解器<b>必须且只能选一份</b>。选哪一份，就是决定什么时候服务。</p>
+      <p>从一个副本出发的每段路，用的是这个时段内所有可能出发时刻里<b>最慢的那个</b>（每 30 秒取样一次）。由于 FIFO，只要司机不早于计划时段开始服务，实际到达时间一定不晚于计划，所以计划在真实交通里一定准时。</p>
+      <p class="q">右图：一个市中心客户的 6 个副本，以及它到另一个客户那段路的耗时。曲线是真实耗时（随出发时刻变化），台阶是每个副本交给 PyVRP 的保守值，台阶总是压在曲线上方。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title" id="t3-title">时段副本与保守行驶时间</div></div>
+      <div class="svgbox" id="t3-fig"></div>
+      <div class="legend" id="t3-legend"></div>
+      <div class="stats" id="t3-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="t4">
+    <div class="prose">
+      <div class="num">步骤 4 / 结果</div>
+      <h3>准时，而且不多跑路</h3>
+      <p>每种做法都在同一天、同一批 20 个实例 × 3 个随机种子上运行，计划统一放进真实交通里评分。纵轴是"整份计划没有任何客户迟到、没有车超班"的比例；横轴是行驶时间相对"PyVRP + 全天平均车速"多出多少。</p>
+      <p>想要的是左上角：准时率高、不多开。按高峰车速规划也能 100% 准时，但要多开 1–4%；OR-Tools 和 Timefold 也准时，但多开 14–21%。PyVRP + 时段复制是唯一两样都做到的。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">准时计划比例 vs 多开的行驶时间（480 次运行）</div>
+        <div class="controls" id="t4-ctl"></div>
+      </div>
+      <div class="svgbox" id="t4-fig"></div>
+      <div class="legend" id="t4-legend"></div>
+      <details class="table"><summary>查看数据表</summary><div class="tbl" id="t4-table"></div></details>
+    </div>
+  </section>
+
+  <div class="chapter-head" id="voi">
+    <div class="eyebrow">第二部分 · 对应报告 §6</div>
+    <h2>Voi 换电日</h2>
+    <p>问题：在一个接近 Voi 真实运营的早班里，PyVRP 能不能表达我们所有的约束？在优先级必须严格的前提下，它每一步是怎么算的？计划在现实里扛不扛得住？</p>
+  </div>
+
+  <section class="step" id="v1">
+    <div class="prose">
+      <div class="num">步骤 1 / 实例</div>
+      <h3>06:00–14:00，5 辆车，约 430 个站点</h3>
+      <p>坐标是斯德哥尔摩市中心的真实经纬度。站点围绕地铁站、广场等热点聚集。每个点是一辆需要换电的滑板车，颜色是优先级：电量越低、所在位置越热门，优先级越高。</p>
+      <p>此外还有三类任务：违停处理（必须做，截止前取走并停到合法位置）、挪车（从车多的区域搬到热点），以及"这 8 辆里任换 3 辆"的区域组。虚线框是近似的 3 级环保区，框内的站点只有电动车能去。</p>
+      <p class="q">车队：2 辆电动货车、1 辆柴油货车、2 辆货运自行车。两个仓库（方块）都可以中途回去补电池；每人 10:00–12:00 之间要休息 30 分钟。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · 点击图例可以隐藏某一类</div>
+        <div class="controls" id="v1-ctl"></div>
+      </div>
+      <div class="svgbox" id="v1-fig"></div>
+      <div class="legend" id="v1-legend"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v2">
+    <div class="prose">
+      <div class="num">步骤 2 / 分阶段求解</div>
+      <h3>先保住 CRITICAL，再逐级往下排</h3>
+      <p>严格优先级的意思是：只要还能多完成一单 CRITICAL，就宁可多花任何成本、少做任何低优先级任务。原方案"每级罚分约 10 倍"做不到这一点，所以我们分阶段求解：</p>
+      <div class="formula">阶段 1  CRITICAL 的奖励 = M（大于所有可能的成本 + 所有低级奖励）
+        其他等级照常给小奖励，一起参与搜索
+        → 完成的 CRITICAL 全部锁定为"必做"
+阶段 2  HIGH 的奖励 = M，从阶段 1 的计划继续搜索 → 锁定
+阶段 3  NORMAL … 阶段 4  LOW（同时把成本降到最低）</div>
+      <p>每个阶段都在完整问题上搜索，并把完整计划交给下一阶段，这是比旧版好得多的关键（旧版只放当前等级，M 规模上丢掉的 NORMAL 价值多达 129）。</p>
+      <p class="q">右图逐阶段切换：实心点是这一阶段计划里完成的站点，空心圈是没做的。右侧条形是各等级完成的价值占比。最后三个按钮对比同一实例上的另外两种做法。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title" id="v2-title">PyVRP 分阶段求解（每阶段 15 秒）</div>
+        <div class="controls" id="v2-ctl"></div>
+      </div>
+      <div class="svgbox" id="v2-fig"></div>
+      <div class="legend" id="v2-legend"></div>
+      <div class="stats" id="v2-stats"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v3">
+    <div class="prose">
+      <div class="num">步骤 3 / 一天的车队</div>
+      <h3>PyVRP 不支持的两条约束是怎么补上的</h3>
+      <p><b>司机休息。</b>PyVRP 没有休息的概念。做法是先把班次提前 30 分钟结束，排完路线后，再在 10:00–12:00 之间找一个位置插入休息：逐个位置试，选既不违反时间窗、又最早收工的那个。右图深色块就是插进去的休息。</p>
+      <p><b>"尽量 9 点前到"。</b>PyVRP 也没有软截止时间。做法和交通里的时段复制一样：把客户复制成"准时、晚 15 分钟、晚 30 分钟、晚 60 分钟、不限"五份，只能选一份，越晚奖励越少，少掉的部分就是迟到的代价（20 分/秒）。</p>
+      <p class="q">右图是最终计划里 5 辆车的一整天。可以看到自行车（容量只有 10 块电池）频繁回仓补货，而货车主要在路上和服务之间切换。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">最终计划 · 每辆车的时间线（06:00–14:00）</div></div>
+      <div class="svgbox" id="v3-fig"></div>
+      <div class="legend" id="v3-legend"></div>
+      <div class="fig-head" style="margin-top:16px"><div class="fig-title">一个 HIGH 热点任务的五个副本：越晚完成，奖励越少</div></div>
+      <div class="svgbox" id="v3-soft"></div>
+    </div>
+  </section>
+
+  <section class="step" id="v4">
+    <div class="prose">
+      <div class="num">步骤 4 / 中途重规划</div>
+      <h3>10:00 突发：新违停 4 单、新紧急换电 8 单</h3>
+      <p>全天计划执行到 10:00 时，先给每辆车拍一张"现场快照"：</p>
+      <p>车在哪里（已经出发前往的下一站算作锁定，车在路上不能改道）；车上还有多少满电电池可以直接送、旧电池占了多少空间；还剩几次回仓机会；休息休了没有。车上装着的滑板车，变成只有这辆车能完成的必做投放。</p>
+      <p>然后从原计划热启动，用分阶段控制器重排剩下的半天。实验里 5 秒就能把新来的必做单全部排进去；不重新规划，这些单一个都做不了。</p>
+      <p class="q">代价：重新规划后，原计划剩下的任务只有 30–40% 还留在原车上，司机会收到大量改派。生产中要给"换车"加成本。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head">
+        <div class="fig-title">voi_M00 · 10:00 的现场与新计划（热启动 5 秒）</div>
+        <div class="controls" id="v4-ctl"></div>
+      </div>
+      <div class="svgbox" id="v4-fig"></div>
+      <div class="legend" id="v4-legend"></div>
+      <details class="table"><summary>查看 100 次重规划实验的汇总</summary><div class="tbl" id="v4-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v5">
+    <div class="prose">
+      <div class="num">步骤 5 / 执行波动</div>
+      <h3>按估算时间排满的计划，现实里几乎每天都会出状况</h3>
+      <p>把计划交给司机执行 300 次，每次随机抽取实际行驶时间和服务时间：整条路线一个日级波动（σ = 0.10），每段路一个（σ = 0.20），每次服务一个（σ = 0.30），都是均值为 1 的对数正态分布。</p>
+      <p>优化器会把可用时间用满，所以不留余量的计划，在这种波动下只有约 5% 的天能整天准时，司机常常超班。规划时把行驶和服务时间放大 20%，就有 99% 的天整天准时，代价是少换约 11% 的车。</p>
+      <p class="q">右图：横轴是当天全车队超班合计的分钟数，纵轴是超班超过这个时长的天数占比。曲线越贴近底部越稳。缓冲大小要用真实数据标定。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">超班有多常见、有多久 · 每份计划模拟执行 300 天</div></div>
+      <div class="svgbox" id="v5-fig"></div>
+      <div class="stats" id="v5-stats"></div>
+      <details class="table"><summary>查看 40 次实验的汇总</summary><div class="tbl" id="v5-table"></div></details>
+    </div>
+  </section>
+
+  <section class="step" id="v6">
+    <div class="prose">
+      <div class="num">步骤 6 / 时间与规模</div>
+      <h3>求解时间要按规模给</h3>
+      <p>S（约 160 个站点）15 秒就够；M（约 430 个站点、5 辆车）15 秒已经不丢 HIGH；L（约 850 个站点、10 辆车，相当于全城一个早班）要 240 秒才完全不丢 HIGH。</p>
+      <p>规模越大，分阶段控制器的优势越明显：L 规模 15 秒时，10 倍权重连 CRITICAL 都会丢。OR-Tools 给多少时间都追不上，M 规模从 15 秒到 240 秒，它丢掉的 NORMAL 一直是 97。</p>
+      <p class="q">右图三个小图的纵轴刻度不同（规模不同）。圆点外加红圈表示这次还丢了 HIGH 或 CRITICAL。</p>
+    </div>
+    <div class="fig">
+      <div class="fig-head"><div class="fig-title">丢失的 NORMAL 价值 vs 求解时间（135 次运行）</div></div>
+      <div class="svgbox" id="v6-fig"></div>
+      <div class="legend" id="v6-legend"></div>
+      <details class="table"><summary>查看数据表</summary><div class="tbl" id="v6-table"></div></details>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  复现：在仓库根目录运行 <code>python -m experiments.export_viz</code> 重新生成本页数据（约 5 分钟）。正式实验的命令和全部数字见报告"复现"一节。地理为合成：真实坐标，但距离按直线乘绕行系数估算，不考虑水域和真实路网；交通为合成模型。
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script type="application/json" id="viz-data"></script>
+
+<script>
+(() => {
+const NS = "http://www.w3.org/2000/svg";
+const CLASSES = ["CRITICAL", "HIGH", "NORMAL", "LOW"];
+const CLS_VAR = { CRITICAL: "--crit", HIGH: "--high", NORMAL: "--norm", LOW: "--low" };
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const hhmm = (s) => { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return `${String(h + Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; };
+const fmt = (x, d = 0) => (x == null || Number.isNaN(x)) ? "–" : Number(x).toLocaleString("zh-CN", { maximumFractionDigits: d, minimumFractionDigits: d });
+
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function svg(host, w, h) { host.innerHTML = ""; return el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img" }, host); }
+function text(parent, x, y, s, attrs = {}) { const t = el("text", { x, y, ...attrs }, parent); t.textContent = s; return t; }
+const lin = (d0, d1, r0, r1) => (v) => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+
+const tip = document.getElementById("tip");
+function hover(node, html) {
+  node.addEventListener("pointermove", (e) => { tip.innerHTML = typeof html === "function" ? html() : html; tip.hidden = false; const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+  node.addEventListener("pointerleave", () => { tip.hidden = true; });
+}
+function buttons(host, items, active, onPick) {
+  host.innerHTML = "";
+  for (const [key, label] of items) {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.id = `${host.id}-${key}`;
+    b.setAttribute("aria-pressed", key === active ? "true" : "false");
+    b.addEventListener("click", () => { host.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); onPick(key); });
+    host.appendChild(b);
+  }
+}
+function legend(host, items) {
+  host.innerHTML = items.map(([color, label, shape = ""]) => `<span><i class="${shape}" style="background:${color};color:${color}"></i>${label}</span>`).join("");
+}
+function stats(host, items) {
+  host.innerHTML = items.map(([v, label, cls = ""]) => `<div class="stat"><b class="${cls}">${v}</b><span>${label}</span></div>`).join("");
+}
+function table(host, cols, rows) {
+  host.innerHTML = `<table><thead><tr>${cols.map((c) => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map((c) => `<td>${c[2] ? c[2](r[c[0]], r) : r[c[0]]}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+function axisX(g, x, y0, ticks, label = (t) => t) {
+  for (const t of ticks) { el("line", { x1: x(t), x2: x(t), y1: y0, y2: y0 + 4, stroke: css("--rule-2") }, g); text(g, x(t), y0 + 16, label(t), { "text-anchor": "middle" }); }
+}
+function gridY(g, y, x0, x1, ticks, label = (t) => t) {
+  for (const t of ticks) { el("line", { x1: x0, x2: x1, y1: y(t), y2: y(t), stroke: css("--rule"), "stroke-width": 1 }, g); text(g, x0 - 6, y(t) + 4, label(t), { "text-anchor": "end" }); }
+}
+
+/* ---------------- Traffic ---------------- */
+function t1(T) {
+  const W = 760, H = 400, L = 54, R = 16;
+  const s = svg(document.getElementById("t1-fig"), W, H);
+  const t0 = 6 * 3600, t1 = 17 * 3600;
+  const x = lin(t0, t1, L, W - R);
+  // profile bars
+  const y1 = lin(0, 1, 120, 24);
+  text(s, L, 14, "拥堵强度 p(t)", { class: "lbl" });
+  gridY(s, y1, L, W - R, [0, 0.5, 1], (v) => v.toFixed(1));
+  el("rect", { x: x(T.shift[0]), y: 20, width: x(T.shift[1]) - x(T.shift[0]), height: 102, fill: css("--accent-soft"), opacity: 0.5 }, s);
+  T.profile.forEach((p, k) => {
+    const a = k * T.bucket_s; if (a < t0 || a >= t1) return;
+    const r = el("rect", { x: x(a) + 1, y: y1(p), width: x(a + T.bucket_s) - x(a) - 2, height: Math.max(0.5, y1(0) - y1(p)), fill: css("--accent"), rx: 1.5 }, s);
+    hover(r, `${hhmm(a)}–${hhmm(a + T.bucket_s)}<br>拥堵强度 ${p.toFixed(2)}`);
+  });
+  text(s, x(T.shift[0]) + 4, 34, "班次 07:00–16:00", { class: "lbl" });
+  // travel time lines
+  const top = 160, bot = H - 40;
+  const all = T.arcs.flatMap((a) => a.travel_s);
+  const ymax = Math.ceil(Math.max(...all) / 60 / 2) * 2;
+  const y2 = lin(0, ymax, bot, top);
+  text(s, L, top - 14, "约 3 km 路段的行驶时间（分钟）", { class: "lbl" });
+  gridY(s, y2, L, W - R, [0, ymax / 2, ymax], (v) => fmt(v));
+  axisX(s, x, bot, [6, 8, 10, 12, 14, 16].map((h) => h * 3600), hhmm);
+  const colors = [css("--s2"), css("--s1")];
+  T.arcs.forEach((a, i) => {
+    const d = a.times.map((t, k) => `${k ? "L" : "M"}${x(t).toFixed(1)},${y2(a.travel_s[k] / 60).toFixed(1)}`).join("");
+    el("path", { d, fill: "none", stroke: colors[i], "stroke-width": 2, "stroke-linejoin": "round" }, s);
+    const k8 = a.times.indexOf(8 * 3600);
+    text(s, W - R - 2, y2(a.travel_s[a.travel_s.length - 1] / 60) - 6, a.name, { "text-anchor": "end", class: "lbl" });
+    el("circle", { cx: x(8 * 3600), cy: y2(a.travel_s[k8] / 60), r: 4, fill: colors[i], stroke: css("--surface"), "stroke-width": 2 }, s);
+  });
+  // crosshair
+  const cross = el("line", { y1: top, y2: bot, stroke: css("--ink-3"), "stroke-dasharray": "3 3", visibility: "hidden" }, s);
+  const hit = el("rect", { x: L, y: top, width: W - R - L, height: bot - top, fill: "transparent" }, s);
+  hit.addEventListener("pointermove", (e) => {
+    const p = s.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(s.getScreenCTM().inverse());
+    const t = t0 + (q.x - L) / (W - R - L) * (t1 - t0); const k = Math.max(0, Math.min(T.arcs[0].times.length - 1, Math.round((t - t0) / 300)));
+    cross.setAttribute("x1", x(T.arcs[0].times[k])); cross.setAttribute("x2", x(T.arcs[0].times[k])); cross.setAttribute("visibility", "visible");
+    tip.innerHTML = `出发 ${hhmm(T.arcs[0].times[k])}<br>` + T.arcs.map((a) => `${a.name}：${fmt(a.travel_s[k] / 60, 1)} 分钟`).join("<br>");
+    tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (e.clientY + 14) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); tip.hidden = true; });
+  legend(document.getElementById("t1-legend"), T.arcs.map((a, i) => [colors[i], `${a.name}（${fmt(a.length_m / 1000, 1)} km，受拥堵程度 ${a.exposure}）`, "sq"]));
+}
+
+function t2(T) {
+  const keys = Object.keys(T.plans);
+  const draw = (key) => {
+    const P = T.plans[key];
+    const rows = P.routes.length, rowH = 44, L = 46, R = 14, top = 14, W = 760;
+    const H = top + rows * rowH + 30;
+    const s = svg(document.getElementById("t2-fig"), W, H);
+    const x = lin(7 * 3600, 16.5 * 3600, L, W - R);
+    for (let h = 7; h <= 16; h++) el("line", { x1: x(h * 3600), x2: x(h * 3600), y1: top, y2: top + rows * rowH, stroke: css("--rule") }, s);
+    axisX(s, x, top + rows * rowH, [7, 9, 11, 13, 15].map((h) => h * 3600), hhmm);
+    P.routes.forEach((r, i) => {
+      const y0 = top + i * rowH;
+      text(s, L - 8, y0 + rowH / 2 + 4, `车 ${i + 1}`, { "text-anchor": "end", class: "lbl" });
+      el("line", { x1: x(7 * 3600), x2: x(r.end), y1: y0 + rowH - 6, y2: y0 + rowH - 6, stroke: css("--rule-2"), "stroke-width": 1 }, s);
+      let lane = 0;
+      r.stops.forEach((st) => {
+        if (!st.window) { el("line", { x1: x(st.start), x2: x(st.start), y1: y0 + rowH - 10, y2: y0 + rowH - 2, stroke: css("--ink-3"), "stroke-width": 1.5 }, s); return; }
+        const ly = y0 + 8 + (lane++ % 3) * 9;
+        const g = el("g", {}, s);
+        el("line", { x1: x(st.window[0]), x2: x(st.window[1]), y1: ly, y2: ly, stroke: css("--ink-3"), "stroke-width": 2.5, "stroke-linecap": "round", opacity: 0.55 }, g);
+        if (st.late) el("line", { x1: x(st.window[1]), x2: x(st.start), y1: ly, y2: ly, stroke: css("--late"), "stroke-width": 2.5 }, g);
+        el("circle", { cx: x(st.start), cy: ly, r: st.late ? 4.5 : 3.5, fill: st.late ? css("--late") : css("--ink"), stroke: css("--surface"), "stroke-width": 1.5 }, g);
+        el("rect", { x: x(st.window[0]) - 4, y: ly - 6, width: Math.max(10, x(Math.max(st.start, st.window[1])) - x(st.window[0]) + 8), height: 12, fill: "transparent" }, g);
+        hover(g, () => `${st.job}<br>时间窗 ${hhmm(st.window[0])}–${hhmm(st.window[1])}<br>${st.planned != null ? `计划 ${hhmm(st.planned)} · ` : ""}实际开始 ${hhmm(st.start)}${st.late ? `<br>迟到 ${fmt((st.start - st.window[1]) / 60)} 分钟` : ""}`);
+      });
+    });
+    const lateRoutes = P.routes.filter((r) => r.stops.some((s) => s.late)).length;
+    const agg = T.summary.filter((r) => r.level === "H" && r.solver === "pyvrp" && r.strategy === key).pop();
+    stats(document.getElementById("t2-stats"), [
+      [P.late_stops, "个站点迟到（这一份计划）", P.late_stops ? "bad" : "good"],
+      [`${lateRoutes} / ${P.routes.length}`, "辆车至少迟到一次", lateRoutes ? "bad" : "good"],
+      ...(agg ? [[`${fmt((1 - agg.on_time) * 100)}%`, `重度拥堵下 ${agg.runs} 份同类计划中出现迟到的比例`, agg.on_time < 1 ? "bad" : "good"]] : []),
+    ]);
+  };
+  buttons(document.getElementById("t2-ctl"), keys.map((k) => [k, T.plans[k].label]), keys[0], draw);
+  draw(keys[0]);
+}
+
+function t3(T) {
+  const B = T.bucket_example, W = 760, H = 330, L = 54, R = 16;
+  const s = svg(document.getElementById("t3-fig"), W, H);
+  const x = lin(7 * 3600, 16 * 3600, L, W - R);
+  // bucket strip
+  B.copies.forEach((c, i) => {
+    el("rect", { x: x(c.lo), y: 22, width: Math.max(2, x(c.hi) - x(c.lo) - 2), height: 26, rx: 4, fill: i % 2 ? css("--accent-soft") : css("--rule"), stroke: css("--rule-2") }, s);
+    text(s, (x(c.lo) + x(c.hi)) / 2, 39, `副本 ${i + 1}`, { "text-anchor": "middle", class: "lbl" });
+  });
+  text(s, L, 14, `客户 ${B.job} 的 ${B.copies.length} 个副本（每个限定在一个 90 分钟时段里服务）`, { class: "lbl" });
+  const top = 86, bot = H - 36;
+  const all = B.copies.flatMap((c) => [...c.true_leg_s, c.planned_leg_s]);
+  const ymin = Math.floor(Math.min(...all) / 60 * 0.9), ymax = Math.ceil(Math.max(...all) / 60 * 1.05);
+  const y = lin(ymin, ymax, bot, top);
+  text(s, L, top - 12, `到 ${B.dest} 的行驶时间（分钟，约 ${fmt(B.length_m / 1000, 1)} km）`, { class: "lbl" });
+  const ticks = [ymin, Math.round((ymin + ymax) / 2), ymax];
+  gridY(s, y, L, W - R, ticks, (v) => fmt(v));
+  axisX(s, x, bot, [7, 9, 11, 13, 15].map((h) => h * 3600), hhmm);
+  B.copies.forEach((c) => {
+    const d = c.deps.map((t, k) => `${k ? "L" : "M"}${x(t).toFixed(1)},${y(c.true_leg_s[k] / 60).toFixed(1)}`).join("");
+    el("path", { d, fill: "none", stroke: css("--s1"), "stroke-width": 2 }, s);
+    const yy = y(c.planned_leg_s / 60);
+    const g = el("g", {}, s);
+    el("line", { x1: x(c.deps[0]), x2: x(c.deps[c.deps.length - 1]), y1: yy, y2: yy, stroke: css("--s2"), "stroke-width": 2.5 }, g);
+    el("rect", { x: x(c.deps[0]), y: yy - 8, width: Math.max(8, x(c.deps[c.deps.length - 1]) - x(c.deps[0])), height: 16, fill: "transparent" }, g);
+    const tmax = Math.max(...c.true_leg_s), tmin = Math.min(...c.true_leg_s);
+    hover(g, `副本服务时段 ${hhmm(c.lo)}–${hhmm(c.hi)}<br>交给 PyVRP 的耗时 ${fmt(c.planned_leg_s / 60, 1)} 分钟<br>真实耗时 ${fmt(tmin / 60, 1)}–${fmt(tmax / 60, 1)} 分钟`);
+  });
+  legend(document.getElementById("t3-legend"), [[css("--s1"), "真实行驶时间（随出发时刻变化）", "sq"], [css("--s2"), "副本使用的保守值（时段内最慢）", "sq"]]);
+  stats(document.getElementById("t3-stats"), [[B.n_jobs, "个客户"], [B.n_copies, "个副本节点（90 分钟时段）"], ["必选其一", "每个客户的副本组"]]);
+}
+
+function t4(T) {
+  const SOLV = { pyvrp: ["--s1", "PyVRP"], ortools: ["--s2", "OR-Tools"], timefold: ["--s3", "Timefold"] };
+  const NAME = { static_mean: "全天平均", static_peak: "高峰车速", iterative: "迭代修正", bucketed_90: "时段复制 90′", bucketed_60: "时段复制 60′", td_search: "交通进搜索", static_free: "畅通车速" };
+  const rows = T.summary.filter((r) => ["bucketed_90", "bucketed_60", "td_search"].includes(r.strategy) || (r.solver === "pyvrp" && ["static_mean", "static_peak", "iterative"].includes(r.strategy)));
+  const uniq = new Map(); for (const r of rows) uniq.set(`${r.level}|${r.solver}|${r.strategy}`, r);
+  const data = [...uniq.values()];
+  const draw = (level) => {
+    const D = data.filter((r) => r.level === level);
+    const W = 760, H = 420, L = 54, R = 24, top = 92, bot = H - 40;
+    const s = svg(document.getElementById("t4-fig"), W, H);
+    const xmax = Math.ceil(Math.max(...D.map((r) => r.travel_vs_ref_pct)) / 5) * 5 + 2;
+    const x = lin(-3, xmax, L, W - R), y = lin(0.3, 1.0, bot, top);
+    gridY(s, y, L, W - R, [0.4, 0.6, 0.8, 1.0], (v) => `${Math.round(v * 100)}%`);
+    axisX(s, x, bot, [0, 5, 10, 15, 20].filter((v) => v <= xmax), (v) => `+${v}%`);
+    el("line", { x1: x(0), x2: x(0), y1: top, y2: bot, stroke: css("--rule-2"), "stroke-dasharray": "3 3" }, s);
+    text(s, 4, 12, "纵轴：准时计划比例", { class: "lbl" });
+    text(s, W - R, bot - 8, "多开的行驶时间 →", { "text-anchor": "end", class: "lbl" });
+    let row = 0;
+    D.sort((a, b) => a.travel_vs_ref_pct - b.travel_vs_ref_pct).forEach((r, i) => {
+      const g = el("g", {}, s);
+      const cx = x(r.travel_vs_ref_pct), cy = y(r.on_time);
+      const right = cx < W - 200;
+      const label = `${SOLV[r.solver][1]} · ${NAME[r.strategy]}`;
+      if (r.on_time >= 0.99) {
+        // all-on-time points share the 100 % line: stack their labels above it
+        const ly = top - 14 - (row++ % 4) * 16;
+        el("line", { x1: cx, x2: cx, y1: cy - 6, y2: ly + 3, stroke: css("--rule-2") }, g);
+        text(g, cx + (right ? 4 : -4), ly, label, { "text-anchor": right ? "start" : "end", class: "lbl" });
+      } else {
+        text(g, cx + 10, cy + 4, label, { "text-anchor": "start", class: "lbl" });
+      }
+      el("circle", { cx, cy, r: 6, fill: css(SOLV[r.solver][0]), stroke: css("--surface"), "stroke-width": 2 }, g);
+      el("circle", { cx, cy, r: 14, fill: "transparent" }, g);
+      hover(g, `${SOLV[r.solver][1]} · ${NAME[r.strategy]}<br>准时 ${fmt(r.on_time * 100)}%（${r.runs} 次）<br>行驶时间 ${r.travel_vs_ref_pct >= 0 ? "+" : ""}${fmt(r.travel_vs_ref_pct, 1)}%<br>平均用车 ${fmt(r.vehicles, 2)}`);
+    });
+    table(document.getElementById("t4-table"), [["solver", "求解器", (v) => SOLV[v][1]], ["strategy", "做法", (v) => NAME[v]], ["on_time", "准时比例", (v) => `${fmt(v * 100)}%`], ["travel_vs_ref_pct", "行驶时间 vs 参照", (v) => `${fmt(v, 1)}%`], ["planning_error_pct", "计划估计误差", (v) => `${fmt(v, 1)}%`], ["vehicles", "平均用车", (v) => fmt(v, 2)], ["runs", "运行次数"]], D);
+  };
+  buttons(document.getElementById("t4-ctl"), [["H", "重度拥堵"], ["T", "中度拥堵"]], "H", draw);
+  draw("H");
+  legend(document.getElementById("t4-legend"), Object.values(SOLV).map(([v, n]) => [css(v), n]));
+}
+
+/* ---------------- Voi map helpers ---------------- */
+function projector(loc, W, H, pad = 18) {
+  const lat0 = 59.325, k = Math.cos(lat0 * Math.PI / 180);
+  const xs = loc.map((p) => p[1] * k), ys = loc.map((p) => p[0]);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const sc = Math.min((W - 2 * pad) / (x1 - x0), (H - 2 * pad) / (y1 - y0));
+  const ox = (W - (x1 - x0) * sc) / 2, oy = (H - (y1 - y0) * sc) / 2;
+  return (lat, lon) => [ox + (lon * k - x0) * sc, H - oy - (lat - y0) * sc];
+}
+function baseMap(s, V, P, opts = {}) {
+  const [zx0, zy0] = P(V.zone[1], V.zone[2]), [zx1, zy1] = P(V.zone[0], V.zone[3]);
+  el("rect", { x: zx0, y: zy0, width: zx1 - zx0, height: zy1 - zy0, fill: css("--accent-soft"), opacity: 0.6, stroke: css("--accent"), "stroke-dasharray": "4 3" }, s);
+  if (opts.labels !== false) for (const h of V.hotspots) { const [x, y] = P(h.lat, h.lon); text(s, x, y - 7, h.name, { "text-anchor": "middle", "font-size": 10, opacity: 0.85 }); }
+}
+function hubMarks(s, V, P, loc) {
+  for (const h of V.hubs) { const [x, y] = P(...loc[h.loc]); el("rect", { x: x - 6, y: y - 6, width: 12, height: 12, fill: css("--ink"), stroke: css("--surface"), "stroke-width": 2 }, s); text(s, x + 10, y + 4, h.id === "HUB_S" ? "南仓" : "北仓", { class: "lbl-strong" }); }
+}
+const R_CLS = { CRITICAL: 4.2, HIGH: 3.6, NORMAL: 3, LOW: 2.6 };
+
+function v1(V) {
+  const W = 760, H = 640;
+  const hidden = new Set();
+  const draw = () => {
+    const s = svg(document.getElementById("v1-fig"), W, H);
+    const P = projector(V.loc, W, H);
+    baseMap(s, V, P);
+    for (const sh of V.ships) {
+      const [x0, y0] = P(...V.loc[sh.from]), [x1, y1] = P(...V.loc[sh.to]);
+      const g = el("g", {}, s);
+      el("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: sh.required ? css("--late") : css("--ink-2"), "stroke-width": 1.5, "stroke-dasharray": sh.required ? "" : "4 3", "marker-end": "url(#arr)" }, g);
+      el("circle", { cx: x0, cy: y0, r: 3, fill: css("--surface"), stroke: sh.required ? css("--late") : css("--ink-2"), "stroke-width": 1.5 }, g);
+      hover(g, `${sh.required ? "违停处理（必做）" : `挪车（${sh.cls}，价值 ${sh.value}）`}<br>${sh.id}`);
+    }
+    const defs = el("defs", {}, s); const m = el("marker", { id: "arr", viewBox: "0 0 8 8", refX: 7, refY: 4, markerWidth: 6, markerHeight: 6, orient: "auto" }, defs); el("path", { d: "M0,0 L8,4 L0,8 z", fill: css("--ink-2") }, m);
+    for (const c of [...CLASSES].reverse()) {
+      if (hidden.has(c)) continue;
+      for (const j of V.jobs.filter((j) => j.cls === c)) {
+        const [x, y] = P(...V.loc[j.loc]);
+        const d = el("circle", { cx: x, cy: y, r: R_CLS[c], fill: css(CLS_VAR[c]), stroke: j.group ? css("--ink") : css("--surface"), "stroke-width": j.group ? 1.5 : 1 }, s);
+        hover(d, () => `${j.id} · ${j.cls} · 价值 ${j.value}${j.tw ? `<br>必须 ${hhmm(j.tw[1])} 前完成` : ""}${j.soft ? `<br>尽量 ${hhmm(j.soft)} 前（软截止）` : ""}${j.zone ? "<br>环保区内：只能电动车" : ""}${j.group ? `<br>区域组 ${j.group}：8 辆里任换 3 辆` : ""}`);
+      }
+    }
+    hubMarks(s, V, P, V.loc);
+  };
+  const lg = document.getElementById("v1-legend");
+  const renderLegend = () => {
+    lg.innerHTML = CLASSES.map((c) => `<span role="button" tabindex="0" data-c="${c}" style="cursor:pointer;opacity:${hidden.has(c) ? 0.35 : 1}"><i style="background:${css(CLS_VAR[c])}"></i>${c}（${V.jobs.filter((j) => j.cls === c).length}）</span>`).join("")
+      + `<span><i class="ring" style="color:${css("--ink")}"></i>区域组成员</span><span><i class="sq" style="background:${css("--late")}"></i>违停处理（必做，取 → 送）</span><span><i class="sq" style="background:${css("--ink-2")}"></i>挪车（虚线）</span><span><i class="sq" style="background:${css("--accent-soft")};outline:1px dashed ${css("--accent")}"></i>环保区（近似）</span>`;
+    lg.querySelectorAll("[data-c]").forEach((n) => { const t = () => { const c = n.dataset.c; hidden.has(c) ? hidden.delete(c) : hidden.add(c); renderLegend(); draw(); }; n.addEventListener("click", t); n.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } }); });
+  };
+  renderLegend(); draw();
+  document.getElementById("v1-ctl").innerHTML = "";
+}
+
+function routeMap(host, V, loc, routes, servedIds, opts = {}) {
+  const W = 760, H = 600;
+  const s = svg(host, W, H);
+  const P = projector(V.loc, W, H);
+  baseMap(s, V, P, { labels: false });
+  const lines = el("g", {}, s);
+  routes.forEach((r) => {
+    const d = r.locs.map((l, k) => { const [x, y] = P(...loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+    const p = el("path", { d, fill: "none", stroke: opts.routeColor || css("--ink-2"), "stroke-width": 1.2, opacity: 0.55, "stroke-linejoin": "round" }, lines);
+    p.addEventListener("pointerenter", () => { p.setAttribute("stroke", css("--accent")); p.setAttribute("stroke-width", 2.6); p.setAttribute("opacity", 1); });
+    p.addEventListener("pointerleave", () => { p.setAttribute("stroke", opts.routeColor || css("--ink-2")); p.setAttribute("stroke-width", 1.2); p.setAttribute("opacity", 0.55); tip.hidden = true; });
+    hover(p, `${r.vehicle} · ${r.visits.length} 个访问<br>回仓 ${r.visits.filter((v) => v[0] === "reload").length} 次`);
+  });
+  for (const c of [...CLASSES].reverse()) for (const j of V.jobs.filter((j) => j.cls === c)) {
+    const [x, y] = P(...loc[j.loc]); const done = servedIds.has(j.id);
+    el("circle", done ? { cx: x, cy: y, r: R_CLS[c], fill: css(CLS_VAR[c]), stroke: css("--surface"), "stroke-width": 0.8 } : { cx: x, cy: y, r: R_CLS[c] - 0.6, fill: css("--surface"), stroke: css(CLS_VAR[c]), "stroke-width": 1.3 }, s);
+  }
+  hubMarks(s, V, P, loc);
+  return { s, P };
+}
+function servedSet(routes) { return new Set(routes.flatMap((r) => r.visits.filter((v) => v[0] === "job" || v[0] === "delivery").map((v) => v[1]))); }
+function classBars(svgHost, served) {
+  // small bar group drawn in its own svg below the map
+  const W = 760, H = 30 * CLASSES.length + 16, L = 96, R = 120;
+  const s = svg(svgHost, W, H);
+  const x = lin(0, 1, L, W - R);
+  CLASSES.forEach((c, i) => {
+    const [got, tot] = served[c] || [0, 0]; const y = 8 + i * 30;
+    text(s, L - 10, y + 15, c, { "text-anchor": "end", class: "lbl" });
+    el("rect", { x: L, y, width: x(1) - L, height: 18, rx: 4, fill: css("--rule") }, s);
+    el("rect", { x: L, y, width: Math.max(0, x(tot ? got / tot : 0) - L), height: 18, rx: 4, fill: css(CLS_VAR[c]) }, s);
+    text(s, x(1) + 8, y + 14, `${fmt(got)} / ${fmt(tot)}（丢 ${fmt(tot - got)}）`, { class: "lbl-strong" });
+  });
+}
+
+function v2(V) {
+  const host = document.getElementById("v2-fig");
+  const items = V.stages.map((st, i) => [`s${i}`, `阶段 ${i + 1} · ${st.stage}`]).concat([["pyvrp_weighted", "对比：10 倍权重"], ["ortools_seqfull", "对比：OR-Tools 分阶段"]]);
+  const LABEL = { pyvrp_weighted: "PyVRP + 原方案 10 倍权重（一次求解 60 秒）", ortools_seqfull: "OR-Tools + 分阶段（60 秒）" };
+  const draw = (key) => {
+    host.innerHTML = "";
+    const mapDiv = document.createElement("div"), barDiv = document.createElement("div"); host.append(mapDiv, barDiv);
+    let routes, served, title, extra = [];
+    if (key.startsWith("s")) {
+      const st = V.stages[+key.slice(1)]; routes = st.routes; served = st.served;
+      title = `PyVRP 分阶段 · 阶段 ${+key.slice(1) + 1}：${st.stage} 的奖励设为 M`;
+      extra = [[st.locked, "个任务已锁定为必做"], [routes.reduce((a, r) => a + r.visits.filter((v) => v[0] === "reload").length, 0), "次回仓补货"]];
+    } else {
+      const f = V.final[key]; routes = f.routes; served = f.served; title = LABEL[key];
+      extra = [[fmt(f.report.served_jobs), "单换电完成"], [`${fmt(f.report.soft_late_s / 3600, 1)} h`, "软截止累计迟到"]];
+    }
+    document.getElementById("v2-title").textContent = title;
+    routeMap(mapDiv, V, V.loc, routes, servedSet(routes));
+    classBars(barDiv, served);
+    const fin = V.final.pyvrp_seqfull;
+    stats(document.getElementById("v2-stats"), [...extra, [fmt(fin.report.served_jobs), "单换电（分阶段最终）"]]);
+  };
+  buttons(document.getElementById("v2-ctl"), items, "s0", draw);
+  draw("s0");
+  legend(document.getElementById("v2-legend"), [...CLASSES.map((c) => [css(CLS_VAR[c]), c]), [css("--ink-3"), "空心 = 这一阶段没做", "ring"], [css("--ink-2"), "路线（悬停高亮）", "sq"]]);
+}
+
+function v3(V) {
+  const KIND = { drive: ["--rule-2", "开车"], serve: [null, "服务（按优先级着色）"], wait: ["--accent-soft", "等时间窗开门"], reload: ["--accent", "回仓补货"], break: ["--ink", "休息（排完后插入）"], load: ["--accent", "出车装货"] };
+  const TL = V.timelines, W = 760, L = 70, R = 12, rowH = 34, top = 10;
+  const H = top + TL.length * rowH + 28;
+  const s = svg(document.getElementById("v3-fig"), W, H);
+  const x = lin(V.shift[0], V.shift[1], L, W - R);
+  el("rect", { x: x(V.rest.earliest), y: top - 4, width: x(V.rest.latest + V.rest.duration) - x(V.rest.earliest), height: TL.length * rowH + 4, fill: css("--accent-soft"), opacity: 0.45 }, s);
+  text(s, x(V.rest.earliest) + 4, top + TL.length * rowH + 22, "休息窗口", { class: "lbl" });
+  axisX(s, x, top + TL.length * rowH, [6, 8, 10, 12, 14].map((h) => h * 3600), hhmm);
+  const vname = (id) => ({ evan: "电动货车", dvan: "柴油货车", bike: "自行车" }[id.replace(/\d+$/, "")] || id);
+  TL.forEach((tl, i) => {
+    const y = top + i * rowH;
+    text(s, L - 8, y + 18, vname(tl.vehicle), { "text-anchor": "end", class: "lbl" });
+    for (const g of tl.segs) {
+      const fill = g.k === "serve" ? (g.c === "SHIP" ? css("--ink-2") : css(CLS_VAR[g.c])) : css(KIND[g.k][0]);
+      const r = el("rect", { x: x(g.a), y: y + 4, width: Math.max(0.6, x(g.b) - x(g.a)), height: 20, fill }, s);
+      if (g.k === "break" || g.k === "reload") hover(r, `${KIND[g.k][1]}<br>${hhmm(g.a)}–${hhmm(g.b)}`);
+    }
+  });
+  legend(document.getElementById("v3-legend"), [[css("--rule-2"), "开车", "sq"], [css("--norm"), "服务（颜色 = 优先级）", "sq"], [css("--ink-2"), "取送滑板车", "sq"], [css("--accent"), "装货 / 回仓补货", "sq"], [css("--ink"), "休息", "sq"], [css("--accent-soft"), "等待", "sq"]]);
+
+  // soft-deadline copies
+  const S = V.soft, value = 3, base = V.weighted_prize.HIGH * value;
+  const copies = [...S.steps_s.map((st) => [st, `${hhmm(S.due + st)} 前`]), [S.open_s, "不限（按晚 2 小时计）"]];
+  const W2 = 760, H2 = 30 * copies.length + 30, L2 = 160, R2 = 150;
+  const s2 = svg(document.getElementById("v3-soft"), W2, H2);
+  const x2 = lin(0, base, L2, W2 - R2);
+  copies.forEach(([st, label], i) => {
+    const y = 8 + i * 30, prize = Math.max(0, base - S.late_cost * st);
+    text(s2, L2 - 10, y + 14, `副本 ${i + 1}：${label}`, { "text-anchor": "end", class: "lbl" });
+    el("rect", { x: L2, y, width: x2(base) - L2, height: 18, rx: 4, fill: css("--rule") }, s2);
+    el("rect", { x: L2, y, width: x2(prize) - L2, height: 18, rx: 4, fill: css("--high") }, s2);
+    text(s2, x2(base) + 8, y + 14, st ? `奖励 −${fmt(S.late_cost * st / 1000)} SEK` : `全额奖励 ${fmt(base / 1000)} SEK`, { class: "lbl-strong" });
+  });
+  text(s2, L2, H2 - 6, `价值 3 的 HIGH 任务，10 倍权重下奖励 ${fmt(base / 1000)} SEK；迟到每秒扣 ${S.late_cost / 1000} SEK。五个副本只能选一个。`, { class: "lbl" });
+}
+
+function v4(V) {
+  const R = V.replan;
+  const draw = (mode) => {
+    const W = 760, H = 600;
+    const s = svg(document.getElementById("v4-fig"), W, H);
+    const P = projector(V.loc, W, H);
+    baseMap(s, V, P, { labels: false });
+    for (const d of R.done) {
+      const path = d.locs.map((l, k) => { const [x, y] = P(...R.loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+      el("path", { d: path, fill: "none", stroke: css("--ink-3"), "stroke-width": 1, opacity: 0.35 }, s);
+    }
+    const routes = mode === "new" ? R.routes : R.old_routes;
+    for (const r of routes) {
+      const path = r.locs.map((l, k) => { const [x, y] = P(...R.loc[l]); return `${k ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`; }).join("");
+      const p = el("path", { d: path, fill: "none", stroke: mode === "new" ? css("--accent") : css("--ink-2"), "stroke-width": 1.8, opacity: 0.85, "stroke-dasharray": mode === "new" ? "" : "5 4", "stroke-linejoin": "round" }, s);
+      hover(p, `${r.vehicle} · 剩余 ${r.visits.length} 个访问`);
+    }
+    for (const it of R.new_items) {
+      const [x, y] = P(...R.loc[it.loc]);
+      const served = mode === "new" && R.routes.some((r) => r.visits.some((v) => v[1] === it.id));
+      const g = el("g", {}, s);
+      el("path", { d: `M${x},${y - 7} L${x + 7},${y} L${x},${y + 7} L${x - 7},${y} z`, fill: served ? css("--crit") : css("--surface"), stroke: css("--crit"), "stroke-width": 2 }, g);
+      hover(g, `${it.id.startsWith("new_viol") ? "新违停（必做）" : "新紧急换电（CRITICAL，12:00 前）"}<br>${served ? "已排进新计划" : "原计划里没有"}`);
+    }
+    for (const p of R.positions) {
+      const [x, y] = P(...R.loc[p.loc]);
+      const g = el("g", {}, s);
+      el("circle", { cx: x, cy: y, r: 7, fill: css("--ink"), stroke: css("--surface"), "stroke-width": 2 }, g);
+      hover(g, `${p.vehicle} · ${hhmm(p.avail)} 起可用<br>车上已占用：${p.initial_load.join(" / ")}（满电位 / 旧电池 / 滑板车）`);
+    }
+    hubMarks(s, V, P, R.loc);
+  };
+  buttons(document.getElementById("v4-ctl"), [["new", "重新规划后"], ["old", "原计划剩余部分"]], "new", draw);
+  draw("new");
+  legend(document.getElementById("v4-legend"), [[css("--ink-3"), "10:00 前已走过", "sq"], [css("--ink"), "10:00 时车辆位置"], [css("--crit"), "新事件（实心 = 已排进计划）", "sq"], [css("--accent"), "新计划路线", "sq"], [css("--ink-2"), "原计划剩余（虚线）", "sq"]]);
+  const ARM = { keep: "不重新规划", warm5: "热启动 5 秒", warm30: "热启动 30 秒", cold30: "从头求解 30 秒" };
+  const SC = { events: "新事件", breakdown: "新事件 + 自行车抛锚" };
+  table(document.getElementById("v4-table"), [["scenario", "场景", (v) => SC[v]], ["arm", "方式", (v) => ARM[v]], ["runs", "次数"], ["feasible", "可行", (v) => `${fmt(v * 100)}%`], ["new_served", "新任务完成", (v) => `${fmt(v * 100)}%`], ["unserved_NORMAL", "丢 NORMAL", (v) => fmt(v, 1)], ["kept_same_vehicle", "留在原车", (v) => `${fmt(v * 100)}%`], ["old_dropped", "原任务被放弃", (v) => `${fmt(v * 100)}%`]], V.summary.dynamic);
+}
+
+function v5(V) {
+  const A = V.robust.buffer_0, B = V.robust.buffer_20;
+  const W = 760, H = 330, L = 54, R = 20, top = 24, bot = H - 44;
+  const s = svg(document.getElementById("v5-fig"), W, H);
+  const maxv = Math.max(...A.samples_overtime_min, ...B.samples_overtime_min);
+  const xmax = Math.max(60, Math.ceil(maxv / 30) * 30);
+  const x = lin(0, xmax, L, W - R), y = lin(0, 1, bot, top);
+  gridY(s, y, L, W - R, [0, 0.25, 0.5, 0.75, 1], (v) => `${Math.round(v * 100)}%`);
+  const tk = []; for (let v = 0; v <= xmax; v += xmax > 180 ? 60 : 30) tk.push(v);
+  axisX(s, x, bot, tk, (v) => `${v}′`);
+  text(s, 4, 12, "纵轴：超班超过 x 分钟的天数占比", { class: "lbl" });
+  text(s, W - R, bot + 32, "x：全车队当天超班合计（分钟）", { "text-anchor": "end", class: "lbl" });
+  const curve = (arr) => { const n = arr.length; const pts = []; for (let v = 0; v <= xmax; v += xmax / 240) pts.push([v, arr.filter((a) => a > v).length / n]); return pts; };
+  [[A, "--s2", "不加缓冲"], [B, "--s1", "规划时加 20% 缓冲"]].forEach(([D, cv, name], k) => {
+    const pts = curve(D.samples_overtime_min);
+    el("path", { d: pts.map(([v, p], i) => `${i ? "L" : "M"}${x(v).toFixed(1)},${y(p).toFixed(1)}`).join(""), fill: "none", stroke: css(cv), "stroke-width": 2.2 }, s);
+    el("circle", { cx: x(0), cy: y(pts[0][1]), r: 5, fill: css(cv), stroke: css("--surface"), "stroke-width": 2 }, s);
+    text(s, x(0) + 10, y(pts[0][1]) + (k ? -8 : 16), `${name}：${fmt(pts[0][1] * 100)}% 的天超班`, { class: "lbl-strong" });
+  });
+  const cross = el("line", { y1: top, y2: bot, stroke: css("--ink-3"), "stroke-dasharray": "3 3", visibility: "hidden" }, s);
+  const hit = el("rect", { x: L, y: top, width: W - R - L, height: bot - top, fill: "transparent" }, s);
+  hit.addEventListener("pointermove", (e) => {
+    const p = s.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(s.getScreenCTM().inverse());
+    const v = Math.max(0, Math.min(xmax, (q.x - L) / (W - R - L) * xmax));
+    cross.setAttribute("x1", x(v)); cross.setAttribute("x2", x(v)); cross.setAttribute("visibility", "visible");
+    const share = (arr) => arr.filter((a) => a > v).length / arr.length;
+    tip.innerHTML = `超班超过 ${fmt(v)} 分钟的天数<br>不加缓冲：${fmt(share(A.samples_overtime_min) * 100, 1)}%<br>加 20% 缓冲：${fmt(share(B.samples_overtime_min) * 100, 1)}%`;
+    tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (e.clientY + 14) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); tip.hidden = true; });
+  stats(document.getElementById("v5-stats"), [
+    [`${fmt(A.on_time_prob * 100, 1)}%`, "整天准时 · 不加缓冲", "bad"], [`${fmt(B.on_time_prob * 100, 1)}%`, "整天准时 · 加 20%", "good"],
+    [fmt(A.served_jobs), "单换电 · 不加缓冲"], [fmt(B.served_jobs), "单换电 · 加 20%"]]);
+  table(document.getElementById("v5-table"), [["arm", "求解器", (v) => v.startsWith("pyvrp") ? "PyVRP" : "OR-Tools"], ["buffer", "缓冲", (v) => `${fmt(v * 100)}%`], ["runs", "次数"], ["served_jobs", "换电单数", (v) => fmt(v, 1)], ["moderate_on_time_prob", "整天准时（中等波动）", (v) => `${fmt(v * 100, 1)}%`], ["moderate_overtime_min_mean", "超班均值", (v) => `${fmt(v, 1)}′`], ["high_on_time_prob", "整天准时（高波动）", (v) => `${fmt(v * 100, 1)}%`]], V.summary.robust);
+}
+
+function v6(V) {
+  const ARMS = { "pyvrp:sequential_full": ["--s1", "PyVRP 分阶段"], "ortools:sequential_full": ["--s2", "OR-Tools 分阶段"], "pyvrp:weighted": ["--s3", "PyVRP 10 倍权重"] };
+  const D = V.summary.scale.filter((r) => ARMS[r.arm]);
+  const sizes = ["S", "M", "L"], SZ = { S: "S · 约 160 站点", M: "M · 约 430 站点", L: "L · 约 850 站点" };
+  const W = 760, H = 290, L = 46, R = 10, gap = 34, pw = (W - L - R - 2 * gap) / 3, top = 30, bot = H - 40;
+  const s = svg(document.getElementById("v6-fig"), W, H);
+  const budgets = [15, 60, 240];
+  sizes.forEach((sz, k) => {
+    const x0 = L + k * (pw + gap), x = (b) => x0 + budgets.indexOf(b) / 2 * (pw - 20) + 10;
+    const rows = D.filter((r) => r.size === sz);
+    const ymax = Math.max(5, ...rows.map((r) => r.unserved_NORMAL)) * 1.1;
+    const y = lin(0, ymax, bot, top);
+    text(s, x0, top - 14, SZ[sz], { class: "lbl-strong" });
+    for (const t of [0, ymax / 2, ymax]) { el("line", { x1: x0, x2: x0 + pw, y1: y(t), y2: y(t), stroke: css("--rule") }, s); text(s, x0 - 5, y(t) + 4, fmt(t), { "text-anchor": "end" }); }
+    axisX(s, x, bot, budgets, (b) => `${b}s`);
+    for (const [arm, [cv]] of Object.entries(ARMS)) {
+      const pts = budgets.map((b) => rows.find((r) => r.arm === arm && r.time_limit_s === b)).filter(Boolean);
+      el("path", { d: pts.map((r, i) => `${i ? "L" : "M"}${x(r.time_limit_s)},${y(r.unserved_NORMAL)}`).join(""), fill: "none", stroke: css(cv), "stroke-width": 2 }, s);
+      for (const r of pts) {
+        const g = el("g", {}, s);
+        if (r.unserved_HIGH > 0 || r.unserved_CRITICAL > 0) el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 8, fill: "none", stroke: css("--late"), "stroke-width": 2 }, g);
+        el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 4.5, fill: css(cv), stroke: css("--surface"), "stroke-width": 1.5 }, g);
+        el("circle", { cx: x(r.time_limit_s), cy: y(r.unserved_NORMAL), r: 12, fill: "transparent" }, g);
+        hover(g, `${ARMS[arm][1]} · ${sz} · ${r.time_limit_s} 秒<br>丢失 CRITICAL ${fmt(r.unserved_CRITICAL, 1)} / HIGH ${fmt(r.unserved_HIGH, 1)} / NORMAL ${fmt(r.unserved_NORMAL, 1)}<br>完成换电 ${fmt(r.served_jobs, 1)}`);
+      }
+    }
+  });
+  legend(document.getElementById("v6-legend"), [...Object.values(ARMS).map(([v, n]) => [css(v), n]), [css("--late"), "还丢了 HIGH 或 CRITICAL", "ring"]]);
+  table(document.getElementById("v6-table"), [["size", "规模"], ["time_limit_s", "时间", (v) => `${v}s`], ["arm", "做法", (v) => ARMS[v][1]], ["unserved_CRITICAL", "丢 CRITICAL", (v) => fmt(v, 1)], ["unserved_HIGH", "丢 HIGH", (v) => fmt(v, 1)], ["unserved_NORMAL", "丢 NORMAL", (v) => fmt(v, 1)], ["served_jobs", "完成换电", (v) => fmt(v, 1)]], D);
+}
+
+let DATA = null;
+function renderAll() {
+  if (!DATA) return;
+  const T = DATA.traffic, V = DATA.voi;
+  [[t1, T], [t2, T], [t3, T], [t4, T], [v1, V], [v2, V], [v3, V], [v4, V], [v5, V], [v6, V]].forEach(([f, d]) => { try { f(d); } catch (e) { console.error(f.name, e); } });
+}
+const inline = document.getElementById("viz-data").textContent.trim();
+(inline ? Promise.resolve(JSON.parse(inline)) : fetch("viz_data.json").then((r) => r.json())).then((d) => {
+  DATA = d; document.getElementById("loading").hidden = true;
+  document.getElementById("meta").textContent += ` · 本页数据生成于 ${d.generated}`;
+  renderAll();
+}).catch(() => { document.getElementById("loading").textContent = "计算数据没有载入：请确认 viz_data.json 与本页一起发布。"; });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>

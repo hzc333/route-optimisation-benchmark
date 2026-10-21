@@ -56,7 +56,7 @@ def _lognormal(rng, sigma, size):
 
 
 def execute(problem: RichProblem, solution: RichSolution, samples: int, noise: tuple,
-            seed: int = 0) -> dict:
+            seed: int = 0, return_samples: bool = False) -> dict:
     """Monte Carlo execution of a plan; returns on-time probability and means."""
     s_route, s_leg, s_service = noise
     rng = np.random.default_rng(seed)
@@ -107,7 +107,9 @@ def execute(problem: RichProblem, solution: RichSolution, samples: int, noise: t
             t = t + services[:, k]
         overtime += np.maximum(0, t - veh.shift[1])
     ok = (late_jobs == 0) & (overtime == 0) & (bad_break == 0)
-    return {"on_time_prob": float(ok.mean()), "late_hard_mean": float(late_jobs.mean()),
+    extra = ({"samples_late": late_jobs.tolist(), "samples_overtime_min": (overtime / 60).tolist()}
+             if return_samples else {})
+    return extra | {"on_time_prob": float(ok.mean()), "late_hard_mean": float(late_jobs.mean()),
             "overtime_min_mean": float(overtime.mean() / 60),
             "overtime_min_p95": float(np.percentile(overtime, 95) / 60),
             "break_late_prob": float((bad_break > 0).mean())}
