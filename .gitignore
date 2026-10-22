@@ -16,3 +16,5 @@ adapters/timefold_java/target/
 # Matrix files returned by the road engine (large)
 roads/exchange/*.matrices.json
 roads/exchange/results/
+# Quick-demo outputs
+results/summary/*_demo.csv

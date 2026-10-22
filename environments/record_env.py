@@ -101,7 +101,6 @@ def collect() -> dict:
     freq = psutil.cpu_freq()
     return {
         "recorded_at": dt.datetime.now().astimezone().isoformat(timespec="seconds"),
-        "hostname": platform.node(),
         "os": {
             "system": platform.system(),
             "release": platform.release(),

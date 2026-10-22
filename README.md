@@ -1,69 +1,115 @@
-# Route Optimisation Benchmark
+# Route Optimisation Engine — Algorithm Track
 
-Algorithm Track（Phase 0）求解器测试与选型仓库。执行方案见上级目录
-`Route_Optimisation_Algorithm_Solver_Benchmark_Plan_CN.md`。
+Solver evaluation for the Route Optimisation Engine (Stockholm; first vertical:
+Voi e-scooter battery swaps). The repository compares OR-Tools, PyVRP, VROOM
+and Timefold on standard benchmarks and on a Voi-style working day, tests how
+strict priorities and time-dependent traffic can be modelled, and prepares the
+hand-off to the road engine (Valhalla).
 
-**结果报告：[docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md)**；
-生成的表格见 `results/summary/report_tables.md`，图见 `results/plots/`。
+中文说明：主报告是 [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md)，
+开发笔记与踩坑记录是 [docs/DEV_NOTES_CN.md](docs/DEV_NOTES_CN.md)。
 
-完整复现：`python -m data.download` 后运行 `bash experiments/run_all.sh`（约 4.5 h，4 个 P 核）。
-单个实验：`python -m experiments.run_benchmark experiments/configs/<name>.yaml`（可断点续跑）；
-strict priority：`python -m experiments.run_priority_tests`。
+## Findings in brief
 
-当前范围：**仅 Python 求解器**（OR-Tools、PyVRP）。VROOM / Timefold / jsprit 需要 Docker 或 JDK 21，后续再加。
+| Question | Answer | Evidence |
+|---|---|---|
+| Which core solver? | **PyVRP.** Best quality everywhere: 1.3 % from the best known solution on 1,000-stop instances (VROOM 21 %, OR-Tools 33 %, Timefold CE 133 %). On a Voi-style day it expresses every constraint: 5 natively, 4 through tested workarounds | 9,000 benchmark runs; Voi study, report §6 |
+| Strict priorities? | Not with "~10× penalties per class". An external **staged controller** (solve one class at a time, lock it, warm-start the next, keep lower classes in every stage) never gave up a CRITICAL or HIGH job that could be served | Report §4, §6.3 |
+| Traffic inside the search? | Yes, with PyVRP: **one copy of each stop per 90-minute time slot**, legs at the slowest time in the slot. 100 % of plans on time with no extra driving (synthetic traffic) | Report §5, §5.1 |
+| Learned / hybrid methods? | Not tested yet | — |
 
-## 环境
+Open points: driver breaks and plan stability during mid-shift re-planning,
+real Stockholm road and traffic data, a time buffer calibrated on real data.
 
-| 项 | 固定版本 |
+## Documents
+
+| File | Content |
 |---|---|
-| Python | 3.13.7（Windows 11, x64） |
-| OR-Tools | 9.15.6755 |
-| PyVRP | 0.14.0 |
-| pyvroom（VROOM 1.15 C++ 核心的 Python 绑定，无需 Docker） | 1.15.2 |
-| JDK（Temurin，免安装 zip，`D:\route_opti\tools`） | 21.0.12.1 |
-| Maven（免安装 zip，`D:\route_opti\tools`） | 3.9.16 |
+| [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md) | Full report (Chinese): setup, every result table, limitations, reproduction |
+| [docs/Algorithm_Track_Findings_EN.md](docs/Algorithm_Track_Findings_EN.md) | Short findings summary in English (12 Oct 2026; before the Voi follow-up studies) |
+| [docs/viz/](docs/viz/README.md) | Interactive step-by-step walkthrough of the traffic and Voi computations, Chinese and English; open `walkthrough_en.html` in a browser |
+| [docs/DEV_NOTES_CN.md](docs/DEV_NOTES_CN.md) | Development notes (Chinese): structure, status, next steps, pitfalls |
+| [docs/background/](docs/background/) | Project idea document and the benchmark plan |
+| [roads/README.md](roads/README.md) | Hand-off to the road engine: stop lists and a Valhalla matrix builder |
 
-Java 工具只对当前 shell 生效：`source environments/java_env.sh`（bash）或
-`. .\environments\java_env.ps1`（PowerShell）。Timefold 2.7.0 / jsprit 2.0.0 从 Maven Central 获取。
-
-完整依赖锁定在 `environments/requirements-python.txt`，机器信息见 `results/metadata.json`。
-
-```powershell
-py -3.13 -m venv .venv
-.venv\Scripts\python -m pip install -r environments\requirements-python.txt
-.venv\Scripts\python -m pytest            # 工具链 smoke test
-.venv\Scripts\python environments\record_env.py   # 刷新 results/metadata.json
-```
-
-> 升级任何求解器版本后必须重新运行 `record_env.py`，且新结果不得追加到旧结果表（方案 §21）。
-
-## 目录
+## Repository layout
 
 ```
-environments/   依赖锁定、环境记录脚本
-data/           raw（下载原件，不入库）/ converted（统一 schema JSON）/ bks
-schema/         Problem / Solution JSON Schema
-adapters/       各求解器 adapter：公共 schema -> 原生 API -> 公共 solution
-evaluator/      统一 validator + objective vector 计算
-experiments/    runner 与配置
-results/        raw（逐次运行，不入库）/ summary / plots / metadata.json
-tests/
+schema/        Shared Problem / Solution model for standard VRPs (pydantic)
+evaluator/     Independent validator: re-simulates every route, never trusts solver output
+adapters/      OR-Tools, PyVRP, VROOM (pyvroom) and Timefold (Java, adapters/timefold_java)
+priority/      Strict-priority strategies: weighted, stacked, staged (sequential)
+experiments/   Benchmark runner, tuning, standby/power guards, plots, walkthrough data export
+traffic/       Time-dependent travel model, synthetic city, traffic strategies, time-slot copies
+rich/          Voi-style instances: rich schema and validator, Stockholm generator,
+               PyVRP / OR-Tools models, staged controller, re-planning, robustness studies
+roads/         Road-engine hand-off: stop lists, Valhalla matrix builder, loader, checks
+data/          Download / conversion scripts, converted instances, best known solutions
+results/       Summary CSVs and plots of every experiment (raw per-run logs are not kept)
+tests/         358 tests
+docs/          Report, notes, walkthrough pages, background documents
+environments/  Pinned Python requirements, Java environment helper, machine snapshot
 ```
 
-## 公共 Schema 与评价器
+## Setup
 
-- `schema/models.py` 是唯一数据源（pydantic）；`*.schema.json` 由
-  `python -m schema.export_json_schema` 生成，测试会检查两者是否同步。
-- 约定：距离/时间一律为非负整数（实数输入由 converter 缩放，系数记入 `meta.distance_scale`）；
-  `duration_matrix` 只含行驶时间，服务时间挂在 job 上；允许早到等待，晚于窗口结束开始服务即 hard violation；
-  车辆须在 `shift` 内出发并返回。首轮仅单 depot、单容量维度、纯配送。
-- `evaluator.validate()` 不信任 solver 自报的时间/载重，按最早开始时刻重新模拟每条路线，检查：
-  容量、时间窗、班次结束、skills、重复/未知 job 与车辆、必服务 job 未服务、adapter 报告的 unserved 与实际不一致。
-- `evaluator.objective_vector()` 输出统一向量；`lex_key()` 按
-  hard → unserved CRITICAL/HIGH/NORMAL/LOW → soft 项 严格字典序比较。
-- Smoke 实例：`python -m data.generate_smoke` 生成 `data/converted/smoke/`（固定随机种子，按构造保证可行）。
+Python 3.13 (tested on Windows 11; the solvers also install on Linux and macOS):
 
-## API 注意事项
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r environments/requirements-python.txt   # Linux/macOS: .venv/bin/python
+.venv/Scripts/python -m pytest
+```
 
-- PyVRP 0.14 起 depot/client 需挂在 `Model.add_location(x, y)` 返回的 `Location` 上，
-  `add_edge` 连接的是 `Location`；方案 §9 中的旧示例写法已不适用。
+Timefold needs JDK 21 and Maven 3.9 (only for the Timefold adapter and the
+experiments that use it):
+
+```bash
+source environments/java_env.sh            # uses ../tools/jdk-21*, apache-maven-* if present
+(cd adapters/timefold_java && mvn -q package)
+```
+
+Standard benchmark instances are downloaded and converted with
+`python -m data.download`; converted instances are already in `data/converted/`.
+
+## Running
+
+All commands run from the repository root.
+
+| What | Command | Time |
+|---|---|---|
+| Tests | `python -m pytest` | ~3.5 min |
+| Standard benchmarks + priority experiments | `bash experiments/run_all.sh` | ~12 h |
+| Traffic experiment (report §5) | `python -m traffic.run_experiment` | ~80 min |
+| Time-slot copies (report §5.1) | `python -m traffic.run_experiment --tag _buckets --combos pyvrp:bucketed_90,pyvrp:bucketed_60,ortools:bucketed_90,ortools:bucketed_60,pyvrp:static_mean,pyvrp:static_peak,pyvrp:iterative,timefold:td_search` | ~60 min |
+| Voi quality and priorities (§6.3) | `python -m rich.run_experiment --tag _final` | ~75 min |
+| Voi budget and scale (§6.5) | `python -m rich.run_experiment --sizes S M L --instances 3 --budgets 15 60 240 --seeds 2 --arms pyvrp:sequential_full,pyvrp:weighted,ortools:sequential_full --tag _scale` | ~60 min |
+| Voi re-planning (§6.4) | `python -m rich.dynamic` | ~15 min |
+| Voi execution uncertainty (§6.6) | `python -m rich.robust` | ~10 min |
+| Voi with real road matrices | `python -m rich.run_experiment --matrices roads/exchange/results --sizes S M --instances 1` | ~30 min |
+| Walkthrough pages | `python -m experiments.export_viz` then `python -m experiments.build_viz` | ~5 min |
+
+Quick demos (a few minutes, results kept separate):
+
+```bash
+python -m traffic.run_experiment --combos pyvrp:static_mean,pyvrp:bucketed_90 --seeds 0 --time-limit 10 --tag _demo
+python -m rich.run_experiment --sizes S --instances 1 --seeds 1 --arms pyvrp:sequential_full,pyvrp:weighted --tag _demo
+```
+
+Runners journal every finished run and resume after an interruption; rerun
+with a new `--tag` to start from scratch. Summaries land in `results/summary/`.
+
+### Measurement conditions
+
+Timed runs are single-threaded and pinned to fixed performance cores (CPUs
+0, 2, 4, 6 of an i5-13500H; edit `CPUS` in the runners for another machine).
+On Windows, runs that overlap a Modern Standby period or battery power are
+detected from the event log and redone (`experiments/standby_check.py`); on
+other systems that check is skipped. Compare configurations only within runs
+made on the same day: results drift by 0.1–5 percentage points between days.
+
+## Limitations
+
+Single laptop; the Voi day and the traffic model are synthetic (real Stockholm
+coordinates, but straight-line distances times a detour factor until the road
+engine provides matrices); learned methods are not evaluated.
