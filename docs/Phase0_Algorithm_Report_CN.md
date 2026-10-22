@@ -458,7 +458,7 @@ Timefold 的 weighted 在 P1 也"通过"，但那是因为它的局部搜索找�
 ## 复现
 
 ```bash
-cd route-optimisation-benchmark
+# 在算法部分的根目录（README.md 所在的文件夹）下运行
 py -3.13 -m venv .venv && .venv/Scripts/python -m pip install -r environments/requirements-python.txt
 source environments/java_env.sh && (cd adapters/timefold_java && mvn -q package)   # Timefold jar
 .venv/Scripts/python -m data.download        # 实例 + BKS

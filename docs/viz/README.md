@@ -10,7 +10,7 @@
 
 ## 更新网页
 
-在 `route-optimisation-benchmark` 目录下运行：
+在算法部分的根目录（README.md 所在的文件夹）下运行：
 
 ```bash
 .venv/Scripts/python -m experiments.export_viz   # 约 5 分钟：重算 src/viz_data.json（算法改了才需要）

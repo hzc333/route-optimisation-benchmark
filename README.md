@@ -1,10 +1,19 @@
 # Route Optimisation Engine — Algorithm Track
 
-Solver evaluation for the Route Optimisation Engine (Stockholm; first vertical:
-Voi e-scooter battery swaps). The repository compares OR-Tools, PyVRP, VROOM
-and Timefold on standard benchmarks and on a Voi-style working day, tests how
-strict priorities and time-dependent traffic can be modelled, and prepares the
-hand-off to the road engine (Valhalla).
+This folder is the **Algorithm Track** of the Route Optimisation Engine project
+(Stockholm; first vertical: Voi e-scooter battery swaps). It answers which
+solver should plan the routes and how priorities and traffic are modelled:
+it compares OR-Tools, PyVRP, VROOM and Timefold on standard benchmarks and on
+a Voi-style working day, and tests strict priorities and time-dependent
+traffic.
+
+**How it connects to the road engine:** the algorithm takes travel-time and
+distance matrices between stops and returns each vehicle's ordered stops and
+schedule. The road engine (Valhalla) supplies those matrices and turns the
+stop order into driving routes. Until that link is live, the matrices are
+exchanged as files; see [roads/README.md](roads/README.md).
+
+Everything below is relative to this folder, and every command runs from it.
 
 中文说明：主报告是 [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md)，
 开发笔记与踩坑记录是 [docs/DEV_NOTES_CN.md](docs/DEV_NOTES_CN.md)。
@@ -53,28 +62,38 @@ environments/  Pinned Python requirements, Java environment helper, machine snap
 
 ## Setup
 
-Python 3.13 (tested on Windows 11; the solvers also install on Linux and macOS):
+Python 3.13 (tested on Windows 11; the solvers also install on Linux and macOS).
+Create a virtual environment in this folder and activate it:
 
 ```bash
 python -m venv .venv
-.venv/Scripts/python -m pip install -r environments/requirements-python.txt   # Linux/macOS: .venv/bin/python
-.venv/Scripts/python -m pytest
+source .venv/Scripts/activate        # Windows Git Bash; Linux/macOS: source .venv/bin/activate
+                                     # Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install -r environments/requirements-python.txt
+python -m pytest                     # 358 tests, about 3.5 minutes
 ```
+
+All later commands assume the environment is active, so `python` is the
+environment's Python.
 
 Timefold needs JDK 21 and Maven 3.9 (only for the Timefold adapter and the
 experiments that use it):
 
 ```bash
-source environments/java_env.sh            # uses ../tools/jdk-21*, apache-maven-* if present
+source environments/java_env.sh            # PowerShell: . .\environments\java_env.ps1
 (cd adapters/timefold_java && mvn -q package)
 ```
+
+The helper uses a JDK and Maven already on `PATH`, or portable copies
+(`jdk-21*`, `apache-maven-*`) in the folder named by `ROUTE_OPTI_TOOLS`
+(default: a `tools` folder next to this one).
 
 Standard benchmark instances are downloaded and converted with
 `python -m data.download`; converted instances are already in `data/converted/`.
 
 ## Running
 
-All commands run from the repository root.
+All commands run from this folder with the virtual environment active.
 
 | What | Command | Time |
 |---|---|---|

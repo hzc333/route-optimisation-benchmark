@@ -119,7 +119,7 @@ def collect() -> dict:
         "python": {
             "version": platform.python_version(),
             "implementation": platform.python_implementation(),
-            "executable": sys.executable,
+            "executable": os.path.relpath(sys.executable, ROOT) if sys.executable.startswith(str(ROOT)) else sys.executable,
         },
         "packages": {p: metadata.version(p) for p in PACKAGES},
         "java": java_toolchain(),

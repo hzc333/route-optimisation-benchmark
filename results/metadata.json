@@ -21,7 +21,7 @@
   "python": {
     "version": "3.13.7",
     "implementation": "CPython",
-    "executable": "D:\\route_opti\\route-optimisation-benchmark\\.venv\\Scripts\\python.exe"
+    "executable": ".venv\\Scripts\\python.exe"
   },
   "packages": {
     "ortools": "9.15.6755",
