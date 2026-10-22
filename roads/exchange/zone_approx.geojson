@@ -1,0 +1,39 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "approximate miljözon klass 3 (City)",
+    "note": "rectangle used by rich/voi.py; replace with the official boundary"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       18.056,
+       59.3305
+      ],
+      [
+       18.076,
+       59.3305
+      ],
+      [
+       18.076,
+       59.3375
+      ],
+      [
+       18.056,
+       59.3375
+      ],
+      [
+       18.056,
+       59.3305
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

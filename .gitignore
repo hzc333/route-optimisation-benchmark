@@ -12,3 +12,7 @@ results/*.log
 
 # Maven build output
 adapters/timefold_java/target/
+
+# Matrix files returned by the road engine (large)
+roads/exchange/*.matrices.json
+roads/exchange/results/
