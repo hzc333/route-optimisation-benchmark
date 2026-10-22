@@ -8,11 +8,6 @@
 | `src/page_en_text.html` | 英文页面的正文和样式 | 手工编辑 |
 | `src/viz_data.json` | 图表数据（在 H00、M00 两个实例上重新求解得到） | `export_viz` 生成 |
 
-在线版（只有本人能打开，分享要在页面右上角 Share 菜单设置）：
-
-- 中文：https://claude.ai/artifact/KTWGLunce4TuwtnzzqH1Xe
-- 英文：https://claude.ai/artifact/1KSYZaFNmejLeJHsLLtxds
-
 ## 更新网页
 
 在 `route-optimisation-benchmark` 目录下运行：
