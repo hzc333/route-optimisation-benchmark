@@ -34,7 +34,8 @@ real Stockholm road and traffic data, a time buffer calibrated on real data.
 
 | File | Content |
 |---|---|
-| [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md) | Full report (Chinese): setup, every result table, limitations, reproduction |
+| [docs/Phase0_Algorithm_Report_EN.md](docs/Phase0_Algorithm_Report_EN.md) | **Full report**: setup, every result table (standard benchmarks, priorities, traffic, Voi studies), engineering findings, recommendations, limitations, reproduction |
+| [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md) | The same report in Chinese (the original) |
 | [docs/Algorithm_Track_Findings_EN.md](docs/Algorithm_Track_Findings_EN.md) | Short findings summary in English (12 Oct 2026; before the Voi follow-up studies) |
 | [docs/viz/](docs/viz/README.md) | Interactive step-by-step walkthrough of the traffic and Voi computations, Chinese and English; open `walkthrough_en.html` in a browser |
 | [docs/DEV_NOTES_CN.md](docs/DEV_NOTES_CN.md) | Development notes (Chinese): structure, status, next steps, pitfalls |
