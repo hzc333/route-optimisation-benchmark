@@ -70,8 +70,12 @@ python -m venv .venv
 source .venv/Scripts/activate        # Windows Git Bash; Linux/macOS: source .venv/bin/activate
                                      # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -r environments/requirements-python.txt
-python -m pytest                     # 358 tests, about 3.5 minutes
+python -m pytest                     # about 1.5 minutes
 ```
+
+Tests that need the Timefold jar are skipped until it is built (below), and the
+216 best-known-solution checks are skipped until `python -m data.download` has run;
+with both in place there are 358 tests.
 
 All later commands assume the environment is active, so `python` is the
 environment's Python.
@@ -97,7 +101,7 @@ All commands run from this folder with the virtual environment active.
 
 | What | Command | Time |
 |---|---|---|
-| Tests | `python -m pytest` | ~3.5 min |
+| Tests | `python -m pytest` | 1.5–3.5 min |
 | Standard benchmarks + priority experiments | `bash experiments/run_all.sh` | ~12 h |
 | Traffic experiment (report §5) | `python -m traffic.run_experiment` | ~80 min |
 | Time-slot copies (report §5.1) | `python -m traffic.run_experiment --tag _buckets --combos pyvrp:bucketed_90,pyvrp:bucketed_60,ortools:bucketed_90,ortools:bucketed_60,pyvrp:static_mean,pyvrp:static_peak,pyvrp:iterative,timefold:td_search` | ~60 min |
