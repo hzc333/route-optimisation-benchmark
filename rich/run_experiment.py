@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
@@ -67,6 +68,11 @@ def run_one(args) -> dict:
     module_name, options, strategy, _ = ARMS[arm]
     module = {"pyvrp": pyvrp_rich, "ortools": ortools_rich}[module_name]
     problem = build(instance[0], int(instance[1:]))
+    matrices = os.environ.get("ROB_MATRICES_DIR")
+    if matrices:  # real road-network matrices from Valhalla (roads/README.md)
+        from roads.load_matrices import apply
+
+        problem = apply(problem, Path(matrices) / f"stops_{instance}.matrices.json")
     row = {"instance": instance, "size": instance[0], "arm": arm, "solver": module_name,
            "strategy": strategy, "seed": seed, "time_limit_s": time_limit, "t_start": time.time()}
     t0 = time.perf_counter()
@@ -147,7 +153,16 @@ def main() -> None:
                     help="time limits in s for every size (default: TIME_LIMIT per size)")
     ap.add_argument("--seeds", type=int, help="use only the first N seeds of each arm")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--matrices", help="folder with stops_<instance>.matrices.json from Valhalla; "
+                                       "replaces the straight-line distances (default tag _valhalla)")
     args = ap.parse_args()
+    if args.matrices:
+        missing = [f"stops_{s}{k:02d}.matrices.json" for s in args.sizes for k in range(args.instances)
+                   if not (Path(args.matrices) / f"stops_{s}{k:02d}.matrices.json").exists()]
+        if missing:
+            raise SystemExit(f"missing in {args.matrices}: {', '.join(missing)}")
+        os.environ["ROB_MATRICES_DIR"] = str(Path(args.matrices).resolve())  # inherited by workers
+        args.tag = args.tag or "_valhalla"
     arms = args.arms.split(",") if args.arms else list(ARMS)
     SUMMARY.mkdir(parents=True, exist_ok=True)
     RAW.mkdir(parents=True, exist_ok=True)

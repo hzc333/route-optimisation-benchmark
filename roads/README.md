@@ -96,6 +96,13 @@ Rows and columns follow the CSV order; `null` means Valhalla found no route.
 
 ## On our side
 
+Put the returned files in `roads/exchange/results/`, then:
+
+```bash
+python -m roads.check                                                      # sanity report per file
+python -m rich.run_experiment --matrices roads/exchange/results --sizes S M --instances 1
+```
+
 `python -m roads.export_stops` regenerates the stop lists from the instance
 generator; `roads.load_matrices.apply(problem, path)` reads a result file into
 a Voi instance (diesel vans get `van_no_zone`, unreachable pairs become a time

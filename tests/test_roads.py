@@ -135,3 +135,21 @@ def test_apply_and_solve(matrices):
     s = summary(path)
     assert s["van"]["requests"] == math.ceil(len(problem.locations) / 40) ** 2
     assert s["snap_auto"]["median_m"] == pytest.approx(11.1, abs=0.5)
+
+
+def test_check_report(matrices, capsys):
+    from roads.check import check
+
+    _, path = matrices
+    check(path)
+    out = capsys.readouterr().out
+    assert "van_no_zone" in out and "real / straight-line model" in out and "snap (auto)" in out
+
+
+def test_experiment_uses_matrices(matrices, monkeypatch):
+    from rich.run_experiment import run_one
+
+    _, path = matrices
+    monkeypatch.setenv("ROB_MATRICES_DIR", str(path.parent))
+    row = run_one(("S00", "pyvrp:weighted", 0, 2.0, 0))
+    assert row["status"] == "SOLVED" and row["feasible"], row.get("notes")
