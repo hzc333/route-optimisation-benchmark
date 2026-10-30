@@ -224,8 +224,9 @@ const PLAN = __PLAN__;
 const COLORS = {REQUIRED: "#111111", CRITICAL: "#e34948", HIGH: "#eda100", NORMAL: "#2a78d6", LOW: "#8f8e88"};
 const VEH = ["#0e6a73", "#b0459a", "#5b6ee1", "#c06a1b"];
 const map = L.map("map");
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  {maxZoom: 19, attribution: "&copy; OpenStreetMap contributors"}).addTo(map);
+// Esri tiles: OSM's own tile servers refuse pages opened from file:// (no Referer -> 403)
+L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+  {maxZoom: 19, attribution: "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors"}).addTo(map);
 const prio = {}; for (const s of PLAN.request_stops) prio[s.id] = s.required ? "REQUIRED" : s.priority;
 const bounds = [];
 const depot = PLAN.depot; bounds.push([depot.lat, depot.lon]);
