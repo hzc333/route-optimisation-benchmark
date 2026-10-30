@@ -1,0 +1,323 @@
+{
+  "format": "route-opti-request/v0",
+  "depot": {
+    "id": "HUB",
+    "name": "Depot (Årsta)",
+    "lat": 59.2985,
+    "lon": 18.04
+  },
+  "stops": [
+    {
+      "id": "r1",
+      "name": "T-Centralen",
+      "lat": 59.331,
+      "lon": 18.059,
+      "service_s": 150,
+      "demand": 1,
+      "required": true,
+      "time_window": [
+        "08:00",
+        "09:00"
+      ]
+    },
+    {
+      "id": "r2",
+      "name": "Slussen",
+      "lat": 59.3195,
+      "lon": 18.072,
+      "service_s": 150,
+      "demand": 1,
+      "required": true,
+      "time_window": [
+        "08:00",
+        "09:00"
+      ]
+    },
+    {
+      "id": "r3",
+      "name": "Fridhemsplan",
+      "lat": 59.332,
+      "lon": 18.029,
+      "service_s": 150,
+      "demand": 1,
+      "required": true
+    },
+    {
+      "id": "r4",
+      "name": "Medborgarplatsen",
+      "lat": 59.3143,
+      "lon": 18.0735,
+      "service_s": 150,
+      "demand": 1,
+      "required": true
+    },
+    {
+      "id": "c1",
+      "name": "Odenplan",
+      "lat": 59.3429,
+      "lon": 18.0496,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "CRITICAL",
+      "value": 4
+    },
+    {
+      "id": "c2",
+      "name": "Hötorget",
+      "lat": 59.3355,
+      "lon": 18.063,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "CRITICAL",
+      "value": 4
+    },
+    {
+      "id": "c3",
+      "name": "Östermalmstorg",
+      "lat": 59.335,
+      "lon": 18.077,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "CRITICAL",
+      "value": 4
+    },
+    {
+      "id": "h1",
+      "name": "KTH",
+      "lat": 59.3456,
+      "lon": 18.0715,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "h2",
+      "name": "S:t Eriksplan",
+      "lat": 59.3395,
+      "lon": 18.037,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "h3",
+      "name": "Mariatorget",
+      "lat": 59.317,
+      "lon": 18.063,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "h4",
+      "name": "Skanstull",
+      "lat": 59.308,
+      "lon": 18.076,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "h5",
+      "name": "Rådmansgatan",
+      "lat": 59.3405,
+      "lon": 18.0585,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "h6",
+      "name": "Stadshagen",
+      "lat": 59.3365,
+      "lon": 18.0175,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "HIGH",
+      "value": 3
+    },
+    {
+      "id": "n1",
+      "name": "Liljeholmen",
+      "lat": 59.31,
+      "lon": 18.023,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n2",
+      "name": "Gullmarsplan",
+      "lat": 59.299,
+      "lon": 18.081,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n3",
+      "name": "Hornstull",
+      "lat": 59.3157,
+      "lon": 18.034,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n4",
+      "name": "Zinkensdamm",
+      "lat": 59.3177,
+      "lon": 18.05,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n5",
+      "name": "Karlaplan",
+      "lat": 59.3389,
+      "lon": 18.0904,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n6",
+      "name": "Gärdet",
+      "lat": 59.346,
+      "lon": 18.099,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n7",
+      "name": "Thorildsplan",
+      "lat": 59.3318,
+      "lon": 18.015,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2
+    },
+    {
+      "id": "n8",
+      "name": "Riddarfjärden quay",
+      "lat": 59.3238,
+      "lon": 18.056,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "NORMAL",
+      "value": 2,
+      "note": "snap test: by the water"
+    },
+    {
+      "id": "l1",
+      "name": "Hammarby sjöstad",
+      "lat": 59.3035,
+      "lon": 18.1,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "LOW",
+      "value": 1
+    },
+    {
+      "id": "l2",
+      "name": "Årstaberg",
+      "lat": 59.299,
+      "lon": 18.03,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "LOW",
+      "value": 1
+    },
+    {
+      "id": "l3",
+      "name": "Telefonplan",
+      "lat": 59.298,
+      "lon": 17.997,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "LOW",
+      "value": 1
+    },
+    {
+      "id": "l4",
+      "name": "Södra Hammarbyhamnen",
+      "lat": 59.3045,
+      "lon": 18.088,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "LOW",
+      "value": 1
+    },
+    {
+      "id": "l5",
+      "name": "Djurgården (park)",
+      "lat": 59.3268,
+      "lon": 18.115,
+      "service_s": 150,
+      "demand": 1,
+      "required": false,
+      "priority": "LOW",
+      "value": 1,
+      "note": "snap test: inside a park"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "van1",
+      "profile": "van",
+      "capacity": 10,
+      "shift": [
+        "07:00",
+        "11:00"
+      ]
+    },
+    {
+      "id": "bike1",
+      "profile": "cargo_bike",
+      "capacity": 6,
+      "shift": [
+        "07:00",
+        "11:00"
+      ]
+    }
+  ],
+  "options": {
+    "priority_mode": "strict",
+    "time_limit_s": 10
+  }
+}

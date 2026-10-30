@@ -1,0 +1,144 @@
+{
+  "format": "route-opti-plan/v0",
+  "matrices": "straight-line placeholder, not Valhalla",
+  "routes": [
+    {
+      "vehicle": "van1",
+      "stops": [
+        {
+          "id": "n3",
+          "start": "07:07"
+        },
+        {
+          "id": "r3",
+          "start": "07:16"
+        },
+        {
+          "id": "h6",
+          "start": "07:22"
+        },
+        {
+          "id": "h2",
+          "start": "07:29"
+        },
+        {
+          "id": "c1",
+          "start": "07:36"
+        },
+        {
+          "id": "h5",
+          "start": "07:43"
+        },
+        {
+          "id": "h1",
+          "start": "07:51"
+        },
+        {
+          "id": "c3",
+          "start": "08:01"
+        },
+        {
+          "id": "c2",
+          "start": "08:08"
+        },
+        {
+          "id": "r1",
+          "start": "08:14"
+        }
+      ],
+      "return": "08:30",
+      "distance_m": 19372,
+      "path": null
+    },
+    {
+      "vehicle": "bike1",
+      "stops": [
+        {
+          "id": "n4",
+          "start": "07:41"
+        },
+        {
+          "id": "n8",
+          "start": "07:47"
+        },
+        {
+          "id": "h3",
+          "start": "07:54"
+        },
+        {
+          "id": "r2",
+          "start": "08:00"
+        },
+        {
+          "id": "r4",
+          "start": "08:05"
+        },
+        {
+          "id": "h4",
+          "start": "08:11"
+        }
+      ],
+      "return": "08:25",
+      "distance_m": 9570,
+      "path": null
+    }
+  ],
+  "unserved": [
+    {
+      "id": "n1",
+      "priority": "NORMAL",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "n2",
+      "priority": "NORMAL",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "n5",
+      "priority": "NORMAL",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "n6",
+      "priority": "NORMAL",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "n7",
+      "priority": "NORMAL",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "l1",
+      "priority": "LOW",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "l2",
+      "priority": "LOW",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "l3",
+      "priority": "LOW",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "l4",
+      "priority": "LOW",
+      "reason": "not enough capacity or time"
+    },
+    {
+      "id": "l5",
+      "priority": "LOW",
+      "reason": "not enough capacity or time"
+    }
+  ],
+  "summary": {
+    "feasible": true,
+    "distance_m": 28942,
+    "served": 16,
+    "unserved": 10
+  }
+}
