@@ -1,0 +1,64 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo v0 plan</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+ body { margin: 0; font: 14px/1.5 system-ui, sans-serif; }
+ #map { position: absolute; top: 0; bottom: 0; left: 0; right: 320px; }
+ #side { position: absolute; top: 0; bottom: 0; right: 0; width: 320px; overflow: auto; padding: 12px 14px;
+         box-sizing: border-box; border-left: 1px solid #ddd; background: #fafafa; }
+ h1 { font-size: 17px; margin: 0 0 6px; } .muted { color: #666; font-size: 12px; }
+ .row { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+ .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; border: 2px solid #fff; box-shadow: 0 0 0 1px #999; }
+ .pin { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #444;
+        box-sizing: border-box; font: 700 11px/18px system-ui, sans-serif; text-align: center; }
+ table { border-collapse: collapse; width: 100%; font-size: 12.5px; } td { padding: 2px 4px; border-bottom: 1px solid #eee; }
+</style></head><body>
+<div id="map"></div><div id="side"></div>
+<script>
+const PLAN = {"format": "route-opti-plan/v0", "matrices": "straight-line placeholder, not Valhalla", "depot": {"id": "HUB", "name": "Depot (Årsta)", "lat": 59.2985, "lon": 18.04}, "routes": [{"vehicle": "van1", "profile": "van", "leave": "07:00", "stops": [{"id": "n3", "name": "Hornstull", "lat": 59.3157, "lon": 18.034, "start": "07:07"}, {"id": "r3", "name": "Fridhemsplan", "lat": 59.332, "lon": 18.029, "start": "07:16"}, {"id": "h6", "name": "Stadshagen", "lat": 59.3365, "lon": 18.0175, "start": "07:22"}, {"id": "h2", "name": "S:t Eriksplan", "lat": 59.3395, "lon": 18.037, "start": "07:29"}, {"id": "c1", "name": "Odenplan", "lat": 59.3429, "lon": 18.0496, "start": "07:36"}, {"id": "h5", "name": "Rådmansgatan", "lat": 59.3405, "lon": 18.0585, "start": "07:43"}, {"id": "h1", "name": "KTH", "lat": 59.3456, "lon": 18.0715, "start": "07:51"}, {"id": "c3", "name": "Östermalmstorg", "lat": 59.335, "lon": 18.077, "start": "08:01"}, {"id": "c2", "name": "Hötorget", "lat": 59.3355, "lon": 18.063, "start": "08:08"}, {"id": "r1", "name": "T-Centralen", "lat": 59.331, "lon": 18.059, "start": "08:14"}], "return": "08:30", "distance_m": 19372, "path": null}, {"vehicle": "bike1", "profile": "cargo_bike", "leave": "07:30", "stops": [{"id": "n4", "name": "Zinkensdamm", "lat": 59.3177, "lon": 18.05, "start": "07:41"}, {"id": "n8", "name": "Riddarfjärden quay", "lat": 59.3238, "lon": 18.056, "start": "07:47"}, {"id": "h3", "name": "Mariatorget", "lat": 59.317, "lon": 18.063, "start": "07:54"}, {"id": "r2", "name": "Slussen", "lat": 59.3195, "lon": 18.072, "start": "08:00"}, {"id": "r4", "name": "Medborgarplatsen", "lat": 59.3143, "lon": 18.0735, "start": "08:05"}, {"id": "h4", "name": "Skanstull", "lat": 59.308, "lon": 18.076, "start": "08:11"}], "return": "08:25", "distance_m": 9570, "path": null}], "unserved": [{"id": "n1", "name": "Liljeholmen", "lat": 59.31, "lon": 18.023, "priority": "NORMAL", "reason": "not enough capacity or time"}, {"id": "n2", "name": "Gullmarsplan", "lat": 59.299, "lon": 18.081, "priority": "NORMAL", "reason": "not enough capacity or time"}, {"id": "n5", "name": "Karlaplan", "lat": 59.3389, "lon": 18.0904, "priority": "NORMAL", "reason": "not enough capacity or time"}, {"id": "n6", "name": "Gärdet", "lat": 59.346, "lon": 18.099, "priority": "NORMAL", "reason": "not enough capacity or time"}, {"id": "n7", "name": "Thorildsplan", "lat": 59.3318, "lon": 18.015, "priority": "NORMAL", "reason": "not enough capacity or time"}, {"id": "l1", "name": "Hammarby sjöstad", "lat": 59.3035, "lon": 18.1, "priority": "LOW", "reason": "not enough capacity or time"}, {"id": "l2", "name": "Årstaberg", "lat": 59.299, "lon": 18.03, "priority": "LOW", "reason": "not enough capacity or time"}, {"id": "l3", "name": "Telefonplan", "lat": 59.298, "lon": 17.997, "priority": "LOW", "reason": "not enough capacity or time"}, {"id": "l4", "name": "Södra Hammarbyhamnen", "lat": 59.3045, "lon": 18.088, "priority": "LOW", "reason": "not enough capacity or time"}, {"id": "l5", "name": "Djurgården (park)", "lat": 59.3268, "lon": 18.115, "priority": "LOW", "reason": "not enough capacity or time"}], "summary": {"feasible": true, "violations": {}, "distance_m": 28942, "served": 16, "unserved": 10}, "request_stops": [{"id": "r1", "name": "T-Centralen", "lat": 59.331, "lon": 18.059, "service_s": 150, "demand": 1, "required": true, "time_window": ["08:00", "09:00"]}, {"id": "r2", "name": "Slussen", "lat": 59.3195, "lon": 18.072, "service_s": 150, "demand": 1, "required": true, "time_window": ["08:00", "09:00"]}, {"id": "r3", "name": "Fridhemsplan", "lat": 59.332, "lon": 18.029, "service_s": 150, "demand": 1, "required": true}, {"id": "r4", "name": "Medborgarplatsen", "lat": 59.3143, "lon": 18.0735, "service_s": 150, "demand": 1, "required": true}, {"id": "c1", "name": "Odenplan", "lat": 59.3429, "lon": 18.0496, "service_s": 150, "demand": 1, "required": false, "priority": "CRITICAL", "value": 4}, {"id": "c2", "name": "Hötorget", "lat": 59.3355, "lon": 18.063, "service_s": 150, "demand": 1, "required": false, "priority": "CRITICAL", "value": 4}, {"id": "c3", "name": "Östermalmstorg", "lat": 59.335, "lon": 18.077, "service_s": 150, "demand": 1, "required": false, "priority": "CRITICAL", "value": 4}, {"id": "h1", "name": "KTH", "lat": 59.3456, "lon": 18.0715, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "h2", "name": "S:t Eriksplan", "lat": 59.3395, "lon": 18.037, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "h3", "name": "Mariatorget", "lat": 59.317, "lon": 18.063, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "h4", "name": "Skanstull", "lat": 59.308, "lon": 18.076, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "h5", "name": "Rådmansgatan", "lat": 59.3405, "lon": 18.0585, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "h6", "name": "Stadshagen", "lat": 59.3365, "lon": 18.0175, "service_s": 150, "demand": 1, "required": false, "priority": "HIGH", "value": 3}, {"id": "n1", "name": "Liljeholmen", "lat": 59.31, "lon": 18.023, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n2", "name": "Gullmarsplan", "lat": 59.299, "lon": 18.081, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n3", "name": "Hornstull", "lat": 59.3157, "lon": 18.034, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n4", "name": "Zinkensdamm", "lat": 59.3177, "lon": 18.05, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n5", "name": "Karlaplan", "lat": 59.3389, "lon": 18.0904, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n6", "name": "Gärdet", "lat": 59.346, "lon": 18.099, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n7", "name": "Thorildsplan", "lat": 59.3318, "lon": 18.015, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2}, {"id": "n8", "name": "Riddarfjärden quay", "lat": 59.3238, "lon": 18.056, "service_s": 150, "demand": 1, "required": false, "priority": "NORMAL", "value": 2, "note": "snap test: by the water"}, {"id": "l1", "name": "Hammarby sjöstad", "lat": 59.3035, "lon": 18.1, "service_s": 150, "demand": 1, "required": false, "priority": "LOW", "value": 1}, {"id": "l2", "name": "Årstaberg", "lat": 59.299, "lon": 18.03, "service_s": 150, "demand": 1, "required": false, "priority": "LOW", "value": 1}, {"id": "l3", "name": "Telefonplan", "lat": 59.298, "lon": 17.997, "service_s": 150, "demand": 1, "required": false, "priority": "LOW", "value": 1}, {"id": "l4", "name": "Södra Hammarbyhamnen", "lat": 59.3045, "lon": 18.088, "service_s": 150, "demand": 1, "required": false, "priority": "LOW", "value": 1}, {"id": "l5", "name": "Djurgården (park)", "lat": 59.3268, "lon": 18.115, "service_s": 150, "demand": 1, "required": false, "priority": "LOW", "value": 1, "note": "snap test: inside a park"}]};
+const COLORS = {REQUIRED: "#111111", CRITICAL: "#e34948", HIGH: "#eda100", NORMAL: "#2a78d6", LOW: "#8f8e88"};
+const VEH = ["#0e6a73", "#b0459a", "#5b6ee1", "#c06a1b"];
+const map = L.map("map");
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {maxZoom: 19, attribution: "&copy; OpenStreetMap contributors"}).addTo(map);
+const prio = {}; for (const s of PLAN.request_stops) prio[s.id] = s.required ? "REQUIRED" : s.priority;
+const bounds = [];
+const depot = PLAN.depot; bounds.push([depot.lat, depot.lon]);
+L.marker([depot.lat, depot.lon]).addTo(map).bindPopup("<b>" + depot.name + "</b>");
+PLAN.routes.forEach((r, k) => {
+  const pts = r.path || [[depot.lat, depot.lon], ...r.stops.map(s => [s.lat, s.lon]), [depot.lat, depot.lon]];
+  L.polyline(pts, {color: VEH[k % VEH.length], weight: 4, opacity: 0.8, dashArray: r.path ? null : "6 6"})
+    .addTo(map).bindPopup(r.vehicle + " (" + r.profile + "): leaves " + r.leave + ", back " + r.return);
+  r.stops.forEach((s, i) => {
+    bounds.push([s.lat, s.lon]);
+    const ink = prio[s.id] === "HIGH" ? "#111" : "#fff";
+    L.marker([s.lat, s.lon], {icon: L.divIcon({className: "", iconSize: [22, 22], iconAnchor: [11, 11],
+      html: "<div class='pin' style='background:" + COLORS[prio[s.id]] + ";color:" + ink + "'>" + (i + 1) + "</div>"})})
+      .addTo(map).bindPopup("<b>" + s.name + "</b> (" + s.id + ")<br>" + prio[s.id] + "<br>" + r.vehicle + ", stop " + (i + 1) + ", starts " + s.start);
+  });
+});
+for (const u of PLAN.unserved) {
+  bounds.push([u.lat, u.lon]);
+  L.circleMarker([u.lat, u.lon], {radius: 7, color: COLORS[u.priority], weight: 2, fillColor: "#fff", fillOpacity: 1})
+    .addTo(map).bindPopup("<b>" + u.name + "</b> (" + u.id + ")<br>" + u.priority + "<br>not served: " + u.reason);
+}
+const fit = () => { map.invalidateSize(); map.fitBounds(bounds, {padding: [30, 30], maxZoom: 15}); };
+fit(); window.addEventListener("load", fit); window.addEventListener("resize", fit);
+const side = document.getElementById("side");
+let h = "<h1>Demo v0 plan</h1><div class='muted'>Distances: " + PLAN.matrices + "<br>Lines: " +
+  (PLAN.routes.some(r => r.path) ? "Valhalla road paths" : "straight lines between stops (road paths not added yet)") + "</div>";
+h += "<p>Served " + PLAN.summary.served + ", not served " + PLAN.summary.unserved + ", " +
+  (PLAN.summary.distance_m / 1000).toFixed(1) + " km in total" + (PLAN.summary.feasible ? "" : " — <b>plan breaks a rule</b>") + "</p>";
+for (const [k, c] of Object.entries(COLORS)) h += "<div class='row'><span class='dot' style='background:" + c + "'></span>" + (k === "REQUIRED" ? "required" : k) + "</div>";
+h += "<div class='row'><span class='dot' style='background:#fff'></span>hollow = not served</div>";
+PLAN.routes.forEach((r, k) => {
+  h += "<h1 style='margin-top:12px;color:" + VEH[k % VEH.length] + "'>" + r.vehicle + " (" + r.profile + ")</h1><table>";
+  h += "<tr><td></td><td>depot</td><td>" + r.leave + "</td></tr>";
+  r.stops.forEach((s, i) => h += "<tr><td>" + (i + 1) + "</td><td>" + s.name + "</td><td>" + s.start + "</td></tr>");
+  h += "<tr><td></td><td>back at depot</td><td>" + r.return + "</td></tr></table>";
+});
+if (PLAN.unserved.length) h += "<h1 style='margin-top:12px'>Not served</h1><div>" + PLAN.unserved.map(u => u.name + " (" + u.priority + ")").join(", ") + "</div>";
+side.innerHTML = h;
+</script></body></html>

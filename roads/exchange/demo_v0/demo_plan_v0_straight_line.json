@@ -1,48 +1,86 @@
 {
   "format": "route-opti-plan/v0",
   "matrices": "straight-line placeholder, not Valhalla",
+  "depot": {
+    "id": "HUB",
+    "name": "Depot (Årsta)",
+    "lat": 59.2985,
+    "lon": 18.04
+  },
   "routes": [
     {
       "vehicle": "van1",
+      "profile": "van",
+      "leave": "07:00",
       "stops": [
         {
           "id": "n3",
+          "name": "Hornstull",
+          "lat": 59.3157,
+          "lon": 18.034,
           "start": "07:07"
         },
         {
           "id": "r3",
+          "name": "Fridhemsplan",
+          "lat": 59.332,
+          "lon": 18.029,
           "start": "07:16"
         },
         {
           "id": "h6",
+          "name": "Stadshagen",
+          "lat": 59.3365,
+          "lon": 18.0175,
           "start": "07:22"
         },
         {
           "id": "h2",
+          "name": "S:t Eriksplan",
+          "lat": 59.3395,
+          "lon": 18.037,
           "start": "07:29"
         },
         {
           "id": "c1",
+          "name": "Odenplan",
+          "lat": 59.3429,
+          "lon": 18.0496,
           "start": "07:36"
         },
         {
           "id": "h5",
+          "name": "Rådmansgatan",
+          "lat": 59.3405,
+          "lon": 18.0585,
           "start": "07:43"
         },
         {
           "id": "h1",
+          "name": "KTH",
+          "lat": 59.3456,
+          "lon": 18.0715,
           "start": "07:51"
         },
         {
           "id": "c3",
+          "name": "Östermalmstorg",
+          "lat": 59.335,
+          "lon": 18.077,
           "start": "08:01"
         },
         {
           "id": "c2",
+          "name": "Hötorget",
+          "lat": 59.3355,
+          "lon": 18.063,
           "start": "08:08"
         },
         {
           "id": "r1",
+          "name": "T-Centralen",
+          "lat": 59.331,
+          "lon": 18.059,
           "start": "08:14"
         }
       ],
@@ -52,29 +90,49 @@
     },
     {
       "vehicle": "bike1",
+      "profile": "cargo_bike",
+      "leave": "07:30",
       "stops": [
         {
           "id": "n4",
+          "name": "Zinkensdamm",
+          "lat": 59.3177,
+          "lon": 18.05,
           "start": "07:41"
         },
         {
           "id": "n8",
+          "name": "Riddarfjärden quay",
+          "lat": 59.3238,
+          "lon": 18.056,
           "start": "07:47"
         },
         {
           "id": "h3",
+          "name": "Mariatorget",
+          "lat": 59.317,
+          "lon": 18.063,
           "start": "07:54"
         },
         {
           "id": "r2",
+          "name": "Slussen",
+          "lat": 59.3195,
+          "lon": 18.072,
           "start": "08:00"
         },
         {
           "id": "r4",
+          "name": "Medborgarplatsen",
+          "lat": 59.3143,
+          "lon": 18.0735,
           "start": "08:05"
         },
         {
           "id": "h4",
+          "name": "Skanstull",
+          "lat": 59.308,
+          "lon": 18.076,
           "start": "08:11"
         }
       ],
@@ -86,57 +144,88 @@
   "unserved": [
     {
       "id": "n1",
+      "name": "Liljeholmen",
+      "lat": 59.31,
+      "lon": 18.023,
       "priority": "NORMAL",
       "reason": "not enough capacity or time"
     },
     {
       "id": "n2",
+      "name": "Gullmarsplan",
+      "lat": 59.299,
+      "lon": 18.081,
       "priority": "NORMAL",
       "reason": "not enough capacity or time"
     },
     {
       "id": "n5",
+      "name": "Karlaplan",
+      "lat": 59.3389,
+      "lon": 18.0904,
       "priority": "NORMAL",
       "reason": "not enough capacity or time"
     },
     {
       "id": "n6",
+      "name": "Gärdet",
+      "lat": 59.346,
+      "lon": 18.099,
       "priority": "NORMAL",
       "reason": "not enough capacity or time"
     },
     {
       "id": "n7",
+      "name": "Thorildsplan",
+      "lat": 59.3318,
+      "lon": 18.015,
       "priority": "NORMAL",
       "reason": "not enough capacity or time"
     },
     {
       "id": "l1",
+      "name": "Hammarby sjöstad",
+      "lat": 59.3035,
+      "lon": 18.1,
       "priority": "LOW",
       "reason": "not enough capacity or time"
     },
     {
       "id": "l2",
+      "name": "Årstaberg",
+      "lat": 59.299,
+      "lon": 18.03,
       "priority": "LOW",
       "reason": "not enough capacity or time"
     },
     {
       "id": "l3",
+      "name": "Telefonplan",
+      "lat": 59.298,
+      "lon": 17.997,
       "priority": "LOW",
       "reason": "not enough capacity or time"
     },
     {
       "id": "l4",
+      "name": "Södra Hammarbyhamnen",
+      "lat": 59.3045,
+      "lon": 18.088,
       "priority": "LOW",
       "reason": "not enough capacity or time"
     },
     {
       "id": "l5",
+      "name": "Djurgården (park)",
+      "lat": 59.3268,
+      "lon": 18.115,
       "priority": "LOW",
       "reason": "not enough capacity or time"
     }
   ],
   "summary": {
     "feasible": true,
+    "violations": {},
     "distance_m": 28942,
     "served": 16,
     "unserved": 10

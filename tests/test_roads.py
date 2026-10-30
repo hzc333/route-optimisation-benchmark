@@ -18,6 +18,21 @@ from roads import build_matrices
 from roads.load_matrices import UNREACHABLE, apply, summary
 
 
+def _encode(points, precision=6):
+    """Encoded polyline (Valhalla shape format) for the mock /route."""
+    out, prev = [], [0, 0]
+    for lat, lon in points:
+        for k, v in enumerate((lat, lon)):
+            n = round(v * 10 ** precision)
+            d, prev[k] = n - prev[k], n
+            d = ~(d << 1) if d < 0 else d << 1
+            while d >= 0x20:
+                out.append(chr((0x20 | (d & 0x1F)) + 63))
+                d >>= 5
+            out.append(chr(d + 63))
+    return "".join(out)
+
+
 def _inside(lon, lat, ring):
     xs, ys = [p[0] for p in ring], [p[1] for p in ring]
     return min(xs) <= lon <= max(xs) and min(ys) <= lat <= max(ys)
@@ -45,6 +60,18 @@ class MockValhalla(BaseHTTPRequestHandler):
         if self.path == "/locate":
             self._send([{"edges": [{"correlated_lat": l["lat"] + 0.0001, "correlated_lon": l["lon"],
                                     "side_of_street": "right"}]} for l in req["locations"]])
+            return
+        if self.path == "/route":
+            locs = req["locations"]
+            legs = []
+            for a, b in zip(locs, locs[1:]):
+                d = build_matrices.haversine_m(a["lat"], a["lon"], b["lat"], b["lon"]) * 1.4
+                mid = [(a["lat"] + b["lat"]) / 2 + 0.001, (a["lon"] + b["lon"]) / 2]
+                legs.append({"shape": _encode([[a["lat"], a["lon"]], mid, [b["lat"], b["lon"]]]),
+                             "summary": {"length": d / 1000, "time": d / 7 + 30}})
+            self._send({"trip": {"legs": legs, "summary": {
+                "length": sum(l["summary"]["length"] for l in legs),
+                "time": sum(l["summary"]["time"] for l in legs)}}})
             return
         src, tgt = req["sources"], req["targets"]
         MockValhalla.max_pairs = max(MockValhalla.max_pairs, len(src) * len(tgt))
@@ -153,3 +180,35 @@ def test_experiment_uses_matrices(matrices, monkeypatch):
     monkeypatch.setenv("ROB_MATRICES_DIR", str(path.parent))
     row = run_one(("S00", "pyvrp:weighted", 0, 2.0, 0))
     assert row["status"] == "SOLVED" and row["feasible"], row.get("notes")
+
+
+def test_decode_polyline_round_trip():
+    from roads.build_routes import decode_polyline
+
+    pts = [[59.331, 18.059], [59.3195, 18.072], [59.2985, 18.04]]
+    assert decode_polyline(_encode(pts)) == pts
+
+
+def test_demo_end_to_end(mock_url, tmp_path, monkeypatch):
+    """make -> Valhalla matrices -> solve -> Valhalla routes -> map."""
+    from roads import build_routes, demo_v0
+
+    monkeypatch.setattr(demo_v0, "OUT", tmp_path)
+    monkeypatch.setattr(demo_v0, "REQUEST", tmp_path / "demo_request_v0.json")
+    demo_v0.cmd_make(None)
+    monkeypatch.setattr(sys, "argv", ["build_matrices.py", str(tmp_path / "demo_stops_v0.csv"),
+                                      "--url", mock_url, "--profiles", "van,bike", "--block", "10"])
+    build_matrices.main()
+    matrices = tmp_path / "demo_stops_v0.matrices.json"
+    demo_v0.cmd_solve(type("A", (), {"matrices": str(matrices), "time_limit": 3})())
+    plan = json.loads((tmp_path / "demo_plan_v0.json").read_text(encoding="utf-8"))
+    assert plan["summary"]["feasible"] and "Valhalla" in plan["matrices"]
+    served = {s["id"] for r in plan["routes"] for s in r["stops"]}
+    assert {"r1", "r2", "r3", "r4", "c1", "c2", "c3"} <= served
+    monkeypatch.setattr(sys, "argv", ["build_routes.py", str(tmp_path / "demo_plan_v0.json"), "--url", mock_url])
+    build_routes.main()
+    routes = tmp_path / "demo_plan_v0.routes.json"
+    demo_v0.cmd_map(type("A", (), {"routes": str(routes), "plan": None})())
+    plan = json.loads((tmp_path / "demo_plan_v0.json").read_text(encoding="utf-8"))
+    assert all(len(r["path"]) >= 2 * (len(r["stops"]) + 1) for r in plan["routes"])
+    assert "leaflet" in (tmp_path / "demo_map.html").read_text(encoding="utf-8")
