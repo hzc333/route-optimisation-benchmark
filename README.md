@@ -56,7 +56,7 @@ rich/          Voi-style instances: rich schema and validator, Stockholm generat
 roads/         Road-engine hand-off: stop lists, Valhalla matrix builder, loader, checks
 data/          Download / conversion scripts, converted instances, best known solutions
 results/       Summary CSVs and plots of every experiment (raw per-run logs are not kept)
-tests/         365 tests
+tests/         369 tests
 docs/          Reports, notes, walkthrough pages, background documents
 environments/  Pinned Python requirements, Java environment helper, machine snapshot
 notes/         Working notes: hand-off, meeting prep, short findings
@@ -77,7 +77,7 @@ python -m pytest                     # about 1.5 minutes
 
 Tests that need the Timefold jar are skipped until it is built (below), and the
 216 best-known-solution checks are skipped until `python -m data.download` has run;
-with both in place there are 365 tests (3 skipped by solver capability).
+with both in place there are 369 tests (3 skipped by solver capability).
 
 All later commands assume the environment is active, so `python` is the
 environment's Python.
@@ -121,9 +121,9 @@ on Ubuntu (or just `python` with the environment active). Set
 `ROUTE_OPTI_CPUS` to the cores the timed runs should use (see Measurement
 conditions); on the i5-13500H the Linux numbering matches Windows, so the
 default 0, 2, 4, 6 are the performance cores (check with `lscpu -e`: they
-show the higher MAXMHZ). On Linux the standby check is skipped, so keep the
-lid open during long runs (closing it suspends the laptop by default);
-battery power is still detected.
+show the higher MAXMHZ). Closing the lid suspends the laptop by default: runs
+hit by a suspend are detected and redone, but keep the lid open during long
+runs to avoid the reruns.
 
 ## Running
 
@@ -157,9 +157,11 @@ with a new `--tag` to start from scratch. Summaries land in `results/summary/`.
 Timed runs are single-threaded and pinned to fixed performance cores (CPUs
 0, 2, 4, 6 of an i5-13500H). On another machine set `ROUTE_OPTI_CPUS`, e.g.
 `export ROUTE_OPTI_CPUS=0,1,2,3`; cores the machine lacks are dropped.
-On Windows, runs that overlap a Modern Standby period or battery power are
-detected from the event log and redone (`experiments/standby_check.py`); on
-other systems that check is skipped. Compare configurations only within runs
+Runs that overlap a standby period or ran on battery power are detected and
+redone (`experiments/standby_check.py`): on Windows from the Modern Standby
+events in the event log, on Linux from the kernel's suspend messages in the
+systemd journal (the user must be able to read it, e.g. be in group `adm`);
+on other systems only battery power is checked. Compare configurations only within runs
 made on the same day: results drift by 0.1–5 percentage points between days.
 
 ## Limitations

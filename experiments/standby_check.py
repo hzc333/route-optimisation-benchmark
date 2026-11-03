@@ -4,9 +4,10 @@
     python -m experiments.standby_check window --since 2026-10-01T16:30:00
     python -m experiments.standby_check runs --since 2026-10-01T16:30:00 [--delete] EXP...
 
-Windows Modern Standby (Kernel-Power events 506 enter / 507 exit) pauses
-desktop processes mid-solve, which corrupts both timings and time-limited
-results; battery power changes CPU behaviour (plan §3). A run is flagged when
+Windows Modern Standby (Kernel-Power events 506 enter / 507 exit) and Linux
+suspend (kernel "PM: suspend entry / exit" in the systemd journal) pause
+processes mid-solve, which corrupts both timings and time-limited results;
+battery power changes CPU behaviour (plan §3). A run is flagged when
 its [end - process_wall, end] interval overlaps a standby period, or when it
 recorded ``on_ac == False``. With --delete the flagged result files are
 removed so a resumed run_benchmark redoes exactly those runs. Prints the
@@ -18,6 +19,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import re
 import subprocess
 import sys
 import time
@@ -29,9 +31,17 @@ MARGIN_S = 5.0
 
 
 def standby_intervals(since: dt.datetime) -> list[tuple[float, float]]:
-    """(enter, exit) epoch seconds of Modern Standby periods since ``since``."""
-    if sys.platform != "win32":
-        return []
+    """(enter, exit) epoch seconds of standby / suspend periods since ``since``
+    (Windows: Modern Standby events; Linux: kernel suspend and hibernation
+    messages in the systemd journal; elsewhere none)."""
+    if sys.platform == "win32":
+        return pair_events(_windows_events(since), since)
+    if sys.platform.startswith("linux"):
+        return pair_events(_linux_events(since), since)
+    return []
+
+
+def _windows_events(since: dt.datetime) -> list[tuple[bool, float]]:
     local = since.astimezone().replace(tzinfo=None)  # PowerShell [datetime] = local time
     ps = (
         "Get-WinEvent -FilterHashtable @{LogName='System'; ProviderName='Microsoft-Windows-Kernel-Power';"
@@ -41,13 +51,66 @@ def standby_intervals(since: dt.datetime) -> list[tuple[float, float]]:
     )
     out = subprocess.run(["powershell", "-NoProfile", "-Command", ps],
                          capture_output=True, text=True, timeout=60).stdout
-    intervals, entered = [], None
     events = [tuple(map(int, ln.split())) for ln in out.strip().splitlines() if ln.strip()]
-    for k, (event_id, ms) in enumerate(events):
-        t = ms / 1000.0
-        if event_id == 506:
+    return [(event_id == 506, ms / 1000.0) for event_id, ms in events if event_id in (506, 507)]
+
+
+# Kernel messages around s2idle / deep suspend and hibernation.
+LINUX_PM = re.compile(r"^PM: (suspend|hibernation) (entry|exit)\b")
+
+
+def _linux_events(since: dt.datetime) -> list[tuple[bool, float]]:
+    try:
+        res = subprocess.run(
+            ["journalctl", "_TRANSPORT=kernel", f"--since=@{int(since.timestamp())}",
+             "--grep=^PM: (suspend|hibernation) (entry|exit)", "--output=json",
+             "--output-fields=MESSAGE", "--no-pager"],
+            capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError) as exc:
+        print(f"standby_check: cannot read the journal ({exc}); suspends go undetected",
+              file=sys.stderr)
+        return []
+    # Without journal access (groups adm / systemd-journal) kernel messages
+    # are silently missing; journalctl says so on stderr.
+    if "not seeing messages" in res.stderr:
+        print("standby_check: no access to system journal messages (join group adm or"
+              " systemd-journal); suspends go undetected", file=sys.stderr)
+    return parse_journal(res.stdout)
+
+
+def parse_journal(out: str) -> list[tuple[bool, float]]:
+    """journalctl --output=json lines -> (is_entry, epoch seconds), in order.
+
+    The kernel logs an exit even when suspending fails, so an entry without
+    the next event being its exit in the same boot means the machine died
+    while suspended (e.g. flat battery). No process survives that, so the
+    entry is dropped rather than read as a standby that never ends."""
+    raw = []
+    for line in out.splitlines():
+        if not line.strip():
+            continue
+        rec = json.loads(line)
+        m = LINUX_PM.match(rec.get("MESSAGE") or "")
+        if m:
+            raw.append((int(rec["__REALTIME_TIMESTAMP"]) / 1e6, m.group(2) == "entry",
+                        rec.get("_BOOT_ID")))
+    raw.sort(key=lambda e: e[0])
+    events = []
+    for k, (t, is_entry, boot) in enumerate(raw):
+        nxt = raw[k + 1] if k + 1 < len(raw) else None
+        if is_entry and (nxt is None or nxt[1] or nxt[2] != boot):
+            continue
+        events.append((is_entry, t))
+    return events
+
+
+def pair_events(events: list[tuple[bool, float]], since: dt.datetime) -> list[tuple[float, float]]:
+    """(is_entry, t) events in time order -> (enter, exit) intervals."""
+    intervals, entered = [], None
+    for k, (is_entry, t) in enumerate(events):
+        if is_entry:
             entered = t
-        elif event_id == 507:
+        else:
             # An exit with no entry in the window: standby began before
             # `since`, so the interval covers the window's start.
             start = entered if entered is not None else (since.timestamp() if k == 0 else None)

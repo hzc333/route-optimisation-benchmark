@@ -78,7 +78,7 @@
 ## 7. 踩过的坑：绝对不要再踩
 
 ### 运行环境（最耗时间）
-- **笔记本会进入 Modern Standby，进程会被暂停。** 合盖、手动睡眠、用户离开都会触发；保持唤醒只能防止闲置休眠。长实验之前要提醒用户**插电、不要合盖**。所有实验都必须带 `experiments/standby_check.py` 的保护（检查待机事件 506/507 和是否插电）。
+- **笔记本会进入 Modern Standby，进程会被暂停。** 合盖、手动睡眠、用户离开都会触发；保持唤醒只能防止闲置休眠。长实验之前要提醒用户**插电、不要合盖**。所有实验都必须带 `experiments/standby_check.py` 的保护（检查待机事件 506/507 和是否插电；Linux 上读 systemd 日志里内核的 `PM: suspend entry / exit`，用户需要能读系统日志，例如在 `adm` 组里）。
 - **会话结束时，会话里启动的子进程会被一起杀掉**（包括 nohup）。长实验要用 WMI 独立启动：`Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine=...; CurrentDirectory=...}`。runner 必须**每跑完一次就写一次文件**，不能等全部跑完再写。
 - **用电池时测出的时间不可比**：runner 会在每次运行前检查电源，用电池就暂停（`wait_for_ac`）。
 - **E 核慢一倍**，所有计时实验必须固定在 P 核 0/2/4/6 上。
