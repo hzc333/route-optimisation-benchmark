@@ -23,10 +23,12 @@ from pathlib import Path
 import pandas as pd
 import psutil
 
+from schema.cpus import bench_cpus
+
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "results" / "summary"
 RAW = ROOT / "results" / "raw"
-CPUS = [0, 2, 4, 6]
+CPUS = bench_cpus()
 TIME_LIMIT = {"S": 30.0, "M": 120.0, "L": 240.0}
 # arm: (module, options, strategy, seeds)
 ARMS = {

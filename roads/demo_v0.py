@@ -1,5 +1,5 @@
 """Shared demo for the map-solver bridge, in data format v0
-(D:/route_opti/Meeting_Prep_Map_Solver_Bridge.md, section 2.2).
+(notes/Meeting_Prep_Map_Solver_Bridge.md, section 2.2).
 
     python -m roads.demo_v0 make                       # request + stop list
     python -m roads.demo_v0 solve                      # straight-line placeholder

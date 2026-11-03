@@ -30,6 +30,7 @@ import pandas as pd
 import yaml
 
 from data.convert import instance_names
+from schema.cpus import bench_cpus
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = ROOT / "experiments" / "configs"
@@ -40,7 +41,7 @@ TRAIN_TIME_S = 10
 TRAIN_SEEDS = [0, 1]
 SAMPLE_SEED = 20261005
 INFEASIBLE_GAP = 100.0
-CPUS = [0, 2, 4, 6]
+CPUS = bench_cpus()
 
 TRAIN = ["solomon/C103", "solomon/C204", "solomon/R106", "solomon/R209",
          "solomon/RC104", "solomon/RC207",

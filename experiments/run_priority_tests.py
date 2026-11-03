@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import psutil
 
+from schema.cpus import bench_cpus
 from schema.models import Job, Location, PriorityClass, Problem, Vehicle
 
 C, H, N, L = (PriorityClass.CRITICAL, PriorityClass.HIGH,
@@ -38,7 +39,7 @@ PRIO_FIELDS = ["hard_violations", "unserved_critical", "unserved_high",
 PENALTY_STRATEGIES = ["weighted", "weighted_fixed", "stacked", "sequential"]
 COMBOS = ([(s, st) for s in ("ortools", "pyvrp", "timefold") for st in PENALTY_STRATEGIES]
           + [("vroom", "native"), ("timefold", "native")])
-CPUS = [0, 2, 4, 6]
+CPUS = bench_cpus()
 
 
 def _problem(name, coords, jobs, vehicles) -> Problem:

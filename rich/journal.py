@@ -18,7 +18,9 @@ from pathlib import Path
 import pandas as pd
 import psutil
 
-CPUS = [0, 2, 4, 6]
+from schema.cpus import bench_cpus
+
+CPUS = bench_cpus()
 
 
 def start_row(**fields) -> dict:

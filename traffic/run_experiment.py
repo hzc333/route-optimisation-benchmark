@@ -24,10 +24,12 @@ from pathlib import Path
 import pandas as pd
 import psutil
 
+from schema.cpus import bench_cpus
+
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "results" / "summary"
 RAW = ROOT / "results" / "raw"
-CPUS = [0, 2, 4, 6]
+CPUS = bench_cpus()
 INSTANCES = [f"{lv}{k:02d}" for lv in ("T", "H") for k in range(10)]
 COMBOS = [("pyvrp", "static_free"), ("pyvrp", "static_mean"), ("pyvrp", "static_peak"),
           ("pyvrp", "iterative"), ("ortools", "static_mean"), ("ortools", "iterative"),

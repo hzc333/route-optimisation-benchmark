@@ -28,6 +28,7 @@ from queue import Queue
 import yaml
 
 from data.convert import converted_path, instance_names, load_bks, write_converted
+from schema.cpus import bench_cpus
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_RESULTS = ROOT / "results" / "raw"
@@ -165,6 +166,7 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
     cfg = yaml.safe_load(args.config.read_text(encoding="utf-8"))
+    cfg["cpus"] = bench_cpus(cfg["cpus"])
     name = cfg.get("name", args.config.stem)
     out_dir = RAW_RESULTS / name
 

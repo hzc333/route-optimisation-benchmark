@@ -38,8 +38,9 @@ real Stockholm road and traffic data, a time buffer calibrated on real data.
 | [docs/Phase0_Algorithm_Report_CN.md](docs/Phase0_Algorithm_Report_CN.md) | The same report in Chinese (the original) |
 | [docs/viz/](docs/viz/README.md) | Interactive step-by-step walkthrough of the traffic and Voi computations, Chinese and English; open `walkthrough_en.html` in a browser |
 | [docs/DEV_NOTES_CN.md](docs/DEV_NOTES_CN.md) | Development notes (Chinese): structure, status, next steps, pitfalls |
-| [docs/background/](docs/background/) | Project idea document and the benchmark plan |
+| [docs/background/](docs/background/) | Project idea document (Markdown and the original PDF) and the benchmark plan |
 | [roads/README.md](roads/README.md) | Hand-off to the road engine: stop lists and a Valhalla matrix builder |
+| [notes/](notes/README.md) | Working notes: hand-off, map-solver bridge meeting prep, short findings |
 
 ## Repository layout
 
@@ -58,12 +59,13 @@ results/       Summary CSVs and plots of every experiment (raw per-run logs are 
 tests/         358 tests
 docs/          Reports, notes, walkthrough pages, background documents
 environments/  Pinned Python requirements, Java environment helper, machine snapshot
+notes/         Working notes: hand-off, meeting prep, short findings
 ```
 
 ## Setup
 
-Python 3.13 (tested on Windows 11; the solvers also install on Linux and macOS).
-Create a virtual environment in this folder and activate it:
+Python 3.13 (developed on Windows 11; everything is plain Python and also runs
+on Ubuntu). Create a virtual environment in this folder and activate it:
 
 ```bash
 python -m venv .venv
@@ -95,6 +97,24 @@ The helper uses a JDK and Maven already on `PATH`, or portable copies
 Standard benchmark instances are downloaded and converted with
 `python -m data.download`; converted instances are already in `data/converted/`.
 
+### On Ubuntu
+
+```bash
+sudo apt install git openjdk-21-jdk maven      # Java only for Timefold
+git clone <this repository> && cd route-optimisation-benchmark
+# Python 3.13: if `python3.13` is missing, install it from the deadsnakes PPA
+# (sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt install python3.13 python3.13-venv)
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r environments/requirements-python.txt
+python -m pytest
+```
+
+Commands written as `.venv/Scripts/python` in the docs are `.venv/bin/python`
+on Ubuntu (or just `python` with the environment active). Set
+`ROUTE_OPTI_CPUS` to the cores the timed runs should use (see Measurement
+conditions).
+
 ## Running
 
 All commands run from this folder with the virtual environment active.
@@ -125,7 +145,8 @@ with a new `--tag` to start from scratch. Summaries land in `results/summary/`.
 ### Measurement conditions
 
 Timed runs are single-threaded and pinned to fixed performance cores (CPUs
-0, 2, 4, 6 of an i5-13500H; edit `CPUS` in the runners for another machine).
+0, 2, 4, 6 of an i5-13500H). On another machine set `ROUTE_OPTI_CPUS`, e.g.
+`export ROUTE_OPTI_CPUS=0,1,2,3`; cores the machine lacks are dropped.
 On Windows, runs that overlap a Modern Standby period or battery power are
 detected from the event log and redone (`experiments/standby_check.py`); on
 other systems that check is skipped. Compare configurations only within runs
