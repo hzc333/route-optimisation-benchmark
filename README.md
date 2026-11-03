@@ -56,7 +56,7 @@ rich/          Voi-style instances: rich schema and validator, Stockholm generat
 roads/         Road-engine hand-off: stop lists, Valhalla matrix builder, loader, checks
 data/          Download / conversion scripts, converted instances, best known solutions
 results/       Summary CSVs and plots of every experiment (raw per-run logs are not kept)
-tests/         358 tests
+tests/         365 tests
 docs/          Reports, notes, walkthrough pages, background documents
 environments/  Pinned Python requirements, Java environment helper, machine snapshot
 notes/         Working notes: hand-off, meeting prep, short findings
@@ -77,7 +77,7 @@ python -m pytest                     # about 1.5 minutes
 
 Tests that need the Timefold jar are skipped until it is built (below), and the
 216 best-known-solution checks are skipped until `python -m data.download` has run;
-with both in place there are 358 tests.
+with both in place there are 365 tests (3 skipped by solver capability).
 
 All later commands assume the environment is active, so `python` is the
 environment's Python.
@@ -110,10 +110,20 @@ python -m pip install -r environments/requirements-python.txt
 python -m pytest
 ```
 
+Without sudo: [uv](https://docs.astral.sh/uv/) installs Python 3.13 in the
+home folder (`uv python install 3.13 && uv venv --python 3.13 --seed .venv`),
+and a Maven 3.9 unpacked into `../tools` is picked up by
+`environments/java_env.sh`. The Timefold adapter uses `JAVA_HOME`, a JDK in
+`../tools`, or else the `java` on `PATH`.
+
 Commands written as `.venv/Scripts/python` in the docs are `.venv/bin/python`
 on Ubuntu (or just `python` with the environment active). Set
 `ROUTE_OPTI_CPUS` to the cores the timed runs should use (see Measurement
-conditions).
+conditions); on the i5-13500H the Linux numbering matches Windows, so the
+default 0, 2, 4, 6 are the performance cores (check with `lscpu -e`: they
+show the higher MAXMHZ). On Linux the standby check is skipped, so keep the
+lid open during long runs (closing it suspends the laptop by default);
+battery power is still detected.
 
 ## Running
 

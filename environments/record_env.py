@@ -10,6 +10,7 @@ import datetime as dt
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 from importlib import metadata
@@ -83,17 +84,22 @@ def on_ac_power() -> bool | None:
 
 
 def java_toolchain() -> dict:
-    """Versions of the portable JDK and Maven, if installed."""
+    """Versions of the JDK the Timefold adapter uses and of the portable
+    Maven, if installed."""
     jdk = next(TOOLS.glob("jdk-21*"), None)
     mvn = next(TOOLS.glob("apache-maven-*"), None)
     out = {"jdk": None, "maven": mvn.name.removeprefix("apache-maven-") if mvn else None}
     if jdk:
-        java = jdk / "bin" / ("java.exe" if sys.platform == "win32" else "java")
+        java = str(jdk / "bin" / ("java.exe" if sys.platform == "win32" else "java"))
+    else:
+        java = os.environ.get("JAVA_HOME") and str(Path(os.environ["JAVA_HOME"]) / "bin" / "java")
+        java = java or shutil.which("java")
+    if java:
         try:
-            res = subprocess.run([str(java), "-version"], capture_output=True, text=True, timeout=30)
-            out["jdk"] = res.stderr.splitlines()[1].strip() if res.stderr else jdk.name
+            res = subprocess.run([java, "-version"], capture_output=True, text=True, timeout=30)
+            out["jdk"] = res.stderr.splitlines()[1].strip() if res.stderr else java
         except (OSError, subprocess.SubprocessError, IndexError):
-            out["jdk"] = jdk.name
+            out["jdk"] = jdk.name if jdk else java
     return out
 
 

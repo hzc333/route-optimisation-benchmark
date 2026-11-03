@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -53,11 +54,16 @@ DEFAULT_WARMUP_S = 5.0
 
 
 def java_executable() -> str:
+    """JAVA_HOME, else a portable JDK in tools/, else ``java`` on PATH (as
+    environments/java_env.sh; e.g. Ubuntu's openjdk-21-jdk)."""
     home = os.environ.get("JAVA_HOME")
     if not home:
         jdk = next(TOOLS.glob("jdk-21*"), None)
         if jdk is None:
-            raise UnsupportedFeature("JDK 21 not found (set JAVA_HOME or install to tools/)")
+            on_path = shutil.which("java")
+            if on_path is None:
+                raise UnsupportedFeature("JDK 21 not found (set JAVA_HOME, install to tools/ or put java on PATH)")
+            return on_path
         home = str(jdk)
     exe = Path(home) / "bin" / ("java.exe" if os.name == "nt" else "java")
     return str(exe)
